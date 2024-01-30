@@ -10,6 +10,8 @@ import { ContactComponent } from './contact/contact.component';
 import { ServicesComponent } from './services/services.component';
 import { DownloadService } from 'src/assets/download.service';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { MobileNavbarComponent } from './mobile-navbar/mobile-navbar.component';
 
 
 @NgModule({
@@ -20,12 +22,14 @@ import { NotFoundComponent } from './not-found/not-found.component';
     ProjectsComponent,
     ContactComponent,
     ServicesComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    SidebarComponent,
+    MobileNavbarComponent,  
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    
+
   ],
   providers: [DownloadService],
   bootstrap: [AppComponent],

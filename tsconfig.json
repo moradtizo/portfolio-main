@@ -23,9 +23,7 @@
       "ES2022",
       "dom"
     ],
-    "types": [
-      "three"
-    ]
+    "types": ["three"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

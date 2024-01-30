@@ -1,7 +1,43 @@
-<!-- Inside your projects component template -->
-<div class="flex items-center justify-center h-screen">
+
+<!-- <div class="flex items-center justify-center h-screen">
   <p class="text-lg text-gray-500">Projects Page Coming Soon!</p>
-</div>
+</div> -->
+
+
+
+<section class="bg-white dark:bg-gray-900 antialiased">
+  <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-20">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl dark:text-white">
+         Projects
+      </h2>
+      <p class="mt-4 text-base font-normal text-gray-500 sm:text-xl dark:text-gray-400">
+        Welcome to my project portfolio, where creativity meets functionality!
+      </p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-16 mb-16">
+      <div
+        *ngFor="let project of projects; let i = index"
+        class="bg-white p-4 rounded shadow transition-transform transform hover:scale-105 project-container curs"
+        (mouseenter)="toggleHover(i)"
+        (mouseleave)="toggleHover(i)"
+        (click)="navigateToProjectWebsite(project.websiteUrl)"
+      >
+        <img [src]="project.imageUrl" alt="{{ project.title }}" class="w-full h-48 rounded-xl">
+        <p class="text-black description" [ngClass]="{'hovered': project.hovered}">
+          {{ project.description }}
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
 
 
 

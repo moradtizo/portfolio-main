@@ -1,13 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DownloadService } from 'src/assets/download.service';
+import Typed from 'typed.js';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   constructor(private downloadService: DownloadService) {}
+  ngOnInit(): void {
+    const options = {
+      strings: ['Hi! Im<b>"Mourad"</b>'],
+      typeSpeed: 200,
+      backSpeed: 50,
+      smartBackspace: true, // this is a default
+      loop: true
+    };
+    const typed = new Typed('#typed-text', options);
+  }
   downloading = false;
 
   downloadCV(): void {
