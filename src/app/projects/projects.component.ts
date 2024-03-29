@@ -42,14 +42,21 @@ export class ProjectsComponent {
       websiteUrl: 'https://business-mtizo.vercel.app/', // Replace with the actual URL
       hovered: false
     },
-    // {
-    //   title: 'Project 3',
-    //   description: 'Description for Project 2.',
-    //   imageUrl: '././.././../assets/project/P1.png',
-    //   websiteUrl: 'https://example.com/project3', // Replace with the actual URL
-    //   hovered: false
-    // },
-    // Add more projects as needed
+    {
+      title: 'Project 3',
+      description: 'Budget Management Platform',
+      imageUrl: '././.././../assets/project/P5.png',
+      websiteUrl: 'http://oddmaroc.com/pages-login', // Replace with the actual URL
+      hovered: false
+    },
+    {
+      title: 'e commerce website',
+      description: 'E commerce website',
+      imageUrl: '././.././../assets/project/P6.png',
+      websiteUrl: 'https://example.com/project3', // Replace with the actual URL
+      hovered: false
+    },
+
   ];
 
   navigateToProjectWebsite(websiteUrl: string) {
