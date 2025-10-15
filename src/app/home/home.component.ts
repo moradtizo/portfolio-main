@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DownloadService } from 'src/assets/download.service';
+import { CvService } from '../cv.service';
 import Typed from 'typed.js';
 
 @Component({
@@ -8,7 +9,7 @@ import Typed from 'typed.js';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  constructor(private downloadService: DownloadService) {}
+  constructor(private downloadService: DownloadService, private cv: CvService) {}
   ngOnInit(): void {
     const options = {
       strings: ['Hi! Im<b>"Mourad"</b>'],
@@ -22,13 +23,14 @@ export class HomeComponent implements OnInit {
   downloading = false;
 
   downloadCV(): void {
-    const cvUrl = '../../assets/cv/Mourad_Tizougarine.pdf';
-
-    this.downloadService.downloadFile(cvUrl);
-
-
-
-
+    if (this.cv.mode === 'file') {
+      this.cv.getFile().then((f) => {
+        if (f) this.downloadService.downloadBlob(f.blob, f.name || 'cv.pdf');
+        else this.downloadService.downloadFile(this.cv.url);
+      });
+      return;
+    }
+    this.downloadService.downloadFile(this.cv.url);
   }
 
 

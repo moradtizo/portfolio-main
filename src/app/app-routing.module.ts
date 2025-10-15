@@ -6,6 +6,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ContactComponent } from './contact/contact.component';
 import { ServicesComponent } from './services/services.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { AdminComponent } from './admin/admin.component';
 
 
 const routes: Routes = [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'services', component: ServicesComponent },
+  { path: 'admin', component: AdminComponent },
   { path: '**', component: NotFoundComponent, data: { fullPage: true } }, // Pass data to indicate full page
 ];
 

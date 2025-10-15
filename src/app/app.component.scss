@@ -1,94 +1,60 @@
+// App component styles
 
-
-.text-white {
-  color: #fff;
-}
-
-
-
-.ta {
+// 3D text effect for sidebar logo
+.effet-3d {
+  margin: 25px 20px;
   display: flex;
   justify-content: center;
-  position: relative;
-  text-decoration: none;
-  top: 100px;
+  font-family: 'Exo', sans-serif;
+  color: #ffffff;
+  font-size: 90px;
+  letter-spacing: .015em;
+  text-shadow: 
+    0 0 0 #ffffff,
+    .0025em .0025em 0 #ffffff,
+    .005em .005em 0 #ffffff,
+    .0075em .0075em 0 #ffffff,
+    .01em .01em 0 #ffffff,
+    .0125em .0125em 0 #ffffff,
+    .015em .015em 0 #ffffff,
+    .0175em .0175em 0 #ffffff,
+    .02em .02em 0 #ffffff,
+    .0225em .0225em 0 #ffffff,
+    .025em .025em 0 #ffffff,
+    .0275em .0275em 0 #ffffff,
+    .03em .03em 0 #ffffff,
+    .0325em .0325em 0 #ffffff,
+    .035em .035em 0 #ffffff,
+    .0375em .0375em 0 #ffffff,
+    .04em .04em 0 #ffffff,
+    .0425em .0425em 0 #ffffff,
+    .045em .045em 0 #ffffff,
+    .0475em .0475em 0 #ffffff,
+    .05em .05em 0 #ffffff,
+    .0525em .0525em 0 #ffffff,
+    .055em .055em 0 #ffffff,
+    .0575em .0575em 0 #ffffff,
+    .06em .06em 0 #ffffff,
+    .0625em .0625em 0 #ffffff,
+    .065em .065em 0 #ffffff,
+    .0675em .0675em 0 #ffffff,
+    .07em .07em 0 #ffffff,
+    .0725em .0725em 0 #ffffff,
+    .075em .075em 0 #ffffff,
+    .0775em .0775em 0 #ffffff,
+    .08em .08em 0 #ffffff,
+    .0825em .0825em 0 #ffffff,
+    .085em .085em 0 #ffffff,
+    .0875em .0875em 0 #ffffff,
+    .09em .09em 0 #ffffff,
+    .0925em .0925em 0 #ffffff,
+    .095em .095em 0 #ffffff,
+    .0975em .0975em 0 #ffffff,
+    .1em .1em 0 #ffffff;
 }
-.da{
-  display: flex;
-    justify-content: space-evenly;
+
+// Reset body and html
+body, html {
+  margin: 0;
+  padding: 0;
 }
-aside{
-  display: block;
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  margin-top: -120;
-}
-.text-xl {
-  font-size: 2.25rem;
-  line-height: 1.75rem;
-}
-
-aside#logo-sidebar {
-  width: 170px;
-}
-
-*,*::before,*::after{box-sizing: border-box;}
-
-.effet-3d {
-
-margin: 25px 20px;
-display: flex;
-justify-content: center;
-font-family: 'Exo';
-color: #ffffff;
-font-size: 90px;
-letter-spacing: .015em;
-text-shadow: 0 0 0 #ffffff,
-.0025em .0025em 0 #ffffff,
-.005em .005em 0 #ffffff,
-.0075em .0075em 0 #ffffff,
-.01em .01em 0 #ffffff,
-.0125em .0125em 0 #ffffff,
-.015em .015em 0 #ffffff,
-.0175em .0175em 0 #ffffff,
-.02em .02em 0 #ffffff,
-.0225em .0225em 0 #ffffff,
-.025em .025em 0 #ffffff,
-.0275em .0275em 0 #ffffff,
-.03em .03em 0 #ffffff,
-.0325em .0325em 0 #ffffff,
-.035em .035em 0 #ffffff,
-.0375em .0375em 0 #ffffff,
-.04em .04em 0 #ffffff,
-.0425em .0425em 0 #ffffff,
-.045em .045em 0 #ffffff,
-.0475em .0475em 0 #ffffff,
-.05em .05em 0 #ffffff,
-.0525em .0525em 0 #ffffff,
-.055em .055em 0 #ffffff,
-.0575em .0575em 0 #ffffff,
-.06em .06em 0 #ffffff,
-.0625em .0625em 0 #ffffff,
-.065em .065em 0 #ffffff,
-.0675em .0675em 0 #ffffff,
-.07em .07em 0 #ffffff,
-.0725em .0725em 0 #ffffff,
-.075em .075em 0 #ffffff,
-.0775em .0775em 0 #ffffff,
-.08em .08em 0 #ffffff,
-.0825em .0825em 0 #ffffff,
-.085em .085em 0 #ffffff,
-.0875em .0875em 0 #ffffff,
-.09em .09em 0 #ffffff,
-.0925em .0925em 0 #ffffff,
-.095em .095em 0 #ffffff,
-.0975em .0975em 0 #ffffff,
-.1em .1em 0 #ffffff
-
-	}
-
-  body, html {
-    height: 100%;
-    margin: 0;
-  }

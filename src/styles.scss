@@ -1,8 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles and Tailwind layers */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* styles.css or styles.scss */
+/* Font Awesome (already used in project) */
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
+/* Design system: reusable components built on Tailwind via @apply */
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800;
+  }
+  .btn-primary {
+    @apply btn bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500;
+  }
+  .btn-outline {
+    @apply btn border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 dark:bg-transparent dark:text-gray-100 dark:border-gray-600 dark:hover:bg-gray-700;
+  }
+  .btn-ghost {
+    @apply btn text-emerald-700 dark:text-emerald-400 hover:underline px-4 py-2;
+  }
+
+  /* Cards */
+  .card {
+    @apply rounded-2xl bg-white/70 dark:bg-gray-800/50 backdrop-blur ring-1 ring-black/5 dark:ring-white/10 shadow;
+  }
+  .card-hover {
+    @apply card transition transform hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  /* Badges */
+  .badge { @apply rounded-full px-3 py-1 text-xs font-medium; }
+  .badge-emerald { @apply badge bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300; }
+  .badge-indigo  { @apply badge bg-indigo-50  text-indigo-800  dark:bg-indigo-900/30  dark:text-indigo-300; }
+  .badge-amber   { @apply badge bg-amber-50   text-amber-800   dark:bg-amber-900/30   dark:text-amber-300; }
+  .badge-sky     { @apply badge bg-sky-50     text-sky-800     dark:bg-sky-900/30     dark:text-sky-300; }
+  .badge-fuchsia { @apply badge bg-fuchsia-50 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-300; }
+
+  /* Sections */
+  .section { @apply relative overflow-hidden bg-gradient-to-b from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 min-h-0; }
+  .section-container { @apply relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .section-title { @apply text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white; }
+  .section-subtitle { @apply mt-3 text-lg text-gray-600 dark:text-gray-300; }
+
+  /* Surfaces */
+  .glass { @apply bg-white/60 dark:bg-gray-800/40 backdrop-blur ring-1 ring-black/5 dark:ring-white/10; }
+  .ring-card { @apply rounded-3xl ring-1 ring-black/5 dark:ring-white/10 shadow-2xl overflow-hidden; }
+  .gradient-surface { @apply bg-gradient-to-b from-white to-gray-100 dark:from-gray-800 dark:to-gray-900; }
+
+  /* Decorative blobs */
+  .surface-blob { @apply absolute rounded-full blur-3xl opacity-70; }
+  .surface-blob-emerald { @apply surface-blob bg-emerald-500/10; }
+  .surface-blob-indigo  { @apply surface-blob bg-indigo-500/10; }
+}

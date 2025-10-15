@@ -1,80 +1,94 @@
-<button *ngIf="showSidebar" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+<button *ngIf="showSidebar" 
+        data-drawer-target="logo-sidebar" 
+        data-drawer-toggle="logo-sidebar" 
+        aria-controls="logo-sidebar" 
+        type="button" 
+        class="fixed top-4 left-4 z-50 inline-flex items-center p-2 text-gray-500 rounded-lg sm:hidden glass hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600">
   <span class="sr-only">Open sidebar</span>
-  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+  <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
   </svg>
 </button>
 
-<aside *ngIf="showSidebar"  id="logo-sidebar" class="fixed top-0  left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-  <div class="h-full px-3 py-4 overflow-y-auto bg-black  dark:bg-gray-800 saidbar">
-     <a routerLink="/" class="flex items-center ps-2.5 mb-5">
-        <span class="self-center text-xl font-semibold whitespace-nowrap text-white effet-3d">M </span>
-     </a>
-     <ul class="space-y-2 font-medium">
-        <li class="ta">
-           <a routerLink="/" data-tooltip-target="home" data-tooltip-placement="right" class=" p-2 text-gray-900 rounded-full dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700  group">
-            <svg class="w-[30px] h-[30px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8v10a1 1 0 0 0 1 1h4v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5h4a1 1 0 0 0 1-1V8M1 10l9-9 9 9"/>
-            </svg>
+<aside *ngIf="showSidebar" 
+       id="logo-sidebar" 
+       class="fixed top-0 left-0 z-40 w-20 h-screen transition-transform -translate-x-full sm:translate-x-0 glass" 
+       aria-label="Sidebar">
+  <div class="h-full px-3 py-6 overflow-y-auto flex flex-col items-center">
+    
+    <!-- Logo -->
+    <a routerLink="/" class="flex items-center justify-center w-12 h-12 mb-8 rounded-full bg-gradient-to-br from-emerald-600 to-indigo-600 text-white font-bold text-xl shadow-lg hover:scale-110 transition">
+      M
+    </a>
 
-           </a>
-        </li>
-        <li class="ta">
-          <a routerLink="/about"  data-tooltip-target="about" data-tooltip-placement="right" class=" p-2 text-gray-900 rounded-full dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700 group">
-            <svg class="w-[30px] h-[30px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
-            </svg>
+    <!-- Navigation -->
+    <ul class="space-y-4 flex-1">
+      <li>
+        <a routerLink="/" 
+           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+           [routerLinkActiveOptions]="{exact: true}"
+           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           title="Home">
+          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8v10a1 1 0 0 0 1 1h4v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5h4a1 1 0 0 0 1-1V8M1 10l9-9 9 9"/>
+          </svg>
+        </a>
+      </li>
 
-          </a>
-       </li>
-       <li class="ta">
-        <a routerLink="/services" data-tooltip-target="services" data-tooltip-placement="right" class=" p-2 text-gray-900 rounded-full dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700 group">
-          <svg class="w-[30px] h-[30px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+      <li>
+        <a routerLink="/about" 
+           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           title="About">
+          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
+          </svg>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/services" 
+           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           title="Services">
+          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.143 1H1.857A.857.857 0 0 0 1 1.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 7 6.143V1.857A.857.857 0 0 0 6.143 1Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 17 6.143V1.857A.857.857 0 0 0 16.143 1Zm-10 10H1.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 7 16.143v-4.286A.857.857 0 0 0 6.143 11Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"/>
           </svg>
-
         </a>
-     </li>
-     <li class="ta">
-      <a routerLink="/projects" data-tooltip-target="projects" data-tooltip-placement="right" class="p-2 text-gray-900 rounded-full dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700 group">
-        <svg class="w-[30px] h-[30px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z"/>
-        </svg>
-      </a>
-    </li>
+      </li>
 
-       <li class="ta">
-        <a routerLink="/contact" data-tooltip-target="contact" data-tooltip-placement="right" class=" p-2 text-gray-900 rounded-full dark:text-white hover:bg-gray-600 dark:hover:bg-gray-700 group">
-          <svg class="w-[30px] h-[30px] text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+      <li>
+        <a routerLink="/projects" 
+           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           title="Projects">
+          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z"/>
+          </svg>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/contact" 
+           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           title="Contact">
+          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5h9M5 9h5m8-8H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4l3.5 4 3.5-4h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"/>
           </svg>
-
         </a>
-     </li>
+      </li>
+    </ul>
 
+    <!-- Theme Toggle (Optional) -->
+    <div class="mt-auto pt-4">
+      <button class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              title="Toggle theme">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+        </svg>
+      </button>
+    </div>
 
-     </ul>
   </div>
-
-<div id="home" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-g font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
-  Home
-  <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-<div id="about" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-g font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
-  About
-  <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-<div id="services" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-g font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
-  Services
-  <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-<div id="projects" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-g font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
-  Projects
-  <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-<div id="contact" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-g font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip ">
-    Contact
-    <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-
 </aside>

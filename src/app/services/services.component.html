@@ -1,40 +1,70 @@
-<section class="bg-white dark:bg-gray-900 antialiased ">
-  <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-20">
-    <div class="max-w-2xl mx-auto text-center">
-      <h2 class="text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl dark:text-white">
-        Our Services
-      </h2>
-      <p class="mt-4 text-base font-normal text-gray-500 sm:text-xl dark:text-gray-400">
-        Crafted with skill and care to help our clients grow their business!
+<section class="section">
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute top-1/4 -left-24 h-72 w-72 surface-blob-indigo"></div>
+    <div class="absolute bottom-1/4 -right-24 h-72 w-72 surface-blob-emerald"></div>
+  </div>
+
+  <div class="section-container py-16 lg:py-24">
+    
+    <!-- Header -->
+    <div class="max-w-2xl mx-auto text-center mb-16">
+      <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 mb-4">
+        What I Offer
+      </div>
+      <h1 class="section-title">Services</h1>
+      <p class="section-subtitle">
+        Crafted with skill and care to help clients grow their business and achieve their digital goals.
       </p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 mt-16 mb-16">
-      <!-- Web Design service -->
-      <div class="bg-black p-4 hover:bg-gray-900 transition">
-        <div class="flex justify-center items-center h-40 w-40 text-white mx-auto mb-4">
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Web Design -->
+      <div class="card-hover p-8 text-center group">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6 group-hover:scale-110 transition">
           <i class="fas fa-code text-3xl"></i>
         </div>
-        <div class="text-center text-white font-bold">WEB DESIGN</div>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Web Design</h3>
+        <p class="text-gray-600 dark:text-gray-300">
+          Creating beautiful, user-friendly interfaces that engage and convert visitors into customers.
+        </p>
       </div>
-      <!-- Photography service -->
-      <div class="bg-black p-4 hover:bg-gray-900 transition">
-        <div class="flex justify-center items-center h-40 w-40 text-white mx-auto mb-4">
+
+      <!-- Photography -->
+      <div class="card-hover p-8 text-center group">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 mb-6 group-hover:scale-110 transition">
           <i class="fas fa-camera text-3xl"></i>
         </div>
-        <div class="text-center text-white font-bold">PHOTOGRAPHY</div>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Photography</h3>
+        <p class="text-gray-600 dark:text-gray-300">
+          Professional photography services to capture your brand's story and create compelling visual content.
+        </p>
       </div>
-      <!-- Web Developer service -->
-      <div class="bg-black p-4 hover:bg-gray-900 transition">
-        <div class="flex justify-center items-center h-40 w-40 text-white mx-auto mb-4">
+
+      <!-- Web Development -->
+      <div class="card-hover p-8 text-center group">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 mb-6 group-hover:scale-110 transition">
           <i class="fas fa-laptop-code text-3xl"></i>
         </div>
-        <div class="text-center text-white font-bold">WEB DEVELOPER</div>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Web Development</h3>
+        <p class="text-gray-600 dark:text-gray-300">
+          Building robust, scalable web applications with modern technologies and best practices.
+        </p>
       </div>
+
     </div>
+
+    <!-- CTA Section -->
+    <div class="mt-16 text-center">
+      <p class="text-gray-600 dark:text-gray-300 mb-6">Ready to start your project?</p>
+      <a routerLink="/contact" class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+        </svg>
+        Get In Touch
+      </a>
+    </div>
+
   </div>
 </section>
-
-
-
-
-
