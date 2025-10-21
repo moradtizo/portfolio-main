@@ -1,8 +1,8 @@
-<button *ngIf="showSidebar" 
-        data-drawer-target="logo-sidebar" 
-        data-drawer-toggle="logo-sidebar" 
-        aria-controls="logo-sidebar" 
-        type="button" 
+<button *ngIf="showSidebar"
+        data-drawer-target="logo-sidebar"
+        data-drawer-toggle="logo-sidebar"
+        aria-controls="logo-sidebar"
+        type="button"
         class="fixed top-4 left-4 z-50 inline-flex items-center p-2 text-gray-500 rounded-lg sm:hidden glass hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600">
   <span class="sr-only">Open sidebar</span>
   <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -10,12 +10,12 @@
   </svg>
 </button>
 
-<aside *ngIf="showSidebar" 
-       id="logo-sidebar" 
-       class="fixed top-0 left-0 z-40 w-20 h-screen transition-transform -translate-x-full sm:translate-x-0 glass" 
+<aside *ngIf="showSidebar"
+       id="logo-sidebar"
+       class="fixed top-0 left-0 z-40 w-20 h-screen transition-transform -translate-x-full sm:translate-x-0 glass"
        aria-label="Sidebar">
   <div class="h-full px-3 py-6 overflow-y-auto flex flex-col items-center">
-    
+
     <!-- Logo -->
     <a routerLink="/" class="flex items-center justify-center w-12 h-12 mb-8 rounded-full bg-gradient-to-br from-emerald-600 to-indigo-600 text-white font-bold text-xl shadow-lg hover:scale-110 transition">
       M
@@ -24,7 +24,7 @@
     <!-- Navigation -->
     <ul class="space-y-4 flex-1">
       <li>
-        <a routerLink="/" 
+        <a routerLink="/"
            routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
            [routerLinkActiveOptions]="{exact: true}"
            class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
@@ -36,7 +36,7 @@
       </li>
 
       <li>
-        <a routerLink="/about" 
+        <a routerLink="/about"
            routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
            class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
            title="About">
@@ -47,7 +47,7 @@
       </li>
 
       <li>
-        <a routerLink="/services" 
+        <a routerLink="/services"
            routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
            class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
            title="Services">
@@ -58,7 +58,7 @@
       </li>
 
       <li>
-        <a routerLink="/projects" 
+        <a routerLink="/projects"
            routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
            class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
            title="Projects">
@@ -69,7 +69,7 @@
       </li>
 
       <li>
-        <a routerLink="/contact" 
+        <a routerLink="/contact"
            routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
            class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
            title="Contact">
@@ -82,13 +82,18 @@
 
     <!-- Theme Toggle (Optional) -->
     <div class="mt-auto pt-4">
-      <button class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+      <button (click)="toggleTheme()"
+              class="flex items-center justify-center w-12 h-12 rounded-full
+                     text-gray-600 dark:text-gray-300
+                     hover:bg-gray-100 dark:hover:bg-gray-700 transition"
               title="Toggle theme">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
         </svg>
       </button>
     </div>
+
 
   </div>
 </aside>

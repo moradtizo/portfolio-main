@@ -1,7 +1,7 @@
 <nav *ngIf="showNavbar" class="fixed bottom-0 left-0 right-0 z-50 glass border-t border-gray-200 dark:border-gray-700">
   <div class="flex justify-around items-center py-3 px-2">
-    
-    <a routerLink="/" 
+
+    <a routerLink="/"
        routerLinkActive="text-emerald-600 dark:text-emerald-400"
        [routerLinkActiveOptions]="{exact: true}"
        class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
@@ -11,7 +11,7 @@
       <span class="text-xs">Home</span>
     </a>
 
-    <a routerLink="/about" 
+    <a routerLink="/about"
        routerLinkActive="text-emerald-600 dark:text-emerald-400"
        class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
       <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
@@ -20,7 +20,7 @@
       <span class="text-xs">About</span>
     </a>
 
-    <a routerLink="/services" 
+    <a routerLink="/services"
        routerLinkActive="text-emerald-600 dark:text-emerald-400"
        class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
       <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
@@ -29,7 +29,7 @@
       <span class="text-xs">Services</span>
     </a>
 
-    <a routerLink="/projects" 
+    <a routerLink="/projects"
        routerLinkActive="text-emerald-600 dark:text-emerald-400"
        class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
       <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -38,7 +38,7 @@
       <span class="text-xs">Projects</span>
     </a>
 
-    <a routerLink="/contact" 
+    <a routerLink="/contact"
        routerLinkActive="text-emerald-600 dark:text-emerald-400"
        class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
       <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
@@ -46,6 +46,15 @@
       </svg>
       <span class="text-xs">Contact</span>
     </a>
+    <!-- Theme toggle button -->
+    <button (click)="toggleTheme()"
+            class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+      </svg>
+      <span class="text-xs">Theme</span>
+    </button>
 
   </div>
 </nav>

@@ -5,10 +5,10 @@
   </div>
 
   <div class="section-container py-16 lg:py-24">
-    
     <!-- Header -->
     <div class="max-w-2xl mx-auto text-center mb-16">
-      <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 mb-4">
+      <div
+        class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 mb-4">
         Get In Touch
       </div>
       <h1 class="section-title">Contact Me</h1>
@@ -19,75 +19,90 @@
 
     <!-- Two Column Layout -->
     <div class="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-      
       <!-- Left: Contact Form -->
       <div class="card p-8">
-        <form class="space-y-6">
+        <form class="space-y-6" [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your email</label>
-            <input type="email" 
-                   id="email" 
-                   class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" 
-                   placeholder="name@example.com" 
-                   required>
+            <label for="email"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your email</label>
+            <input type="email" id="email" formControlName="email"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+              placeholder="name@example.com" required />
           </div>
-          
+
           <div>
-            <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Subject</label>
-            <input type="text" 
-                   id="subject" 
-                   class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" 
-                   placeholder="How can I help you?" 
-                   required>
+            <label for="subject"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Subject</label>
+            <input type="text" id="subject" formControlName="subject"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+              placeholder="How can I help you?" required />
           </div>
-          
+
           <div>
-            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your message</label>
-            <textarea id="message" 
-                      rows="5" 
-                      class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition" 
-                      placeholder="Leave a message..."></textarea>
+            <label for="message"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Your message</label>
+            <textarea id="message" rows="5" formControlName="message"
+              class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+              placeholder="Leave a message..." required></textarea>
           </div>
-          
-          <button type="submit" class="btn-primary w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+
+          <button type="submit"
+            class="btn-primary w-full flex items-center justify-center gap-2" [disabled]="loading">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
             </svg>
-            Send Message
+            {{ loading ? 'Sending...' : 'Send Message' }}
           </button>
+
+          <!-- Success/Error messages -->
+          <div *ngIf="successMessage" class="p-4 rounded-lg bg-green-100 text-green-800 mt-3 animate-fadeIn">
+            {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="p-4 rounded-lg bg-red-100 text-red-800 mt-3 animate-fadeIn">
+            {{ errorMessage }}
+          </div>
         </form>
       </div>
 
       <!-- Right: Contact Info & Social -->
       <div class="space-y-8">
-        
         <!-- Contact Info Card -->
         <div class="card p-8">
           <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Contact Information</h3>
-          
+
           <div class="space-y-4">
             <div class="flex items-start gap-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-900 dark:text-white">Email</p>
-                <a href="mailto:your.email@example.com" class="text-sm text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400">your.email@example.com</a>
+                <a href="mailto:mouradtizougarine.com"
+                  class="text-sm text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400">mouradtizougarine.com</a>
               </div>
             </div>
 
             <div class="flex items-start gap-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+              <div
+                class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                  stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                 </svg>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-900 dark:text-white">Location</p>
-                <p class="text-sm text-gray-600 dark:text-gray-300">Your City, Country</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300">Casablanca, Maroc</p>
               </div>
             </div>
           </div>
@@ -96,31 +111,29 @@
         <!-- Social Links Card -->
         <div class="card p-8">
           <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Connect With Me</h3>
-          
+
           <div class="flex gap-4">
-            <a href="https://github.com/moradtizo" 
-               target="_blank" 
-               rel="noopener" 
-               class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition group">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white">
-                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.589 2 12.253c0 4.515 2.865 8.342 6.839 9.693.5.095.682-.221.682-.49 0-.242-.009-.884-.014-1.736-2.782.615-3.369-1.37-3.369-1.37-.455-1.175-1.11-1.488-1.11-1.488-.908-.637.069-.624.069-.624 1.003.072 1.53 1.05 1.53 1.05.892 1.55 2.341 1.102 2.91.842.091-.659.35-1.102.636-1.355-2.22-.259-4.555-1.132-4.555-5.037 0-1.113.39-2.023 1.03-2.737-.104-.258-.447-1.3.098-2.71 0 0 .84-.272 2.75 1.045A9.38 9.38 0 0112 6.844a9.38 9.38 0 012.504.34c1.909-1.317 2.748-1.045 2.748-1.045.546 1.41.203 2.452.1 2.71.64.714 1.029 1.624 1.029 2.737 0 3.915-2.338 4.776-4.565 5.03.359.317.678.943.678 1.901 0 1.372-.013 2.478-.013 2.816 0 .272.18.588.688.488C19.138 20.592 22 16.766 22 12.253 22 6.589 17.523 2 12 2z" clip-rule="evenodd"/>
+            <a href="https://github.com/moradtizo" target="_blank" rel="noopener"
+              class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition group">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                class="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white">
+                <path fill-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.589 2 12.253c0 4.515 2.865 8.342 6.839 9.693.5.095.682-.221.682-.49 0-.242-.009-.884-.014-1.736-2.782.615-3.369-1.37-3.369-1.37-.455-1.175-1.11-1.488-1.11-1.488-.908-.637.069-.624.069-.624 1.003.072 1.53 1.05 1.53 1.05.892 1.55 2.341 1.102 2.91.842.091-.659.35-1.102.636-1.355-2.22-.259-4.555-1.132-4.555-5.037 0-1.113.39-2.023 1.03-2.737-.104-.258-.447-1.3.098-2.71 0 0 .84-.272 2.75 1.045A9.38 9.38 0 0112 6.844a9.38 9.38 0 012.504.34c1.909-1.317 2.748-1.045 2.748-1.045.546 1.41.203 2.452.1 2.71.64.714 1.029 1.624 1.029 2.737 0 3.915-2.338 4.776-4.565 5.03.359.317.678.943.678 1.901 0 1.372-.013 2.478-.013 2.816 0 .272.18.588.688.488C19.138 20.592 22 16.766 22 12.253 22 6.589 17.523 2 12 2z"
+                  clip-rule="evenodd" />
               </svg>
             </a>
 
-            <a href="https://www.linkedin.com/in/mourad-tizougarine-175bb7221/" 
-               target="_blank" 
-               rel="noopener" 
-               class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition group">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-500">
-                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7 0h3.8v2.2h.1c.5-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-6.8c0-1.6 0-3.6-2.2-3.6-2.2 0-2.6 1.7-2.6 3.5V24h-4V8z"/>
+            <a href="https://www.linkedin.com/in/mourad-tizougarine-175bb7221/" target="_blank" rel="noopener"
+              class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition group">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                class="w-5 h-5 text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-500">
+                <path
+                  d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7 0h3.8v2.2h.1c.5-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-6.8c0-1.6 0-3.6-2.2-3.6-2.2 0-2.6 1.7-2.6 3.5V24h-4V8z" />
               </svg>
             </a>
           </div>
         </div>
-
       </div>
-
     </div>
-
   </div>
 </section>
