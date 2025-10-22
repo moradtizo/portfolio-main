@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { DownloadService } from 'src/assets/download.service';
 import { CvService } from '../cv.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import Typed from 'typed.js';
 
 @Component({
@@ -8,46 +11,68 @@ import Typed from 'typed.js';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  constructor(private downloadService: DownloadService, private cv: CvService) {}
+export class HomeComponent implements OnInit, OnDestroy {
+  isLoading = false;
+  downloading = false;
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private downloadService: DownloadService,
+    private cv: CvService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
+    this.initializeTypedAnimation();
+    this.setupNavigationLoading();
+  }
+
+  private initializeTypedAnimation(): void {
     const options = {
-      strings: ['Hi! Im<b>"Mourad"</b>'],
+      strings: ['Hi! I\'m <b>"Mourad"</b>'],
       typeSpeed: 200,
       backSpeed: 50,
-      smartBackspace: true, // this is a default
+      smartBackspace: true,
       loop: true
     };
     const typed = new Typed('#typed-text', options);
   }
-  downloading = false;
+
+  private setupNavigationLoading(): void {
+    this.router.events
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(event => {
+        if (event instanceof NavigationStart) {
+          this.isLoading = true;
+        } else if (event instanceof NavigationEnd || event instanceof NavigationError) {
+          this.isLoading = false;
+        }
+      });
+  }
 
   downloadCV(): void {
+    this.downloading = true;
+
     if (this.cv.mode === 'file') {
       this.cv.getFile().then((f) => {
-        if (f) this.downloadService.downloadBlob(f.blob, f.name || 'cv.pdf');
-        else this.downloadService.downloadFile(this.cv.url);
+        if (f) {
+          this.downloadService.downloadBlob(f.blob, f.name || 'cv.pdf');
+        } else {
+          this.downloadService.downloadFile(this.cv.url);
+        }
+        this.downloading = false;
+      }).catch(() => {
+        this.downloading = false;
       });
       return;
     }
+
     this.downloadService.downloadFile(this.cv.url);
+    this.downloading = false;
   }
 
-
-
-
-
-  // downloadCV(): void {
-  //   this.downloading = true;
-
-  //   const cvUrl = '../../assets/cv/Mourad_Tizougarine.pdf';
-
-  //   // Simulate a download (replace with your actual download logic)
-  //   setTimeout(() => {
-  //     this.downloadService.downloadFile(cvUrl);
-
-  //     // After the download is complete, set downloading to false
-  //     this.downloading = false;
-  //   }, 2000); // Adjust the time according to your actual download time
-  // }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

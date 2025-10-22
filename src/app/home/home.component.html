@@ -1,4 +1,13 @@
-<section class="section">
+<section class="section relative">
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="fixed inset-0 bg-black/30 dark:bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
+    <div class="flex flex-col items-center gap-3 bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl">
+      <!-- Spinner -->
+      <div class="w-12 h-12 border-4 border-emerald-200 dark:border-emerald-900 border-t-emerald-600 dark:border-t-emerald-400 rounded-full animate-spin"></div>
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Loading...</span>
+    </div>
+  </div>
+
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
     <div class="absolute top-1/4 -left-24 h-72 w-72 surface-blob-indigo"></div>
     <div class="absolute bottom-1/4 -right-24 h-72 w-72 surface-blob-emerald"></div>
@@ -23,7 +32,7 @@
           </h1>
 
           <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            I craft performant, accessible web experiences with Angular, TypeScript, and Node.js. Passionate about clean architecture, UI polish, and 3D interactions.
+            I design and develop high-performance web applications with Angular, React, and Laravel. Expert in SEO optimization, responsive design, and full-stack development. Committed to delivering accessible, scalable solutions that transform businesses.
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-start justify-center">
@@ -62,12 +71,31 @@
             <span class="rounded-full bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 px-3 py-1 text-xs font-medium">Node.js</span>
             <span class="rounded-full bg-sky-50 text-sky-800 dark:bg-sky-900/30 dark:text-sky-300 px-3 py-1 text-xs font-medium">Three.js</span>
             <span class="rounded-full bg-fuchsia-50 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-300 px-3 py-1 text-xs font-medium">Tailwind CSS</span>
+            <span class="rounded-full bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-300 px-3 py-1 text-xs font-medium">Laravel</span>
+            <span class="rounded-full bg-cyan-50 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300 px-3 py-1 text-xs font-medium">React JS</span>
           </div>
         </div>
 
         <!-- Right: Image -->
-        <div class="relative order-first md:order-none">
-          <div class="mx-auto w-64 sm:w-80 md:w-full max-w-md rounded-3xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden shadow-2xl">
+        <div class="relative order-first md:order-none w-full">
+          <!-- Background Icons -->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-visible">
+            <div class="absolute top-0 left-0 text-emerald-500 dark:text-emerald-400 opacity-30">
+              <i class="fas fa-laptop text-8xl"></i>
+            </div>
+            <div class="absolute bottom-0 right-0 text-indigo-500 dark:text-indigo-400 opacity-30">
+              <i class="fas fa-mobile-alt text-8xl"></i>
+            </div>
+            <div class="absolute top-1/4 -right-12 text-amber-500 dark:text-amber-400 opacity-25">
+              <i class="fas fa-tablet-alt text-7xl"></i>
+            </div>
+            <div class="absolute bottom-1/4 -left-12 text-sky-500 dark:text-sky-400 opacity-25">
+              <i class="fas fa-code text-7xl"></i>
+            </div>
+          </div>
+
+          <!-- Image Container -->
+          <div class="mx-auto w-64 sm:w-80 md:w-full max-w-md rounded-3xl overflow-hidden relative z-10">
             <img src="../../assets/images/mt.png" alt="Mourad profile illustration" class="w-full h-auto object-cover" />
           </div>
         </div>
@@ -83,6 +111,9 @@
       </div>
     </div>
 
+    <div class="grid grid-cols-2 gap-4 h-6">
+      <!-- content -->
+    </div>
+
   </div>
 </section>
-
