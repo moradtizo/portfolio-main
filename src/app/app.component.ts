@@ -2,7 +2,7 @@
 import { Component,HostListener,OnInit,ViewEncapsulation } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { SharedService } from './shared.service';
-import { Router } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 const SHOW_BOTTOM_NAVBAR_KEY = 'showBottomNavbar';
 @Component({
   selector: 'app-root',
@@ -15,10 +15,19 @@ export class AppComponent implements OnInit{
     const storedState = localStorage.getItem(SHOW_BOTTOM_NAVBAR_KEY);
     this.showBottomNavbar = storedState ? JSON.parse(storedState) : false;}
   title = 'portfolio';
+  isLoading: boolean = false;
   ngOnInit(): void {
     initFlowbite();
     this.sharedService.showSidebar$.subscribe((value) => {
       this.showSidebar = value;
+    });
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.isLoading = true;
+      } else if (event instanceof NavigationEnd) {        setTimeout(() => {
+          this.isLoading = false;
+        }, 500);
+      }
     });
   }
   showSidebar: boolean = true;

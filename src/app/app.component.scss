@@ -58,3 +58,100 @@ body, html {
   margin: 0;
   padding: 0;
 }
+
+// Loading indicator styles
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.loader {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top-color: #00d4ff;
+  border-right-color: #ff006e;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+.loader-circle:nth-child(2) {
+  width: 80%;
+  height: 80%;
+  border-top-color: #ff006e;
+  border-right-color: #00d4ff;
+  animation: spin 1.5s linear infinite reverse;
+}
+
+.loader-circle:nth-child(3) {
+  width: 60%;
+  height: 60%;
+  border-top-color: #00d4ff;
+  border-right-color: #ff006e;
+  animation: spin 1s linear infinite;
+}
+
+.code-symbol {
+  position: absolute;
+  font-size: 40px;
+  font-weight: 900;
+  color: #ffffff;
+  z-index: 10;
+  animation: symbolPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes symbolPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
