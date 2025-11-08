@@ -15,6 +15,7 @@ export class ContactComponent {
 
   constructor(private fb: FormBuilder) {
     this.contactForm = this.fb.group({
+      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', Validators.required],
@@ -29,9 +30,14 @@ export class ContactComponent {
     this.errorMessage = '';
 
     const templateParams = {
-      from_email: this.contactForm.value.email,
+      name: this.contactForm.value.name,
+      email: this.contactForm.value.email,
       subject: this.contactForm.value.subject,
       message: this.contactForm.value.message,
+      time: new Date().toLocaleString('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }),
     };
 
     emailjs.send(
