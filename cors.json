@@ -1,6 +1,22 @@
 [
   {
-    "origin": ["http://localhost:4200", "http://localhost:*", "http://127.0.0.1:*"],
+    "origin": [
+      "http://localhost:4200",
+      "http://localhost:*",
+      "http://127.0.0.1:*",
+      "https://localhost:4200",
+      "https://localhost:*",
+      "https://127.0.0.1:*"
+    ],
+    "method": ["GET", "HEAD", "DELETE", "PUT", "POST", "OPTIONS"],
+    "responseHeader": ["Content-Type", "x-goog-meta-uploaded-content-length", "x-goog-meta-*"],
+    "maxAgeSeconds": 3600
+  },
+  {
+    "origin": [
+      "https://mouradtizougarine.online",
+      "https://www.mouradtizougarine.online"
+    ],
     "method": ["GET", "HEAD", "DELETE", "PUT", "POST", "OPTIONS"],
     "responseHeader": ["Content-Type", "x-goog-meta-uploaded-content-length", "x-goog-meta-*"],
     "maxAgeSeconds": 3600
