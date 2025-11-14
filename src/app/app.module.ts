@@ -15,7 +15,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MobileNavbarComponent } from './mobile-navbar/mobile-navbar.component';
 import { AdminComponent } from './admin/admin.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +33,6 @@ import { AdminComponent } from './admin/admin.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-
   ],
   providers: [DownloadService],
   bootstrap: [AppComponent],
