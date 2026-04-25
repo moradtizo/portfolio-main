@@ -1,85 +1,121 @@
-<section class="section">
+<section class="section py-28 min-h-screen">
+
+  <!-- Decorative background -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div class="absolute top-1/4 -left-24 h-72 w-72 surface-blob-indigo"></div>
-    <div class="absolute bottom-1/4 -right-24 h-72 w-72 surface-blob-emerald"></div>
+    <div class="orb orb-cyan w-[400px] h-[400px] top-1/3 -left-20"></div>
+    <div class="orb orb-violet w-[360px] h-[360px] bottom-10 right-10" style="animation-delay:-5s;"></div>
   </div>
 
-  <div class="section-container py-16 lg:py-24">
+  <div class="section-container">
 
     <!-- Header -->
-    <div class="max-w-2xl mx-auto text-center mb-16">
-      <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 mb-4">
-        What I Offer
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-14">
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <span class="section-num">03 / SERVICES</span>
+          <div class="h-px w-28 bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+        </div>
+        <h1 class="section-title max-w-2xl">
+          What I <span class="gradient-text">build for</span> clients.
+        </h1>
       </div>
-      <h1 class="section-title">Services</h1>
-      <p class="section-subtitle">
-        Crafted with skill and care to help clients grow their business and achieve their digital goals.
+      <p class="text-slate-400 max-w-sm text-lg">
+        From first pixel to production. Scoped tightly, shipped predictably, measured after launch.
       </p>
     </div>
 
-    <!-- Services Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <!-- Services grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
 
-  <!-- Web Design -->
-  <div class="card-hover p-8 text-center group">
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 mb-6 group-hover:scale-110 transition">
-      <i class="fas fa-code text-3xl"></i>
+      <!-- Web Design -->
+      <div class="card-hover p-7">
+        <div class="icon-wrap mb-6"><i class="fas fa-pen-ruler"></i></div>
+        <span class="proj-tag mb-4 inline-block">01</span>
+        <h3 class="font-display font-semibold text-xl text-white mb-2">Web Design</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Interfaces that convert — clean hierarchy, real brand, accessible from day one.
+        </p>
+        <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">
+          Learn more <i class="fas fa-arrow-right text-xs"></i>
+        </div>
+      </div>
+
+      <!-- Web Development -->
+      <div class="card-hover p-7">
+        <div class="icon-wrap icon-wrap-cyan mb-6"><i class="fas fa-code"></i></div>
+        <span class="proj-tag mb-4 inline-block">02</span>
+        <h3 class="font-display font-semibold text-xl text-white mb-2">Web Development</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Full-stack apps in Angular, React, Laravel, Node. Scalable, tested, production-ready.
+        </p>
+        <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">
+          Learn more <i class="fas fa-arrow-right text-xs"></i>
+        </div>
+      </div>
+
+      <!-- SEO Optimization -->
+      <div class="card-hover p-7">
+        <div class="icon-wrap icon-wrap-lime mb-6"><i class="fas fa-magnifying-glass"></i></div>
+        <span class="proj-tag mb-4 inline-block">03</span>
+        <h3 class="font-display font-semibold text-xl text-white mb-2">SEO Optimization</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Technical SEO, Core Web Vitals, structured data. Rank higher, load faster.
+        </p>
+        <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">
+          Learn more <i class="fas fa-arrow-right text-xs"></i>
+        </div>
+      </div>
+
+      <!-- Photography -->
+      <div class="card-hover p-7">
+        <div class="icon-wrap icon-wrap-pink mb-6"><i class="fas fa-camera"></i></div>
+        <span class="proj-tag mb-4 inline-block">04</span>
+        <h3 class="font-display font-semibold text-xl text-white mb-2">Photography</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Product &amp; brand photography — visuals that match the quality of your site.
+        </p>
+        <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">
+          Learn more <i class="fas fa-arrow-right text-xs"></i>
+        </div>
+      </div>
+
     </div>
-    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Web Design</h3>
-    <p class="text-gray-600 dark:text-gray-300">
-      Creating beautiful, user-friendly interfaces that engage and convert visitors into customers.
-    </p>
-  </div>
 
-  <!-- Photography -->
-  <div class="card-hover p-8 text-center group">
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 mb-6 group-hover:scale-110 transition">
-      <i class="fas fa-camera text-3xl"></i>
+    <!-- Process ribbon -->
+    <div class="mt-16 card p-8">
+      <div class="divider-label mb-8"><span>MY PROCESS</span></div>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">01</div>
+          <h4 class="mt-2 text-white font-semibold">Discover</h4>
+          <p class="text-slate-400 text-sm mt-1">Deep dive into your goals, users, and constraints.</p>
+        </div>
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">02</div>
+          <h4 class="mt-2 text-white font-semibold">Design</h4>
+          <p class="text-slate-400 text-sm mt-1">Wireframes → prototypes → polished UI ready to ship.</p>
+        </div>
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">03</div>
+          <h4 class="mt-2 text-white font-semibold">Build</h4>
+          <p class="text-slate-400 text-sm mt-1">Clean code, reviewed weekly. Progress every sprint.</p>
+        </div>
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">04</div>
+          <h4 class="mt-2 text-white font-semibold">Launch</h4>
+          <p class="text-slate-400 text-sm mt-1">Deploy, measure, iterate. Support after go-live.</p>
+        </div>
+      </div>
     </div>
-    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Photography</h3>
-    <p class="text-gray-600 dark:text-gray-300">
-      Professional photography services to capture your brand's story and create compelling visual content.
-    </p>
-  </div>
 
-  <!-- Web Development -->
-  <div class="card-hover p-8 text-center group">
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 mb-6 group-hover:scale-110 transition">
-      <i class="fas fa-laptop-code text-3xl"></i>
-    </div>
-    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Web Development</h3>
-    <p class="text-gray-600 dark:text-gray-300">
-      Building robust, scalable web applications with modern technologies and best practices.
-    </p>
-  </div>
-
-  <!-- SEO Optimization -->
-  <div class="card-hover p-8 text-center group">
-    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 mb-6 group-hover:scale-110 transition">
-      <i class="fas fa-search text-3xl"></i>
-    </div>
-    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">SEO Optimization</h3>
-    <p class="text-gray-600 dark:text-gray-300">
-      Boost your online visibility with strategic SEO techniques to rank higher and drive organic traffic.
-    </p>
-  </div>
-
-</div>
-
-    <!-- CTA Section -->
+    <!-- CTA -->
     <div class="mt-16 text-center">
-      <p class="text-gray-600 dark:text-gray-300 mb-6">Ready to start your project?</p>
+      <p class="text-slate-400 mb-6">Ready to start your project?</p>
       <a routerLink="/contact" class="btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-        </svg>
+        <i class="fas fa-paper-plane"></i>
         Get In Touch
       </a>
     </div>
-    <div class="grid grid-cols-2 gap-4 h-8">
-      <!-- content -->
-    </div>
-
 
   </div>
 </section>

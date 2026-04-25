@@ -1,119 +1,429 @@
-<section class="section relative">
-  <!-- Loading Overlay -->
-  <div *ngIf="isLoading" class="fixed inset-0 bg-black/30 dark:bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
-    <div class="flex flex-col items-center gap-3 bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl">
-      <!-- Spinner -->
-      <div class="w-12 h-12 border-4 border-emerald-200 dark:border-emerald-900 border-t-emerald-600 dark:border-t-emerald-400 rounded-full animate-spin"></div>
-      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Loading...</span>
+<div class="max-w-[1200px] mx-auto px-5 md:px-8 pt-8 pb-20">
+
+  <!-- ============================================================== -->
+  <!-- TOP BAR: huge name + social icons -->
+  <!-- ============================================================== -->
+  <header class="flex items-start justify-between gap-8 mb-10 flex-wrap">
+    <h1 class="display-name">
+      Mourad <span class="display-italic">Tizougarine</span>
+    </h1>
+
+    <div class="flex items-center gap-1 shrink-0 mt-3">
+      <a href="https://www.linkedin.com/in/mourad-tizougarine"
+         target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a href="https://github.com/moradtizo"
+         target="_blank" rel="noopener" class="social-btn" aria-label="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="mailto:mouradtizougarine@gmail.com"
+         class="social-btn" aria-label="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+      <a href="tel:+212649331053"
+         class="social-btn" aria-label="Phone">
+        <i class="fas fa-phone"></i>
+      </a>
+      <button (click)="scrollTo('contact')"
+              class="ml-2 inline-flex items-center justify-center w-10 h-10 rounded-full"
+              style="background:#0E0E0C; color:#F5F4F0;"
+              aria-label="Contact">
+        <i class="fas fa-paper-plane text-[12px]"></i>
+      </button>
     </div>
-  </div>
+  </header>
 
-  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div class="absolute top-1/4 -left-24 h-72 w-72 surface-blob-indigo"></div>
-    <div class="absolute bottom-1/4 -right-24 h-72 w-72 surface-blob-emerald"></div>
-  </div>
+  <div class="space-y-6">
 
-  <div class="section-container py-16 lg:py-24">
+    <!-- ============================================================== -->
+    <!-- ABOUT ME -->
+    <!-- ============================================================== -->
+    <section id="about" class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">About me</div>
+      <div class="mb-5 label">About me</div>
 
-    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div class="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl"></div>
-      <div class="absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl"></div>
-    </div>
+      <div class="grid md:grid-cols-[180px_1fr] gap-8 items-center">
+        <div class="relative shrink-0">
+          <div class="w-[160px] h-[160px] rounded-full overflow-hidden flex items-center justify-center relative"
+               style="background: radial-gradient(circle at 30% 30%, #F4A38C, #C9553B 70%);">
+            <img src="../../assets/images/mt.png"
+                 alt="Mourad Tizougarine"
+                 class="w-full h-full object-cover mix-blend-luminosity opacity-95"
+                 onerror="this.style.display='none'" />
+            <span class="absolute text-white pointer-events-none" style="font-family:'Instrument Serif',serif;font-size:80px;font-style:italic;line-height:1;">M</span>
+          </div>
+        </div>
 
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-2 gap-12 items-center py-16">
-
-        <!-- Left: Content -->
-        <div class="text-center md:text-left">
-          <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600">Full‑Stack Developer</div>
-
-          <h1 class="mt-4 text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            <span id="typed-text" class="align-middle">Hi! I'm Mourad</span>
-          </h1>
-
-          <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            I design and develop high-performance web applications with Angular, React, and Laravel. Expert in SEO optimization, responsive design, and full-stack development. Committed to delivering accessible, scalable solutions that transform businesses.
+        <div>
+          <h2 class="section-h2">Front-End &amp; Full-Stack Developer</h2>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="pill"><i class="fab fa-react text-sky-500 text-xs"></i> React.js</span>
+            <span class="pill"><i class="fab fa-react text-cyan-500 text-xs"></i> React Native</span>
+            <span class="pill"><i class="fab fa-angular text-red-500 text-xs"></i> Angular</span>
+            <span class="pill"><i class="fab fa-laravel text-rose-500 text-xs"></i> Laravel</span>
+            <span class="pill"><i class="fab fa-node-js text-emerald-600 text-xs"></i> Node.js</span>
+          </div>
+          <p class="mt-5 text-[15px] leading-relaxed text-[#3F3E3B] max-w-xl">
+            Casablanca-based engineer <span class="display-italic" style="font-size:1rem;">on a mission</span>
+            to build modern, scalable, and user-focused web &amp; mobile apps.
+            Passionate about clean code, performance, and delivering high-quality digital solutions.
           </p>
-
-          <div class="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-start justify-center">
-            <button (click)="downloadCV()" class="inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-2.5 font-medium shadow hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 3a1 1 0 011 1v9.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L11 13.586V4a1 1 0 011-1z"/><path d="M5 15a1 1 0 011 1v3h12v-3a1 1 0 112 0v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3a1 1 0 011-1z"/></svg>
-              Download CV
-            </button>
-
-            <a routerLink="/projects" class="inline-flex items-center justify-center gap-2 rounded-full bg-white text-gray-900 border border-gray-300 px-5 py-2.5 font-medium shadow hover:bg-gray-50 dark:bg-transparent dark:text-gray-100 dark:border-gray-600 dark:hover:bg-gray-700 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3h16.5M3.75 7.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"/></svg>
-              View Projects
-            </a>
-
-            <a routerLink="/contact" class="inline-flex items-center justify-center gap-2 rounded-full text-emerald-700 dark:text-emerald-400 px-5 py-2.5 font-medium hover:underline">
-              Contact Me
-            </a>
-          </div>
-
-          <!-- Socials -->
-          <div class="mt-8 flex items-center gap-4 justify-center md:justify-start">
-            <a href="https://github.com/moradtizo" target="_blank" rel="noopener" aria-label="GitHub" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.589 2 12.253c0 4.515 2.865 8.342 6.839 9.693.5.095.682-.221.682-.49 0-.242-.009-.884-.014-1.736-2.782.615-3.369-1.37-3.369-1.37-.455-1.175-1.11-1.488-1.11-1.488-.908-.637.069-.624.069-.624 1.003.072 1.53 1.05 1.53 1.05.892 1.55 2.341 1.102 2.91.842.091-.659.35-1.102.636-1.355-2.22-.259-4.555-1.132-4.555-5.037 0-1.113.39-2.023 1.03-2.737-.104-.258-.447-1.3.098-2.71 0 0 .84-.272 2.75 1.045A9.38 9.38 0 0112 6.844a9.38 9.38 0 012.504.34c1.909-1.317 2.748-1.045 2.748-1.045.546 1.41.203 2.452.1 2.71.64.714 1.029 1.624 1.029 2.737 0 3.915-2.338 4.776-4.565 5.03.359.317.678.943.678 1.901 0 1.372-.013 2.478-.013 2.816 0 .272.18.588.688.488C19.138 20.592 22 16.766 22 12.253 22 6.589 17.523 2 12 2z" clip-rule="evenodd"/></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/mourad-tizougarine-175bb7221/" target="_blank" rel="noopener" aria-label="LinkedIn" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7 0h3.8v2.2h.1c.5-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-6.8c0-1.6 0-3.6-2.2-3.6-2.2 0-2.6 1.7-2.6 3.5V24h-4V8z"/></svg>
-            </a>
-            <a href="mailto:your.email@example.com" aria-label="Email" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1.5 6.75A2.25 2.25 0 013.75 4.5h16.5a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0120.25 19.5H3.75a2.25 2.25 0 01-2.25-2.25V6.75zm2.204-.75a.75.75 0 00-.454 1.35l8.25 6.188a.75.75 0 00.9 0l8.25-6.188a.75.75 0 00-.9-1.2L12 11.9 3.15 6.15a.75.75 0 00-.446-.15z"/></svg>
-            </a>
-          </div>
-
-          <!-- Tech stack badges -->
-          <div class="mt-6 flex flex-wrap gap-2 justify-center md:justify-start">
-            <span class="rounded-full bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 px-3 py-1 text-xs font-medium">Angular</span>
-            <span class="rounded-full bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 px-3 py-1 text-xs font-medium">TypeScript</span>
-            <span class="rounded-full bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 px-3 py-1 text-xs font-medium">Node.js</span>
-            <span class="rounded-full bg-sky-50 text-sky-800 dark:bg-sky-900/30 dark:text-sky-300 px-3 py-1 text-xs font-medium">Three.js</span>
-            <span class="rounded-full bg-fuchsia-50 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-300 px-3 py-1 text-xs font-medium">Tailwind CSS</span>
-            <span class="rounded-full bg-red-50 text-red-800 dark:bg-red-900/30 dark:text-red-300 px-3 py-1 text-xs font-medium">Laravel</span>
-            <span class="rounded-full bg-cyan-50 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-300 px-3 py-1 text-xs font-medium">React JS</span>
-          </div>
         </div>
-
-        <!-- Right: Image -->
-        <div class="relative order-first md:order-none w-full">
-          <!-- Background Icons -->
-          <div class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-visible">
-            <div class="absolute top-0 left-0 text-emerald-500 dark:text-emerald-400 opacity-30">
-              <i class="fas fa-laptop text-8xl"></i>
-            </div>
-            <div class="absolute bottom-0 right-0 text-indigo-500 dark:text-indigo-400 opacity-30">
-              <i class="fas fa-mobile-alt text-8xl"></i>
-            </div>
-            <div class="absolute top-1/4 -right-12 text-amber-500 dark:text-amber-400 opacity-25">
-              <i class="fas fa-tablet-alt text-7xl"></i>
-            </div>
-            <div class="absolute bottom-1/4 -left-12 text-sky-500 dark:text-sky-400 opacity-25">
-              <i class="fas fa-code text-7xl"></i>
-            </div>
-          </div>
-
-          <!-- Image Container -->
-          <div class="mx-auto w-64 sm:w-80 md:w-full max-w-md rounded-3xl overflow-hidden relative z-10">
-            <img src="../../assets/images/mt.png" alt="Mourad profile illustration" class="w-full h-auto object-cover" />
-          </div>
-        </div>
-
       </div>
 
-      <!-- Scroll hint -->
-      <div class="pb-12 flex justify-center">
-        <a routerLink="/projects" class="group inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">
-          <span>See my work</span>
-          <svg class="w-5 h-5 transition-transform group-hover:translate-y-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+      <div class="mt-10 pt-8 border-t border-dashed" style="border-color:#E6E4DD;">
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <div class="stat-num">3<span class="stat-sup">+</span></div>
+            <div class="stat-label">Years of experience</div>
+          </div>
+          <div>
+            <div class="stat-num">15<span class="stat-sup">+</span></div>
+            <div class="stat-label">Projects shipped</div>
+          </div>
+          <div>
+            <div class="stat-num">3</div>
+            <div class="stat-label">Languages spoken</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <button (click)="downloadCV()" [disabled]="downloading" class="btn-primary">
+          <i class="fas fa-arrow-down text-[11px]"></i>
+          {{ downloading ? 'Preparing…' : 'Download CV' }}
+        </button>
+        <button (click)="scrollTo('contact')" class="btn-ghost">
+          <i class="fas fa-paper-plane text-[11px]"></i>
+          Let's talk
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- STRENGTHS -->
+    <!-- ============================================================== -->
+    <section id="strengths" class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">Strengths</div>
+      <div class="mb-5 label">Strengths</div>
+      <h2 class="section-h2">What I'm <span class="display-italic" style="color:#C9553B;">good at</span></h2>
+      <p class="section-subtitle">From pixels to pipelines, I'll make your digital dreams ship.</p>
+
+      <div class="mt-8">
+        <div class="strength-row">
+          <div class="strength-num">01</div>
+          <div class="strength-title"><i class="fas fa-mobile-screen"></i> Mobile Development</div>
+          <div class="strength-desc">Cross-platform mobile apps with React Native — scalable UI components, smooth interactions, and seamless API integrations.</div>
+        </div>
+        <div class="strength-row">
+          <div class="strength-num">02</div>
+          <div class="strength-title"><i class="fas fa-code"></i> Full-Stack Web Development</div>
+          <div class="strength-desc">React.js, Angular, and Laravel — from responsive interfaces to secure auth systems and optimized MySQL/PostgreSQL databases.</div>
+        </div>
+        <div class="strength-row">
+          <div class="strength-num">03</div>
+          <div class="strength-title"><i class="fas fa-plug"></i> RESTful API Integration</div>
+          <div class="strength-desc">Designing and consuming REST APIs with proper state management, error handling, and authentication flows.</div>
+        </div>
+        <div class="strength-row">
+          <div class="strength-num">04</div>
+          <div class="strength-title"><i class="fas fa-people-group"></i> Agile Collaboration</div>
+          <div class="strength-desc">Comfortable in Scrum/Kanban teams — close collaboration with designers and back-end developers, clear async communication.</div>
+        </div>
+        <div class="strength-row">
+          <div class="strength-num">05</div>
+          <div class="strength-title"><i class="fas fa-gauge-high"></i> Performance &amp; Quality</div>
+          <div class="strength-desc">Clean code, performance optimization, and deployment monitoring — making sure shipped apps stay fast and reliable.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TECH STACK MARQUEE -->
+    <!-- ============================================================== -->
+    <section class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">Stack</div>
+      <div class="mb-5 label">My toolkit</div>
+      <h2 class="section-h2">Trusted <span class="display-italic" style="color:#C9553B;">stack</span></h2>
+
+      <div class="mt-8 marquee">
+        <div class="marquee-track text-2xl text-[#3F3E3B]">
+          <span class="flex items-center gap-3"><i class="fab fa-react text-sky-500"></i> React.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-react text-cyan-500"></i> React Native</span>
+          <span class="flex items-center gap-3"><i class="fab fa-angular text-red-500"></i> Angular</span>
+          <span class="flex items-center gap-3"><i class="fab fa-laravel text-rose-500"></i> Laravel</span>
+          <span class="flex items-center gap-3"><i class="fab fa-node-js text-emerald-600"></i> Node.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-js text-amber-500"></i> TypeScript</span>
+          <span class="flex items-center gap-3"><i class="fab fa-php text-indigo-500"></i> PHP</span>
+          <span class="flex items-center gap-3"><i class="fas fa-database text-teal-600"></i> MySQL</span>
+          <span class="flex items-center gap-3"><i class="fas fa-database text-sky-700"></i> PostgreSQL</span>
+          <span class="flex items-center gap-3"><i class="fas fa-leaf text-emerald-500"></i> MongoDB</span>
+          <span class="flex items-center gap-3"><i class="fab fa-css3-alt text-sky-500"></i> Tailwind</span>
+          <!-- duplicate for loop -->
+          <span class="flex items-center gap-3"><i class="fab fa-react text-sky-500"></i> React.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-react text-cyan-500"></i> React Native</span>
+          <span class="flex items-center gap-3"><i class="fab fa-angular text-red-500"></i> Angular</span>
+          <span class="flex items-center gap-3"><i class="fab fa-laravel text-rose-500"></i> Laravel</span>
+          <span class="flex items-center gap-3"><i class="fab fa-node-js text-emerald-600"></i> Node.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-js text-amber-500"></i> TypeScript</span>
+          <span class="flex items-center gap-3"><i class="fab fa-php text-indigo-500"></i> PHP</span>
+          <span class="flex items-center gap-3"><i class="fas fa-database text-teal-600"></i> MySQL</span>
+          <span class="flex items-center gap-3"><i class="fas fa-database text-sky-700"></i> PostgreSQL</span>
+          <span class="flex items-center gap-3"><i class="fas fa-leaf text-emerald-500"></i> MongoDB</span>
+          <span class="flex items-center gap-3"><i class="fab fa-css3-alt text-sky-500"></i> Tailwind</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- RESUME (Education + Experience) -->
+    <!-- ============================================================== -->
+    <section id="resume" class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">Resume</div>
+      <div class="mb-5 label">Resume</div>
+      <h2 class="section-h2">Education &amp; <span class="display-italic" style="color:#C9553B;">experience</span></h2>
+      <p class="section-subtitle">The dynamic duo that turned me into the engineer I am today.</p>
+
+      <div class="mt-10 grid md:grid-cols-2 gap-12">
+        <!-- Education -->
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                 style="background:#F7F5EF;border:1px solid #E6E4DD;">
+              <i class="fas fa-graduation-cap" style="color:#0E0E0C;"></i>
+            </div>
+            <div class="font-mono text-[11px] tracking-widest" style="color:#8A8983;">EDUCATION</div>
+          </div>
+          <div class="tl">
+            <div class="tl-item">
+              <div class="pill-sm mb-2">2021 – 2022</div>
+              <div class="font-semibold" style="color:#0E0E0C;">Professional Bachelor's · Web &amp; Mobile Development</div>
+              <div class="text-[13px]" style="color:#6B6A66;">Faculty of Sciences Ain Chock — Casablanca</div>
+            </div>
+            <div class="tl-item">
+              <div class="pill-sm mb-2">2019 – 2021</div>
+              <div class="font-semibold" style="color:#0E0E0C;">Specialized Technician · Software Development</div>
+              <div class="text-[13px]" style="color:#6B6A66;">NTIC2 Sidi Maârouf (ISTA) — Morocco</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <div>
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                 style="background:#F7F5EF;border:1px solid #E6E4DD;">
+              <i class="fas fa-briefcase" style="color:#0E0E0C;"></i>
+            </div>
+            <div class="font-mono text-[11px] tracking-widest" style="color:#8A8983;">EXPERIENCE</div>
+          </div>
+          <div class="tl">
+            <div class="tl-item">
+              <div class="pill-sm mb-2">Jan 2026 – Present</div>
+              <div class="font-semibold" style="color:#0E0E0C;">Front-End Developer · React Native</div>
+              <div class="text-[13px]" style="color:#6B6A66;">@ ELDEN — Casablanca</div>
+            </div>
+            <div class="tl-item">
+              <div class="pill-sm mb-2">Sept 2024 – Dec 2025</div>
+              <div class="font-semibold" style="color:#0E0E0C;">Full-Stack Developer</div>
+              <div class="text-[13px]" style="color:#6B6A66;">@ Bibatech — Casablanca</div>
+            </div>
+            <div class="tl-item">
+              <div class="pill-sm mb-2">Jun 2023 – Sept 2023</div>
+              <div class="font-semibold" style="color:#0E0E0C;">Front-End Web Developer Intern</div>
+              <div class="text-[13px]" style="color:#6B6A66;">@ Digitalia Solutions — Casablanca</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- EMPLOYERS -->
+    <!-- ============================================================== -->
+    <section id="employers" class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">Employers</div>
+      <div class="mb-5 label">My awesome employers</div>
+      <h2 class="section-h2">Companies I've <span class="display-italic" style="color:#C9553B;">worked with</span></h2>
+
+      <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="logo-box">
+          <span style="font-family:Inter;font-weight:900;letter-spacing:-0.05em;font-size:26px;">ELDEN</span>
+        </div>
+        <div class="logo-box">
+          <span style="font-family:Inter;font-weight:800;letter-spacing:-0.02em;font-size:22px;">Bibatech</span>
+        </div>
+        <div class="logo-box">
+          <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;">Digitalia Solutions</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- PROJECTS -->
+    <!-- ============================================================== -->
+    <section id="projects" class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">Projects</div>
+      <div class="mb-5 label">Selected work</div>
+      <h2 class="section-h2">Selected <span class="display-italic" style="color:#C9553B;">projects</span></h2>
+      <p class="section-subtitle">A handful of recent builds — from side projects to client work.</p>
+
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+        <a href="https://movie-mtizo.vercel.app/" target="_blank" rel="noopener"
+           class="card-hover overflow-hidden block group">
+          <div class="aspect-video overflow-hidden"
+               style="background: linear-gradient(135deg,#1A1A18,#3A4B2E);">
+            <img src="../../assets/project/P3.png" alt="Movie Scope"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.style.display='none'" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="proj-tag">#01</span>
+              <span class="text-[11px] font-mono" style="color:#8A8983;">ANGULAR · API</span>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">Movie Scope</h3>
+            <p class="text-sm mt-2" style="color:#4A4945;">Movie discovery app built with Angular and the TMDB API.</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
+              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://business-mtizo.vercel.app/" target="_blank" rel="noopener"
+           class="card-hover overflow-hidden block group">
+          <div class="aspect-video overflow-hidden"
+               style="background: linear-gradient(135deg,#F4E9DF,#E9CDB8);">
+            <img src="../../assets/project/P4.png" alt="Business UI"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.style.display='none'" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="proj-tag">#02</span>
+              <span class="text-[11px] font-mono" style="color:#8A8983;">HTML · CSS</span>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">Business Website</h3>
+            <p class="text-sm mt-2" style="color:#4A4945;">UX/UI marketing site — pure HTML &amp; CSS, mobile-first.</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
+              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            </div>
+          </div>
+        </a>
+
+        <a href="http://oddmaroc.com/pages-login" target="_blank" rel="noopener"
+           class="card-hover overflow-hidden block group">
+          <div class="aspect-video overflow-hidden"
+               style="background: linear-gradient(135deg,#3A4B2E,#1F2A19);">
+            <img src="../../assets/project/P5.png" alt="Budget Platform"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.style.display='none'" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="proj-tag">#03</span>
+              <span class="text-[11px] font-mono" style="color:#8A8983;">LARAVEL · DASHBOARD</span>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">Budget Management Platform</h3>
+            <p class="text-sm mt-2" style="color:#4A4945;">SDG-aligned budget tracking dashboard for ministries &amp; regions.</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
+              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            </div>
+          </div>
+        </a>
+
+        <a href="https://example.com/project3" target="_blank" rel="noopener"
+           class="card-hover overflow-hidden block group">
+          <div class="aspect-video overflow-hidden"
+               style="background: linear-gradient(135deg,#C9553B,#8B3724);">
+            <img src="../../assets/project/P6.png" alt="E-commerce"
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                 onerror="this.style.display='none'" />
+          </div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-2">
+              <span class="proj-tag">#04</span>
+              <span class="text-[11px] font-mono" style="color:#8A8983;">E-COMMERCE</span>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">E-commerce Website</h3>
+            <p class="text-sm mt-2" style="color:#4A4945;">Full e-commerce flow with cart, checkout, and admin dashboard.</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
+              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            </div>
+          </div>
         </a>
       </div>
-    </div>
+    </section>
 
-    <div class="grid grid-cols-2 gap-4 h-6">
-      <!-- content -->
-    </div>
+    <!-- ============================================================== -->
+    <!-- CONTACT -->
+    <!-- ============================================================== -->
+    <section id="contact" class="card p-8 md:p-10 reveal">
+      <div class="ghost-heading">Contact</div>
+      <div class="mb-5 label">Get in touch</div>
+      <h2 class="section-h2">Let's <span class="display-italic" style="color:#C9553B;">connect</span></h2>
+      <p class="section-subtitle">Tell me about your idea, budget, and timeline. I typically reply within 24 hours.</p>
+
+      <div class="mt-6 flex flex-wrap gap-2">
+        <a href="tel:+212649331053" class="pill"><i class="fas fa-phone text-xs text-emerald-600"></i> +212 649 331 053</a>
+        <a href="mailto:mouradtizougarine@gmail.com" class="pill"><i class="fas fa-envelope text-xs" style="color:#C9553B;"></i> mouradtizougarine&#64;gmail.com</a>
+        <span class="pill"><i class="fas fa-location-dot text-xs text-sky-600"></i> Casablanca, MA</span>
+        <a href="https://www.linkedin.com/in/mourad-tizougarine" target="_blank" rel="noopener" class="pill"><i class="fab fa-linkedin text-xs text-sky-600"></i> LinkedIn</a>
+        <a href="https://github.com/moradtizo" target="_blank" rel="noopener" class="pill"><i class="fab fa-github text-xs"></i> GitHub</a>
+        <button type="button" (click)="downloadCV()" class="pill"><i class="fas fa-file-pdf text-xs text-rose-500"></i> Resume</button>
+      </div>
+
+      <form class="mt-10 grid md:grid-cols-2 gap-x-10 gap-y-2"
+            [formGroup]="contactForm"
+            (ngSubmit)="onSubmit()">
+
+        <div>
+          <div class="field-label mb-1">Name</div>
+          <input class="field" formControlName="name" placeholder="Your name" required />
+        </div>
+        <div>
+          <div class="field-label mb-1">E-mail</div>
+          <input class="field" type="email" formControlName="email" placeholder="you@company.com" required />
+        </div>
+        <div class="md:col-span-2 mt-4">
+          <div class="field-label mb-1">Subject</div>
+          <input class="field" formControlName="subject" placeholder="What's this about?" required />
+        </div>
+        <div class="md:col-span-2 mt-4">
+          <div class="field-label mb-1">Message</div>
+          <textarea class="field" rows="3" formControlName="message" placeholder="Tell me about your project…" required></textarea>
+        </div>
+
+        <div class="md:col-span-2 mt-6 flex items-center justify-between gap-4 flex-wrap">
+          <span class="text-xs font-mono" style="color:#8A8983;">I typically reply within 24h</span>
+          <button class="btn-primary" type="submit" [disabled]="loading">
+            <i class="fas fa-paper-plane text-[11px]"></i>
+            {{ loading ? 'Sending…' : 'Send message' }}
+          </button>
+        </div>
+
+        <div *ngIf="successMessage"
+             class="md:col-span-2 mt-4 animate-fadeIn p-4 rounded-2xl text-sm font-medium"
+             style="background:#ECF7E5;border:1px solid #BFDDA8;color:#365D1F;">
+          {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage"
+             class="md:col-span-2 mt-4 animate-fadeIn p-4 rounded-2xl text-sm font-medium"
+             style="background:#FBE7E2;border:1px solid #E8B7AC;color:#7A2A18;">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- FOOTER -->
+    <!-- ============================================================== -->
+    <footer class="pt-10 pb-4 flex flex-wrap items-center justify-between gap-4 text-[12px] font-mono"
+            style="color:#8A8983;">
+      <div>© 2026 Mourad Tizougarine · Designed &amp; developed in Casablanca</div>
+      <button (click)="scrollTo('about')" class="hover:text-[#0E0E0C] transition" style="background:none;border:none;cursor:pointer;font:inherit;color:inherit;">↑ Back to top</button>
+    </footer>
 
   </div>
-</section>
+</div>

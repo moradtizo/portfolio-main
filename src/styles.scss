@@ -1,56 +1,526 @@
-/* Global styles and Tailwind layers */
+/* =====================================================================
+   Mourad Tizougarine · Portfolio
+   Editorial / light design system  (v3 — inspired by omaranajar.com)
+   ===================================================================== */
+
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Font Awesome (already used in project) */
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
-/* Design system: reusable components built on Tailwind via @apply */
+/* ---------- Base / body ---------- */
+html, body {
+  background: #EDEDE9;
+  color: #0E0E0C;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body { min-height: 100vh; }
+
+/* Selection */
+::selection { background: rgba(14,14,12,0.12); color: #0E0E0C; }
+
+/* Scrollbar (WebKit) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #EDEDE9; }
+::-webkit-scrollbar-thumb {
+  background: #BEBBB1;
+  border-radius: 10px;
+  border: 2px solid #EDEDE9;
+}
+::-webkit-scrollbar-thumb:hover { background: #8A8983; }
+
+/* ---------- Keyframes ---------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-fadeIn { animation: fadeIn .3s ease-out both; }
+
+/* =====================================================================
+   Reusable components
+   ===================================================================== */
+
 @layer components {
-  /* Buttons */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-medium transition focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800;
+
+  /* ---------- Sections / layout ---------- */
+  .section {
+    @apply relative overflow-hidden;
   }
-  .btn-primary {
-    @apply btn bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500;
-  }
-  .btn-outline {
-    @apply btn border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 dark:bg-transparent dark:text-gray-100 dark:border-gray-600 dark:hover:bg-gray-700;
-  }
-  .btn-ghost {
-    @apply btn text-emerald-700 dark:text-emerald-400 hover:underline px-4 py-2;
+  .section-container {
+    @apply relative mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 1200px;
   }
 
-  /* Cards */
+  /* Page-level label like "// about me" */
+  .label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #8A8983;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .label::before { content: '// '; color: #C9A99C; }
+
+  /* Ghost watermark heading (top-left of every card) */
+  .ghost-heading {
+    position: absolute;
+    top: 14px;
+    left: 32px;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    color: #0E0E0C;
+    opacity: 0.05;
+    pointer-events: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ---------- Huge display name (top of home page) ---------- */
+  .display-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    font-size: clamp(2.4rem, 7vw, 5.6rem);
+    color: #0E0E0C;
+  }
+  .display-italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #B9B6AC;
+    letter-spacing: -0.01em;
+  }
+
+  .section-title,
+  .section-h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    color: #0E0E0C;
+  }
+  .section-subtitle {
+    @apply mt-3;
+    color: #6B6A66;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: #8A8983;
+    text-transform: uppercase;
+  }
+
+  /* Accent (gradient-text kept as an alias so legacy classes still render) */
+  .gradient-text,
+  .display-accent {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #C9553B;
+  }
+
+  /* ---------- Cards ---------- */
   .card {
-    @apply rounded-2xl bg-white/70 dark:bg-gray-800/50 backdrop-blur ring-1 ring-black/5 dark:ring-white/10 shadow;
+    position: relative;
+    background: #FFFFFF;
+    border: 1px solid #E6E4DD;
+    border-radius: 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 8px 40px -24px rgba(0,0,0,0.08);
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    overflow: hidden;
   }
   .card-hover {
-    @apply card transition transform hover:-translate-y-0.5 hover:shadow-lg;
+    @apply card;
+    cursor: pointer;
+    &:hover {
+      transform: translateY(-3px);
+      border-color: #D3CFC2;
+      box-shadow: 0 14px 40px -20px rgba(0,0,0,0.12);
+    }
+  }
+  .card-dark {
+    background: #0E0E0C;
+    color: #F5F4F0;
+    border-radius: 22px;
   }
 
-  /* Badges */
-  .badge { @apply rounded-full px-3 py-1 text-xs font-medium; }
-  .badge-emerald { @apply badge bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300; }
-  .badge-indigo  { @apply badge bg-indigo-50  text-indigo-800  dark:bg-indigo-900/30  dark:text-indigo-300; }
-  .badge-amber   { @apply badge bg-amber-50   text-amber-800   dark:bg-amber-900/30   dark:text-amber-300; }
-  .badge-sky     { @apply badge bg-sky-50     text-sky-800     dark:bg-sky-900/30     dark:text-sky-300; }
-  .badge-fuchsia { @apply badge bg-fuchsia-50 text-fuchsia-800 dark:bg-fuchsia-900/30 dark:text-fuchsia-300; }
+  /* Glass surface — re-styled for light theme (kept for legacy use) */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #E6E4DD;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid #E6E4DD;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
 
-  /* Sections */
-  .section { @apply relative overflow-hidden bg-gradient-to-b from-white to-gray-100 dark:from-gray-800 dark:to-gray-900 min-h-0; }
-  .section-container { @apply relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
-  .section-title { @apply text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white; }
-  .section-subtitle { @apply mt-3 text-lg text-gray-600 dark:text-gray-300; }
+  /* ---------- Buttons ---------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full font-medium transition;
+    padding: .8rem 1.3rem;
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary {
+    @apply btn;
+    background: #0E0E0C;
+    color: #F5F4F0;
+    border: 1px solid #0E0E0C;
+    &:hover {
+      background: transparent;
+      color: #0E0E0C;
+    }
+    &:disabled { opacity: .5; cursor: not-allowed; }
+  }
+  .btn-ghost {
+    @apply btn;
+    background: transparent;
+    color: #0E0E0C;
+    border: 1px solid #D9D7D0;
+    &:hover {
+      background: #0E0E0C;
+      color: #F5F4F0;
+      border-color: #0E0E0C;
+    }
+  }
+  .btn-outline { @apply btn-ghost; }
+  .btn-link {
+    @apply inline-flex items-center gap-2 font-medium;
+    color: #0E0E0C;
+    &:hover { text-decoration: underline; }
+  }
 
-  /* Surfaces */
-  .glass { @apply bg-white/60 dark:bg-gray-800/40 backdrop-blur ring-1 ring-black/5 dark:ring-white/10; }
-  .ring-card { @apply rounded-3xl ring-1 ring-black/5 dark:ring-white/10 shadow-2xl overflow-hidden; }
-  .gradient-surface { @apply bg-gradient-to-b from-white to-gray-100 dark:from-gray-800 dark:to-gray-900; }
+  /* ---------- Pills / chips ---------- */
+  .chip {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #0E0E0C;
+    border: 1px solid #E6E4DD;
+    background: #F7F5EF;
+    text-transform: uppercase;
+  }
+  .chip .dot {
+    width: 6px; height: 6px; border-radius: 9999px;
+    background: #10B981;
+    box-shadow: 0 0 0 4px rgba(16,185,129,0.15);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px; border-radius: 999px;
+    border: 1px solid #E6E4DD; background: #FFFFFF;
+    font-size: 13px; color: #2B2A27;
+    transition: all .15s;
+    &:hover { border-color: #C4BFB1; }
+  }
+  .pill-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 11px; border-radius: 999px;
+    border: 1px solid #E6E4DD; background: #F7F5EF;
+    font-size: 11px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em; color: #3F3E3B; text-transform: uppercase;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-md;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: .68rem;
+    color: #0E0E0C;
+    background: #F7F5EF;
+    border: 1px solid #E6E4DD;
+  }
 
-  /* Decorative blobs */
-  .surface-blob { @apply absolute rounded-full blur-3xl opacity-70; }
-  .surface-blob-emerald { @apply surface-blob bg-emerald-500/10; }
-  .surface-blob-indigo  { @apply surface-blob bg-indigo-500/10; }
+  /* ---------- Social buttons (top bar) ---------- */
+  .social-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #0E0E0C; background: transparent;
+    border: 1px solid transparent;
+    transition: all .2s;
+  }
+  .social-btn:hover { background: #FFFFFF; border-color: #E6E4DD; }
+
+  /* ---------- Metrics / stats ---------- */
+  .stat-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: #0E0E0C;
+  }
+  .stat-sup {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #6B6A66;
+    margin-left: 4px;
+    vertical-align: super;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px; letter-spacing: 0.14em;
+    color: #8A8983; text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* Legacy .metric → updated for light theme */
+  .metric {
+    @apply flex flex-col gap-1 px-5 py-4 rounded-2xl;
+    background: #F7F5EF;
+    border: 1px solid #E6E4DD;
+  }
+  .metric .num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: #0E0E0C;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  .metric .label {
+    font-size: .7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8A8983;
+    &::before { content: none; }
+  }
+
+  /* ---------- Strength rows (numbered list) ---------- */
+  .strength-row {
+    display: grid;
+    grid-template-columns: 48px 1fr 1.5fr;
+    align-items: start;
+    gap: 28px;
+    padding: 22px 0;
+    border-top: 1px dashed #E6E4DD;
+  }
+  .strength-row:first-child { border-top: none; padding-top: 4px; }
+  .strength-num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 14px;
+    color: #0E0E0C;
+    letter-spacing: -0.02em;
+  }
+  .strength-title {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 0.14em;
+    color: #0E0E0C; text-transform: uppercase;
+  }
+  .strength-title i { color: #0E0E0C; font-size: 14px; }
+  .strength-desc {
+    color: #4A4945;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* ---------- Timeline (Education / Experience) ---------- */
+  .tl {
+    position: relative;
+    padding-left: 22px;
+  }
+  .tl::before {
+    content: '';
+    position: absolute; left: 5px; top: 8px; bottom: 8px;
+    width: 1px; background: #DCD9D0;
+  }
+  .tl-item {
+    position: relative;
+    padding-bottom: 24px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -22px; top: 8px;
+    width: 11px; height: 11px; border-radius: 999px;
+    background: #FFFFFF; border: 2px solid #0E0E0C;
+  }
+
+  /* ---------- Tech icon tile ---------- */
+  .tech-icon {
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 16px;
+    border: 1px solid #E6E4DD;
+    background: #F7F5EF;
+    transition: all .2s ease;
+    cursor: pointer;
+  }
+  .tech-icon:hover {
+    transform: translateY(-3px);
+    border-color: #C4BFB1;
+    background: #FFFFFF;
+  }
+
+  /* ---------- Icon wrap (service cards) ---------- */
+  .icon-wrap {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+    background: #0E0E0C;
+    color: #F5F4F0;
+    font-size: 1rem;
+  }
+  .icon-wrap-cyan { background: #3A4B2E; color: #DDEBC1; }
+  .icon-wrap-lime { background: #F1ECE4; color: #0E0E0C; border: 1px solid #E6E4DD; }
+  .icon-wrap-pink { background: #C9553B; color: #FFFFFF; }
+
+  /* ---------- Dividers / labels ---------- */
+  .divider-label {
+    @apply flex items-center gap-4;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: .7rem;
+    letter-spacing: .18em;
+    color: #8A8983;
+    text-transform: uppercase;
+  }
+  .divider-label::before,
+  .divider-label::after {
+    content: "";
+    flex: 1; height: 1px;
+    background: #E6E4DD;
+  }
+
+  /* ---------- Marquee ---------- */
+  .marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    white-space: nowrap;
+    width: max-content;
+    animation: slide 30s linear infinite;
+  }
+
+  /* ---------- Project tag ---------- */
+  .proj-tag {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #E6E4DD;
+    color: #0E0E0C;
+    display: inline-flex;
+    align-items: center;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---------- Form fields ---------- */
+  .field-label {
+    @apply block mb-1;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #8A8983;
+    text-transform: uppercase;
+  }
+  .field-input,
+  .field-textarea,
+  .field {
+    @apply w-full transition;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #D9D7D0;
+    padding: 14px 2px;
+    font-size: 14px;
+    color: #0E0E0C;
+    font-family: inherit;
+    outline: none;
+    &:focus { border-color: #0E0E0C; }
+    &::placeholder {
+      color: #A9A79F;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  }
+
+  /* ---------- Decorative orbs (kept but toned down for light bg) ---------- */
+  .orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: .35;
+    pointer-events: none;
+  }
+  .orb-violet { background: rgba(201,85,59,0.25); }    /* sienna */
+  .orb-cyan   { background: rgba(58,75,46,0.18); }     /* moss */
+  .orb-lime   { background: rgba(201,85,59,0.12); }
+
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(14,14,12,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,14,12,0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+    pointer-events: none;
+  }
+
+  /* legacy aliases */
+  .surface-blob         { @apply orb; }
+  .surface-blob-emerald { @apply orb orb-cyan; }
+  .surface-blob-indigo  { @apply orb orb-violet; }
+  .gradient-surface     { background: transparent; }
+
+  /* ---------- Avatar frame (legacy) ---------- */
+  .avatar-frame {
+    position: relative;
+    border-radius: 32px;
+    overflow: hidden;
+    background: radial-gradient(circle at 30% 30%, #F4A38C, #C9553B 70%);
+    border: 1px solid #E6E4DD;
+    aspect-ratio: 4/5;
+  }
+
+  /* ---------- Logo box (employers) ---------- */
+  .logo-box {
+    background: #FFFFFF;
+    border: 1px solid #E6E4DD;
+    border-radius: 16px;
+    padding: 42px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 130px;
+    transition: all .2s;
+  }
+  .logo-box:hover { border-color: #C4BFB1; }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: all .6s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- Stars ---------- */
+  .stars {
+    color: #F5A524;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
 }

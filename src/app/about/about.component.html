@@ -1,89 +1,133 @@
-<section class="section relative overflow-hidden min-h-screen flex items-center justify-center">
+<section class="section py-28 min-h-screen flex items-center">
+
+  <!-- Decorative background -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div class="absolute top-1/4 -left-24 h-72 w-72 surface-blob-indigo"></div>
-    <div class="absolute bottom-1/4 -right-24 h-72 w-72 surface-blob-emerald"></div>
+    <div class="orb orb-violet w-[420px] h-[420px] top-20 right-10"></div>
+    <div class="orb orb-cyan w-[360px] h-[360px] -bottom-20 -left-20" style="animation-delay:-7s;"></div>
   </div>
 
-  <div class="section-container relative overflow-hidden py-16 lg:py-24 w-full">
+  <div class="section-container w-full">
 
+    <div class="mb-10 flex items-center gap-4">
+      <span class="section-num">02 / ABOUT</span>
+      <div class="h-px flex-1 max-w-[120px] bg-gradient-to-r from-violet-500/50 to-transparent"></div>
+    </div>
 
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
 
-    <div class="grid lg:grid-cols-2 gap-12 items-center justify-items-center">
+      <!-- Left: content -->
+      <div>
+        <h2 class="section-title">
+          Full-stack developer<br />
+          <span class="gradient-text">&amp; problem solver.</span>
+        </h2>
 
-      <!-- Left: Content -->
-      <div class="w-full">
-        <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 mb-4">
-          About Me
+        <p class="section-subtitle max-w-xl">
+          I'm an experienced full-stack developer with expertise in web development, SEO
+          optimization, and digital transformation. Passionate about clean code, real
+          performance, and making interfaces that feel effortless.
+        </p>
+
+        <p class="mt-4 text-slate-400 text-lg leading-relaxed max-w-xl">
+          Equally comfortable architecting a Laravel API as tuning Core Web Vitals on a
+          marketing site. What ties it together: shipping fast without leaving a mess.
+        </p>
+
+        <!-- Skill bars -->
+        <div class="mt-10 space-y-5 max-w-xl">
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2">
+              <span class="text-white font-medium">Frontend · Angular / React / TS</span>
+              <span class="text-cyan-300 font-mono">95%</span>
+            </div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
+              <div class="h-full rounded-full" style="width:95%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2">
+              <span class="text-white font-medium">Backend · Laravel / Node</span>
+              <span class="text-cyan-300 font-mono">88%</span>
+            </div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
+              <div class="h-full rounded-full" style="width:88%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2">
+              <span class="text-white font-medium">SEO · Performance · A11y</span>
+              <span class="text-cyan-300 font-mono">82%</span>
+            </div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
+              <div class="h-full rounded-full" style="width:82%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2">
+              <span class="text-white font-medium">3D / Three.js / Creative</span>
+              <span class="text-cyan-300 font-mono">75%</span>
+            </div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
+              <div class="h-full rounded-full" style="width:75%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div>
+            </div>
+          </div>
         </div>
 
-        <h1 class="section-title">Full-Stack Developer & Problem Solver</h1>
-
-       <p class="section-subtitle">
-  I am an experienced full-stack developer with expertise in web development, SEO optimization, and digital transformation. Passionate about innovation, clean code, and building performant, accessible solutions. My motivation lies in creating digital experiences that drive real impact and help businesses grow online.
-</p>
-
-        <!-- Tech Stack Icons -->
-        <div class="mt-8 flex flex-wrap gap-4">
-  <div class="group relative">
-    <i class="fab fa-angular text-5xl text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">Angular</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-html5 text-5xl text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">HTML5</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-js text-5xl text-gray-700 dark:text-gray-300 hover:text-yellow-500 dark:hover:text-yellow-400 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">JavaScript</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-css3-alt text-5xl text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-500 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">CSS3</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-react text-5xl text-gray-700 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">React JS</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-node-js text-5xl text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">Node.js</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-java text-5xl text-gray-700 dark:text-gray-300 hover:text-red-700 dark:hover:text-red-600 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">Java</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-php text-5xl text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-500 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">PHP</span>
-  </div>
-  <div class="group relative">
-    <i class="fab fa-laravel text-5xl text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-500 transition transform hover:scale-110 cursor-pointer"></i>
-    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs opacity-0 group-hover:opacity-100 transition">Laravel</span>
-  </div>
-</div>
-
-        <div class="mt-12">
+        <div class="mt-10">
           <a routerLink="/contact" class="btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
-            </svg>
-            Let's Talk
+            <i class="fas fa-comment-dots"></i>
+            Let's work together
           </a>
         </div>
       </div>
 
-      <!-- Right: Images Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-auto md:h-96 w-full">
-  <div class="space-y-4">
-    <img src="./../../assets/images/3e.jpg" alt="Work environment" class="block w-full h-64 md:h-full object-cover rounded-2xl shadow-lg transform transition hover:scale-105" />
-  </div>
-  <div class="space-y-4 pt-0 md:pt-8">
-    <img src="./../../assets/images/d5.jpg" alt="Development setup" class="block w-full h-64 md:h-full object-cover rounded-2xl shadow-lg transform transition hover:scale-105" />
-  </div>
-</div>
+      <!-- Right: stack grid + bio cards -->
+      <div class="space-y-4">
+        <div class="card p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="font-display text-xl font-semibold text-white">Stack I love working with</h3>
+            <span class="proj-tag">9 tools</span>
+          </div>
+          <div class="grid grid-cols-5 gap-3">
+            <div class="tech-icon" title="Angular"><i class="fab fa-angular text-red-400 text-2xl"></i></div>
+            <div class="tech-icon" title="React"><i class="fab fa-react text-cyan-400 text-2xl"></i></div>
+            <div class="tech-icon" title="Node.js"><i class="fab fa-node-js text-emerald-400 text-2xl"></i></div>
+            <div class="tech-icon" title="Laravel"><i class="fab fa-laravel text-rose-400 text-2xl"></i></div>
+            <div class="tech-icon" title="TypeScript"><i class="fab fa-js text-amber-300 text-2xl"></i></div>
+            <div class="tech-icon" title="PHP"><i class="fab fa-php text-indigo-400 text-2xl"></i></div>
+            <div class="tech-icon" title="Java"><i class="fab fa-java text-orange-400 text-2xl"></i></div>
+            <div class="tech-icon" title="HTML5"><i class="fab fa-html5 text-orange-500 text-2xl"></i></div>
+            <div class="tech-icon" title="CSS3"><i class="fab fa-css3-alt text-sky-400 text-2xl"></i></div>
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 gap-3">
+            <div class="metric">
+              <div class="num text-xl">Casablanca</div>
+              <div class="label">Based in Morocco</div>
+            </div>
+            <div class="metric">
+              <div class="num text-xl">EN / FR / AR</div>
+              <div class="label">Languages</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card p-6">
+            <div class="icon-wrap mb-4"><i class="fas fa-graduation-cap"></i></div>
+            <div class="text-xs font-mono text-slate-400 tracking-wider">EDUCATION</div>
+            <div class="text-white font-medium mt-1">Software Engineering</div>
+            <div class="text-sm text-slate-400 mt-1">Computer science background</div>
+          </div>
+          <div class="card p-6">
+            <div class="icon-wrap icon-wrap-cyan mb-4"><i class="fas fa-briefcase"></i></div>
+            <div class="text-xs font-mono text-slate-400 tracking-wider">EXPERIENCE</div>
+            <div class="text-white font-medium mt-1">4+ years shipping</div>
+            <div class="text-sm text-slate-400 mt-1">Agencies · Startups · Clients</div>
+          </div>
+        </div>
+      </div>
 
     </div>
-
   </div>
 </section>
-

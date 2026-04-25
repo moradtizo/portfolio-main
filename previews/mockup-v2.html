@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mourad Tizougarine — Editorial Redesign v2</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&amp;family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  :root {
+    --bg:      #F1ECE4;
+    --bg-2:    #E7E0D4;
+    --ink:     #0B0A09;
+    --ink-60:  #5B5754;
+    --ink-40:  #8A857F;
+    --line:    rgba(11, 10, 9, 0.12);
+    --accent:  #C9553B; /* burnt sienna */
+    --accent-2:#3A4B2E; /* moss */
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    cursor: none;
+  }
+  a, button, input, textarea, [data-cursor="hover"] { cursor: none; }
+  .serif { font-family: 'Instrument Serif', 'Cormorant Garamond', serif; font-weight: 400; }
+  .mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* Top nav */
+  .nav-pill {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 50;
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px;
+    background: rgba(241, 236, 228, 0.72);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    border-radius: 999px;
+  }
+  .nav-pill a {
+    padding: 8px 16px; border-radius: 999px;
+    font-size: 14px; font-weight: 500; color: var(--ink);
+    transition: background .2s ease;
+  }
+  .nav-pill a:hover { background: rgba(11,10,9,0.06); }
+  .nav-pill a.active { background: var(--ink); color: var(--bg); }
+
+  /* Cursor (big blend-mode) */
+  .cursor {
+    position: fixed; top: 0; left: 0; width: 22px; height: 22px;
+    border-radius: 999px;
+    background: var(--ink);
+    mix-blend-mode: difference;
+    pointer-events: none; z-index: 999;
+    transform: translate(-50%, -50%);
+    transition: width .25s ease, height .25s ease, transform .05s linear;
+  }
+  .cursor.is-hover { width: 64px; height: 64px; }
+
+  /* Hero */
+  .display {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+  }
+  .display-xl { font-size: clamp(4rem, 13vw, 14rem); }
+  .display-lg { font-size: clamp(3rem, 9vw, 9rem); }
+  .display-md { font-size: clamp(2.25rem, 6vw, 5rem); }
+
+  .italic-accent { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+
+  /* Tags */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-60);
+  }
+  .divider {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-60);
+  }
+  .divider::before, .divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--line);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 28px; border-radius: 999px;
+    font-weight: 500; font-size: 15px;
+    transition: background .25s ease, color .25s ease, transform .2s ease;
+  }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+  .btn-outline { border: 1px solid var(--ink); color: var(--ink); }
+  .btn-outline:hover { background: var(--ink); color: var(--bg); }
+
+  /* Arrow arrow */
+  .arrow {
+    width: 40px; height: 40px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-2); color: var(--ink);
+    transition: transform .25s ease, background .25s ease;
+  }
+  .btn:hover .arrow { background: var(--bg); transform: translate(4px, -4px) rotate(-10deg); }
+
+  /* Project card */
+  .proj {
+    position: relative; overflow: hidden;
+    border-radius: 28px;
+    background: var(--bg-2);
+    aspect-ratio: 4/3;
+    transition: transform .35s ease;
+  }
+  .proj:hover { transform: translateY(-6px); }
+  .proj .tag {
+    position: absolute; top: 20px; left: 20px; z-index: 2;
+    background: rgba(241, 236, 228, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+  }
+  .proj .year {
+    position: absolute; top: 20px; right: 20px; z-index: 2;
+    color: var(--ink); font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; opacity: .7;
+  }
+  .proj .visual {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12rem; color: rgba(11,10,9,.08);
+    transition: transform .6s cubic-bezier(.2,.8,.2,1);
+  }
+  .proj:hover .visual { transform: scale(1.08); }
+  .proj .overlay {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 28px;
+  }
+
+  /* Marquee */
+  .marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent); }
+  .marquee-track { display: inline-flex; gap: 60px; white-space: nowrap; animation: slide 35s linear infinite; padding-right: 60px; }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* Image placeholders (SVG noise) */
+  .tex {
+    background: linear-gradient(135deg, #d7c9b0, #b8a283);
+    position: relative; overflow: hidden;
+  }
+  .tex::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+    mix-blend-mode: soft-light;
+  }
+  .tex-green { background: linear-gradient(135deg,#3A4B2E,#5B6B44); }
+  .tex-red   { background: linear-gradient(135deg,#C9553B,#7B2F22); }
+  .tex-blue  { background: linear-gradient(135deg,#2C3E50,#60748E); }
+  .tex-dark  { background: linear-gradient(135deg,#1C1A17,#3B3731); }
+
+  /* Ticker stats */
+  .stat-row { display:flex; justify-content:space-between; align-items:baseline; padding: 28px 0; border-top: 1px solid var(--line); }
+  .stat-row:last-child { border-bottom: 1px solid var(--line); }
+
+  /* Marquee (availability) */
+  .avail-bar {
+    display: flex; align-items: center; gap: 18px;
+    padding: 12px 20px; border-radius: 999px;
+    background: rgba(11,10,9,0.06);
+    font-size: 13px;
+  }
+  .avail-bar .pulse {
+    width: 10px; height: 10px; border-radius: 999px; background: #3A4B2E;
+    box-shadow: 0 0 0 0 rgba(58,75,46,0.6);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(58,75,46,0.6); }
+    70%  { box-shadow: 0 0 0 14px rgba(58,75,46,0); }
+    100% { box-shadow: 0 0 0 0 rgba(58,75,46,0); }
+  }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(22px); transition: all .7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* Form */
+  .fld {
+    width: 100%; background: transparent;
+    border: 0; border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+    font-family: inherit; font-size: 1.1rem; color: var(--ink);
+  }
+  .fld:focus { outline: none; border-bottom-color: var(--ink); }
+  .fld::placeholder { color: var(--ink-40); }
+
+  ::selection { background: var(--ink); color: var(--bg); }
+
+  /* Preview header */
+  .prev-bar {
+    position: sticky; top: 0; z-index: 60;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- Preview note (you can ignore this when reviewing) -->
+<div class="prev-bar">
+  <div class="max-w-[1400px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold" style="background:var(--ink);color:var(--bg);font-size:14px;">M</div>
+      <div>
+        <div class="font-semibold text-sm">Portfolio Redesign — Preview v2</div>
+        <div class="text-xs mono" style="color:var(--ink-60);">Editorial · cream · huge type — inspired by omaranajar.com</div>
+      </div>
+    </div>
+    <div class="hidden md:block text-xs mono" style="color:var(--ink-60);">Scroll to review · approve to apply to Angular</div>
+  </div>
+</div>
+
+<!-- Top nav pill -->
+<nav class="nav-pill hidden md:flex">
+  <a href="#home" class="active">Work</a>
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#contact">Contact</a>
+  <a href="#" class="btn btn-primary" style="padding:10px 18px; font-size:13px;">Let's talk <i class="fas fa-arrow-right text-xs"></i></a>
+</nav>
+
+<main>
+
+<!-- =============================================== -->
+<!-- HERO                                               -->
+<!-- =============================================== -->
+<section id="home" class="relative pt-40 pb-32">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <!-- Availability -->
+    <div class="avail-bar inline-flex mb-14">
+      <span class="pulse"></span>
+      <span>Available for new projects · Q2 2026</span>
+      <span style="color:var(--ink-40);">·</span>
+      <span>Casablanca, Morocco</span>
+    </div>
+
+    <!-- Big headline -->
+    <h1 class="display display-xl">
+      Mourad<br />
+      <span class="italic-accent" style="font-size:.9em;">Tizougarine<sup style="font-size:.35em; vertical-align:super;">®</sup></span>
+    </h1>
+
+    <div class="mt-14 grid md:grid-cols-[1fr_380px] gap-10 items-end">
+      <div>
+        <p class="text-2xl md:text-3xl leading-[1.2] max-w-2xl" style="color:var(--ink);">
+          Full-stack developer crafting <span class="italic-accent" style="color:var(--accent);">fast, elegant</span> web products with Angular, React &amp; Laravel.
+        </p>
+      </div>
+      <div class="flex flex-col gap-3">
+        <a href="#projects" class="btn btn-primary">
+          <span>See selected work</span>
+          <span class="arrow"><i class="fas fa-arrow-up-right-from-square text-xs"></i></span>
+        </a>
+        <a href="#contact" class="btn btn-outline">
+          <span>Start a project</span>
+          <span class="arrow" style="background:transparent; border:1px solid var(--line);"><i class="fas fa-arrow-right text-xs"></i></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll hint + marquee -->
+    <div class="mt-24 flex items-center justify-between flex-wrap gap-8">
+      <div class="eyebrow">(Scroll to explore ↓)</div>
+      <div class="marquee flex-1 max-w-3xl">
+        <div class="marquee-track mono text-sm" style="color:var(--ink-60);">
+          <span>FULL-STACK DEVELOPMENT</span><span>·</span>
+          <span>SEO / PERFORMANCE</span><span>·</span>
+          <span>3D &amp; CREATIVE CODE</span><span>·</span>
+          <span>ANGULAR · REACT · LARAVEL</span><span>·</span>
+          <span>CASABLANCA — MARRAKECH — REMOTE</span><span>·</span>
+          <span>FULL-STACK DEVELOPMENT</span><span>·</span>
+          <span>SEO / PERFORMANCE</span><span>·</span>
+          <span>3D &amp; CREATIVE CODE</span><span>·</span>
+          <span>ANGULAR · REACT · LARAVEL</span><span>·</span>
+          <span>CASABLANCA — MARRAKECH — REMOTE</span><span>·</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- ABOUT / INTRO                                     -->
+<!-- =============================================== -->
+<section id="about" class="py-32 relative" style="background:var(--bg);">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <div class="divider mb-16"><span>01 — ABOUT</span></div>
+
+    <div class="grid md:grid-cols-[1fr_1fr] gap-16 items-start">
+      <div>
+        <h2 class="display display-lg">
+          Building the<br />
+          <span class="italic-accent">web of tomorrow,</span><br />
+          shipping it today.
+        </h2>
+      </div>
+      <div class="md:pt-24">
+        <p class="text-xl md:text-2xl leading-relaxed" style="color:var(--ink);">
+          I'm a full-stack developer based in Casablanca with four years of experience turning fuzzy product ideas into working software. I care deeply about clean architecture, real performance, and interfaces that feel effortless.
+        </p>
+
+        <p class="mt-8 text-lg leading-relaxed" style="color:var(--ink-60);">
+          Equally comfortable shipping a Laravel API or tuning Core Web Vitals on a marketing site. What ties it all together: moving fast without leaving a mess.
+        </p>
+
+        <div class="mt-10 flex gap-4 flex-wrap">
+          <a href="#" class="btn btn-outline">
+            <i class="fas fa-download text-xs"></i>
+            Download CV
+          </a>
+          <a href="#contact" class="btn btn-outline">
+            <i class="far fa-envelope text-xs"></i>
+            Get in touch
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="mt-24 grid grid-cols-2 md:grid-cols-4 gap-x-8">
+      <div class="stat-row">
+        <div>
+          <div class="display display-md">4<span class="italic-accent" style="color:var(--accent);">+</span></div>
+          <div class="eyebrow mt-3">Years shipping</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div>
+          <div class="display display-md">25<span class="italic-accent" style="color:var(--accent);">+</span></div>
+          <div class="eyebrow mt-3">Projects delivered</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div>
+          <div class="display display-md">12</div>
+          <div class="eyebrow mt-3">Happy clients</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div>
+          <div class="display display-md">98<span class="italic-accent" style="color:var(--accent);">/100</span></div>
+          <div class="eyebrow mt-3">Avg. Lighthouse</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- FEATURED WORK                                     -->
+<!-- =============================================== -->
+<section id="projects" class="py-32 relative">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <div class="divider mb-12"><span>02 — SELECTED WORK</span></div>
+
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-14">
+      <h2 class="display display-lg">
+        Work that <span class="italic-accent">shipped.</span>
+      </h2>
+      <a href="#" class="btn btn-outline">
+        <span>All projects</span>
+        <span class="arrow" style="background:transparent; border:1px solid var(--line);"><i class="fas fa-arrow-right text-xs"></i></span>
+      </a>
+    </div>
+
+    <!-- Feature project (big) -->
+    <a href="#" class="proj block mb-6 tex tex-green" style="aspect-ratio: 21/10;" data-cursor="hover">
+      <div class="tag">Case study</div>
+      <div class="year">2025</div>
+      <div class="visual">
+        <i class="fas fa-chart-line" style="color:rgba(241,236,228,.2);"></i>
+      </div>
+      <div class="overlay">
+        <div class="flex items-end justify-between flex-wrap gap-4">
+          <div>
+            <div class="mono text-xs uppercase tracking-widest" style="color:rgba(241,236,228,.7);">Analytics / SaaS</div>
+            <h3 class="display text-4xl md:text-6xl mt-2" style="color:var(--bg);">Atlas Analytics Platform</h3>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="text-xs mono px-3 py-1 rounded-full" style="background:rgba(241,236,228,.14); color:var(--bg);">Angular</span>
+              <span class="text-xs mono px-3 py-1 rounded-full" style="background:rgba(241,236,228,.14); color:var(--bg);">Laravel</span>
+              <span class="text-xs mono px-3 py-1 rounded-full" style="background:rgba(241,236,228,.14); color:var(--bg);">Firebase</span>
+            </div>
+          </div>
+          <div class="arrow" style="background:var(--bg); width:56px; height:56px;">
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Grid of 2 -->
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <a href="#" class="proj block tex tex-red" data-cursor="hover">
+        <div class="tag">E-commerce</div>
+        <div class="year">2025</div>
+        <div class="visual"><i class="fas fa-store"></i></div>
+        <div class="overlay">
+          <div class="mono text-xs uppercase tracking-widest" style="color:rgba(241,236,228,.7);">Marketplace</div>
+          <h3 class="display text-3xl md:text-4xl mt-2" style="color:var(--bg);">Atlas Marketplace</h3>
+        </div>
+      </a>
+      <a href="#" class="proj block tex tex-blue" data-cursor="hover">
+        <div class="tag">Booking</div>
+        <div class="year">2024</div>
+        <div class="visual"><i class="fas fa-hotel"></i></div>
+        <div class="overlay">
+          <div class="mono text-xs uppercase tracking-widest" style="color:rgba(241,236,228,.7);">Hospitality</div>
+          <h3 class="display text-3xl md:text-4xl mt-2" style="color:var(--bg);">Riad Reservation System</h3>
+        </div>
+      </a>
+    </div>
+
+    <!-- Row of 3 -->
+    <div class="grid md:grid-cols-3 gap-6">
+      <a href="#" class="proj block tex tex-dark" data-cursor="hover">
+        <div class="tag">EdTech</div>
+        <div class="year">2024</div>
+        <div class="visual"><i class="fas fa-graduation-cap"></i></div>
+        <div class="overlay">
+          <div class="mono text-xs uppercase tracking-widest" style="color:rgba(241,236,228,.7);">Learning</div>
+          <h3 class="display text-2xl md:text-3xl mt-2" style="color:var(--bg);">Knowledge Hub</h3>
+        </div>
+      </a>
+      <a href="#" class="proj block tex" data-cursor="hover">
+        <div class="tag">Creative</div>
+        <div class="year">2024</div>
+        <div class="visual" style="color:rgba(11,10,9,.14);"><i class="fas fa-cube"></i></div>
+        <div class="overlay">
+          <div class="mono text-xs uppercase tracking-widest" style="color:var(--ink-60);">3D / WebGL</div>
+          <h3 class="display text-2xl md:text-3xl mt-2" style="color:var(--ink);">Product Configurator</h3>
+        </div>
+      </a>
+      <a href="#" class="proj block tex tex-green" data-cursor="hover">
+        <div class="tag">Landing</div>
+        <div class="year">2023</div>
+        <div class="visual"><i class="fas fa-leaf"></i></div>
+        <div class="overlay">
+          <div class="mono text-xs uppercase tracking-widest" style="color:rgba(241,236,228,.7);">Climate tech</div>
+          <h3 class="display text-2xl md:text-3xl mt-2" style="color:var(--bg);">Sustainable Energy Co.</h3>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- SERVICES                                          -->
+<!-- =============================================== -->
+<section id="services" class="py-32 relative" style="background:var(--bg-2);">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <div class="divider mb-16"><span>03 — WHAT I DO</span></div>
+
+    <h2 class="display display-lg max-w-4xl mb-20">
+      Tight scopes.<br />
+      <span class="italic-accent">Ruthless craft.</span><br />
+      Measurable outcomes.
+    </h2>
+
+    <!-- Services as editorial rows -->
+    <div class="flex flex-col">
+      <div class="group py-10 border-t flex items-start gap-6 md:gap-12" style="border-color: var(--line);">
+        <div class="mono text-sm shrink-0 w-14" style="color:var(--ink-40);">(01)</div>
+        <div class="flex-1">
+          <h3 class="display text-4xl md:text-6xl">Web Design</h3>
+          <p class="mt-4 text-lg max-w-2xl" style="color:var(--ink-60);">Interfaces that convert — clean hierarchy, a real brand system, accessible from day one.</p>
+        </div>
+        <div class="arrow shrink-0"><i class="fas fa-arrow-up-right-from-square text-xs"></i></div>
+      </div>
+      <div class="group py-10 border-t flex items-start gap-6 md:gap-12" style="border-color: var(--line);">
+        <div class="mono text-sm shrink-0 w-14" style="color:var(--ink-40);">(02)</div>
+        <div class="flex-1">
+          <h3 class="display text-4xl md:text-6xl">Web Development</h3>
+          <p class="mt-4 text-lg max-w-2xl" style="color:var(--ink-60);">Full-stack apps in Angular, React, Laravel and Node — scalable, tested, and production-ready.</p>
+        </div>
+        <div class="arrow shrink-0"><i class="fas fa-arrow-up-right-from-square text-xs"></i></div>
+      </div>
+      <div class="group py-10 border-t flex items-start gap-6 md:gap-12" style="border-color: var(--line);">
+        <div class="mono text-sm shrink-0 w-14" style="color:var(--ink-40);">(03)</div>
+        <div class="flex-1">
+          <h3 class="display text-4xl md:text-6xl">SEO &amp; Performance</h3>
+          <p class="mt-4 text-lg max-w-2xl" style="color:var(--ink-60);">Technical SEO, Core Web Vitals, structured data. Rank higher, load faster, stick around.</p>
+        </div>
+        <div class="arrow shrink-0"><i class="fas fa-arrow-up-right-from-square text-xs"></i></div>
+      </div>
+      <div class="group py-10 border-t border-b flex items-start gap-6 md:gap-12" style="border-color: var(--line);">
+        <div class="mono text-sm shrink-0 w-14" style="color:var(--ink-40);">(04)</div>
+        <div class="flex-1">
+          <h3 class="display text-4xl md:text-6xl">3D &amp; Creative</h3>
+          <p class="mt-4 text-lg max-w-2xl" style="color:var(--ink-60);">Three.js configurators, WebGL effects, scroll choreography — interactions with a point of view.</p>
+        </div>
+        <div class="arrow shrink-0"><i class="fas fa-arrow-up-right-from-square text-xs"></i></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- CLIENTS / MARQUEE                                 -->
+<!-- =============================================== -->
+<section class="py-24" style="background:var(--bg);">
+  <div class="marquee">
+    <div class="marquee-track display text-6xl md:text-8xl" style="color:var(--ink);">
+      <span>Angular</span>
+      <span class="italic-accent" style="color:var(--accent);">React</span>
+      <span>Laravel</span>
+      <span class="italic-accent" style="color:var(--accent-2);">Node.js</span>
+      <span>TypeScript</span>
+      <span class="italic-accent" style="color:var(--accent);">Three.js</span>
+      <span>Tailwind</span>
+      <span>Angular</span>
+      <span class="italic-accent" style="color:var(--accent);">React</span>
+      <span>Laravel</span>
+      <span class="italic-accent" style="color:var(--accent-2);">Node.js</span>
+      <span>TypeScript</span>
+      <span class="italic-accent" style="color:var(--accent);">Three.js</span>
+      <span>Tailwind</span>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- TESTIMONIAL                                       -->
+<!-- =============================================== -->
+<section class="py-32" style="background:var(--bg);">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 text-center">
+    <div class="eyebrow mb-10">— Kind words from clients —</div>
+    <blockquote class="italic-accent text-4xl md:text-6xl leading-[1.15]" style="color:var(--ink);">
+      "Mourad delivered a product our users love — &amp; he did it without drama. Every deadline, every detail."
+    </blockquote>
+    <div class="mt-10 flex items-center justify-center gap-4">
+      <div class="w-12 h-12 rounded-full tex tex-dark"></div>
+      <div class="text-left">
+        <div class="font-medium">Leila B.</div>
+        <div class="text-sm" style="color:var(--ink-60);">Product Lead · Atlas Labs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- CONTACT                                           -->
+<!-- =============================================== -->
+<section id="contact" class="py-32 relative" style="background:var(--ink); color:var(--bg);">
+  <div class="max-w-[1400px] mx-auto px-6 md:px-10">
+
+    <div class="flex items-center gap-3 eyebrow mb-10" style="color:rgba(241,236,228,.6);">
+      <span>04 — GET IN TOUCH</span>
+    </div>
+
+    <div class="grid md:grid-cols-[1.1fr_.9fr] gap-16 items-start">
+      <div>
+        <h2 class="display display-xl" style="color:var(--bg);">
+          Let's make<br />
+          <span class="italic-accent" style="color:#E7C98B;">something good.</span>
+        </h2>
+
+        <p class="mt-10 text-xl max-w-md" style="color:rgba(241,236,228,.75);">
+          Tell me a bit about your project. I reply within 24 hours — weekdays &amp; most weekends.
+        </p>
+
+        <div class="mt-12 space-y-4 max-w-md">
+          <a href="#" class="flex items-center justify-between py-5 border-t" style="border-color:rgba(241,236,228,.18);">
+            <div>
+              <div class="eyebrow" style="color:rgba(241,236,228,.5);">Email</div>
+              <div class="text-lg mt-1">mouradtizougarine&#64;gmail.com</div>
+            </div>
+            <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+          </a>
+          <a href="#" class="flex items-center justify-between py-5 border-t" style="border-color:rgba(241,236,228,.18);">
+            <div>
+              <div class="eyebrow" style="color:rgba(241,236,228,.5);">LinkedIn</div>
+              <div class="text-lg mt-1">in/mourad-tizougarine</div>
+            </div>
+            <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+          </a>
+          <a href="#" class="flex items-center justify-between py-5 border-t border-b" style="border-color:rgba(241,236,228,.18);">
+            <div>
+              <div class="eyebrow" style="color:rgba(241,236,228,.5);">GitHub</div>
+              <div class="text-lg mt-1">@moradtizo</div>
+            </div>
+            <i class="fas fa-arrow-up-right-from-square text-sm"></i>
+          </a>
+        </div>
+      </div>
+
+      <form class="md:pt-20">
+        <div class="grid md:grid-cols-2 gap-6">
+          <input type="text" class="fld" placeholder="Your name *" style="color:var(--bg); border-bottom-color: rgba(241,236,228,.25);" />
+          <input type="email" class="fld" placeholder="Email *" style="color:var(--bg); border-bottom-color: rgba(241,236,228,.25);" />
+        </div>
+        <input type="text" class="fld mt-2" placeholder="Subject" style="color:var(--bg); border-bottom-color: rgba(241,236,228,.25);" />
+        <textarea rows="5" class="fld mt-2" placeholder="Tell me about your project *" style="color:var(--bg); border-bottom-color: rgba(241,236,228,.25);"></textarea>
+        <button type="button" class="btn mt-10" style="background:var(--bg);color:var(--ink);">
+          <span>Send message</span>
+          <span class="arrow" style="background:var(--ink); color:var(--bg);"><i class="fas fa-arrow-up-right-from-square text-xs"></i></span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-32 pt-10 border-t flex flex-wrap items-end justify-between gap-8" style="border-color:rgba(241,236,228,.18);">
+      <div>
+        <div class="display text-7xl md:text-9xl" style="color:var(--bg);">
+          Mourad.<span class="italic-accent" style="color:#E7C98B;">®</span>
+        </div>
+        <div class="mono text-xs mt-6" style="color:rgba(241,236,228,.5);">© 2026 · CASABLANCA · ALL RIGHTS RESERVED</div>
+      </div>
+      <div class="flex flex-col gap-2 mono text-xs" style="color:rgba(241,236,228,.6);">
+        <div>CRAFTED IN CASABLANCA</div>
+        <div>BUILT WITH ANGULAR</div>
+        <div>SOUNDTRACK: COFFEE &amp; LO-FI</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<script>
+  // Cursor follower
+  const cur = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cur.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%,-50%)`;
+  });
+  document.querySelectorAll('a, button, [data-cursor="hover"]').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('is-hover'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('is-hover'));
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('section, .proj, h2, h3, .stat-row').forEach(el => {
+    el.classList.add('reveal');
+    io.observe(el);
+  });
+</script>
+</body>
+</html>

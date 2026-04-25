@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.mobile-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  color: #94a3b8;
+  transition: all .2s ease;
+
+  &:hover { color: #fff; }
+}
+
+.mobile-nav-active {
+  color: #fff !important;
+  background: rgba(139, 92, 246, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.35);
+}

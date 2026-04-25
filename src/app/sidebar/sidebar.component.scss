@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.sidebar-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: #94a3b8;
+  border: 1px solid transparent;
+  transition: all .2s ease;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.sidebar-active {
+  color: #fff !important;
+  background: rgba(139, 92, 246, 0.14) !important;
+  border-color: rgba(139, 92, 246, 0.35) !important;
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2) inset,
+              0 10px 24px -10px rgba(139, 92, 246, 0.4);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 22px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #8b5cf6, #06b6d4);
+    box-shadow: 0 0 12px #8b5cf6;
+  }
+}

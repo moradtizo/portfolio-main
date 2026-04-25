@@ -1,11 +1,12 @@
+<!-- Mobile open button -->
 <button *ngIf="showSidebar"
         data-drawer-target="logo-sidebar"
         data-drawer-toggle="logo-sidebar"
         aria-controls="logo-sidebar"
         type="button"
-        class="fixed top-4 left-4 z-50 inline-flex items-center p-2 text-gray-500 rounded-lg sm:hidden glass hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-600">
+        class="fixed top-4 left-4 z-50 sm:hidden inline-flex items-center p-2.5 rounded-xl glass text-slate-300 hover:text-white transition">
   <span class="sr-only">Open sidebar</span>
-  <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
   </svg>
 </button>
@@ -13,23 +14,26 @@
 <aside *ngIf="showSidebar"
        id="logo-sidebar"
        class="fixed top-0 left-0 z-40 w-20 h-screen transition-transform -translate-x-full sm:translate-x-0 glass"
+       style="border-top:0; border-bottom:0; border-left:0; border-right:1px solid rgba(255,255,255,0.06);"
        aria-label="Sidebar">
   <div class="h-full px-3 py-6 overflow-y-auto flex flex-col items-center">
 
     <!-- Logo -->
-    <a routerLink="/" class="flex items-center justify-center w-12 h-12 mb-8 rounded-full bg-gradient-to-br from-emerald-600 to-indigo-600 text-white font-bold text-xl shadow-lg hover:scale-110 transition">
+    <a routerLink="/"
+       class="flex items-center justify-center w-11 h-11 mb-10 rounded-2xl font-display font-bold text-lg text-ink-900 transition hover:scale-110"
+       style="background: linear-gradient(135deg, #8b5cf6, #06b6d4); box-shadow: 0 10px 30px -8px rgba(139,92,246,0.6);">
       M
     </a>
 
     <!-- Navigation -->
-    <ul class="space-y-4 flex-1 flex flex-col items-center justify-center">
+    <ul class="space-y-2 flex-1 flex flex-col items-center justify-center">
       <li>
         <a routerLink="/"
-           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+           routerLinkActive="sidebar-active"
            [routerLinkActiveOptions]="{exact: true}"
-           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           class="sidebar-link"
            title="Home">
-          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8v10a1 1 0 0 0 1 1h4v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5h4a1 1 0 0 0 1-1V8M1 10l9-9 9 9"/>
           </svg>
         </a>
@@ -37,10 +41,10 @@
 
       <li>
         <a routerLink="/about"
-           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           routerLinkActive="sidebar-active"
+           class="sidebar-link"
            title="About">
-          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
           </svg>
         </a>
@@ -48,10 +52,10 @@
 
       <li>
         <a routerLink="/services"
-           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           routerLinkActive="sidebar-active"
+           class="sidebar-link"
            title="Services">
-          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.143 1H1.857A.857.857 0 0 0 1 1.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 7 6.143V1.857A.857.857 0 0 0 6.143 1Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 17 6.143V1.857A.857.857 0 0 0 16.143 1Zm-10 10H1.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 7 16.143v-4.286A.857.857 0 0 0 6.143 11Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"/>
           </svg>
         </a>
@@ -59,10 +63,10 @@
 
       <li>
         <a routerLink="/projects"
-           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           routerLinkActive="sidebar-active"
+           class="sidebar-link"
            title="Projects">
-          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
             <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z"/>
           </svg>
         </a>
@@ -70,22 +74,28 @@
 
       <li>
         <a routerLink="/contact"
-           routerLinkActive="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-           class="flex items-center justify-center w-12 h-12 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition group relative"
+           routerLinkActive="sidebar-active"
+           class="sidebar-link"
            title="Contact">
-          <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5h9M5 9h5m8-8H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4l3.5 4 3.5-4h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"/>
           </svg>
         </a>
       </li>
     </ul>
 
-    <!-- Theme Toggle (Optional) -->
-    <div class="mt-auto pt-4">
+    <!-- Bottom: socials + theme toggle -->
+    <div class="mt-auto pt-4 flex flex-col items-center gap-3">
+      <a href="https://github.com/moradtizo" target="_blank" rel="noopener"
+         class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-white transition">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/mourad-tizougarine-175bb7221/" target="_blank" rel="noopener"
+         class="w-9 h-9 flex items-center justify-center rounded-lg text-slate-400 hover:text-white transition">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
       <button (click)="toggleTheme()"
-              class="flex items-center justify-center w-12 h-12 rounded-full
-                     text-gray-600 dark:text-gray-300
-                     hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              class="w-10 h-10 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition"
               title="Toggle theme">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

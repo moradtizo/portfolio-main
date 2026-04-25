@@ -18,13 +18,14 @@ export class SidebarComponent implements OnInit {
   //   this.checkScreenSize();
   // }
   ngOnInit() {
+    // Dark-first portfolio: default to dark unless the user has explicitly chosen light.
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      this.isDarkMode = true;
-      document.documentElement.classList.add('dark');
-    } else {
+    if (savedTheme === 'light') {
       this.isDarkMode = false;
       document.documentElement.classList.remove('dark');
+    } else {
+      this.isDarkMode = true;
+      document.documentElement.classList.add('dark');
     }
     this.checkScreenSize();
   }

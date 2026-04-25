@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mourad Tizougarine — Portfolio Redesign Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet" />
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          ink:   { 950:'#05070b', 900:'#0a0d14', 800:'#0f131c', 700:'#161b27' },
+          line:  'rgba(255,255,255,0.08)',
+          violet:{ 500:'#8b5cf6' },
+          cyan:  { 500:'#06b6d4' },
+          lime:  { 400:'#c5f82a' }
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"','ui-sans-serif','system-ui'],
+          sans:    ['Inter','ui-sans-serif','system-ui'],
+          mono:    ['"JetBrains Mono"','ui-monospace','monospace']
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html, body { background:#05070b; color:#e6e8ef; font-family:'Inter',sans-serif; }
+  body {
+    background-image:
+      radial-gradient(1000px 500px at 10% -10%, rgba(139,92,246,.22), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, rgba(6,182,212,.18), transparent 60%),
+      radial-gradient(700px 500px at 50% 110%, rgba(197,248,42,.08), transparent 60%);
+    min-height: 100vh;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+  }
+  .glass {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .glass-strong {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.09);
+    backdrop-filter: blur(18px);
+  }
+  .gradient-text {
+    background: linear-gradient(90deg,#c4b5fd 0%, #8b5cf6 30%, #06b6d4 70%, #67e8f9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .chip {
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.35rem .75rem; border-radius:999px;
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.08em;
+    color:#c4b5fd;
+    border:1px solid rgba(139,92,246,.35);
+    background:rgba(139,92,246,.08);
+  }
+  .chip .dot { width:6px; height:6px; border-radius:999px; background:#a78bfa; box-shadow:0 0 10px #a78bfa; }
+  .btn-primary {
+    position:relative; display:inline-flex; align-items:center; gap:.6rem;
+    padding:.85rem 1.4rem; border-radius:999px;
+    background: linear-gradient(135deg,#8b5cf6 0%, #06b6d4 100%);
+    color:#0a0d14; font-weight:600; letter-spacing:.01em;
+    box-shadow:
+      0 10px 35px -10px rgba(139,92,246,.6),
+      0 0 0 1px rgba(255,255,255,.08) inset;
+    transition: transform .2s ease, box-shadow .25s ease;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(6,182,212,.55), 0 0 0 1px rgba(255,255,255,.12) inset; }
+  .btn-ghost {
+    display:inline-flex; align-items:center; gap:.55rem;
+    padding:.8rem 1.3rem; border-radius:999px;
+    color:#e6e8ef; border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.02);
+    transition: all .2s ease;
+  }
+  .btn-ghost:hover { border-color: rgba(139,92,246,.5); background: rgba(139,92,246,.08); }
+  .card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 24px;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    position: relative; overflow:hidden;
+  }
+  .card::before {
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(400px circle at var(--mx,50%) var(--my,0%), rgba(139,92,246,.12), transparent 40%);
+    opacity:0; transition: opacity .3s ease;
+    pointer-events:none;
+  }
+  .card:hover { transform: translateY(-4px); border-color: rgba(139,92,246,.3); box-shadow: 0 30px 60px -20px rgba(0,0,0,.6); }
+  .card:hover::before { opacity:1; }
+
+  .orb {
+    position:absolute; border-radius:9999px; filter:blur(80px); opacity:.5;
+    animation: float 14s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(20px,-30px) scale(1.08); }
+  }
+  .marquee { mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent); }
+  .marquee-track { animation: slide 30s linear infinite; }
+  @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .section-num {
+    font-family:'JetBrains Mono',monospace;
+    font-size:.72rem; letter-spacing:.18em; color:#06b6d4;
+  }
+
+  .tech-icon {
+    width:56px; height:56px; display:flex; align-items:center; justify-content:center;
+    border-radius:16px; border:1px solid rgba(255,255,255,.08);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    transition: all .2s ease;
+  }
+  .tech-icon:hover { transform: translateY(-3px); border-color: rgba(139,92,246,.45); box-shadow: 0 12px 30px -15px rgba(139,92,246,.7); }
+
+  .sidebar-item { position:relative; }
+  .sidebar-item.active::before {
+    content:""; position:absolute; left:-10px; top:50%; transform:translateY(-50%);
+    height:20px; width:3px; border-radius:4px; background: linear-gradient(180deg,#8b5cf6,#06b6d4);
+    box-shadow:0 0 10px #8b5cf6;
+  }
+  .sidebar-item.active a { color:#fff; background: rgba(139,92,246,.12); border-color: rgba(139,92,246,.3); }
+
+  .noise {
+    position:fixed; inset:0; pointer-events:none; z-index:1; opacity:.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Mock page separator */
+  .page-separator {
+    margin: 0 auto;
+    max-width: 1200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  }
+  .page-label {
+    display:inline-flex; align-items:center; gap:.6rem;
+    padding:.45rem 1rem; border-radius:999px;
+    background: rgba(6,182,212,.08);
+    border: 1px solid rgba(6,182,212,.25);
+    color:#67e8f9; font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.12em;
+  }
+
+  /* Hero avatar */
+  .avatar-frame {
+    position:relative; border-radius:32px; overflow:hidden;
+    background: linear-gradient(135deg, rgba(139,92,246,.25), rgba(6,182,212,.18));
+    border: 1px solid rgba(255,255,255,.08);
+    aspect-ratio: 4/5;
+  }
+  .avatar-frame::after {
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(400px 400px at 50% 20%, rgba(139,92,246,.35), transparent 60%);
+  }
+  .avatar-emoji {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size: 180px; filter: drop-shadow(0 20px 40px rgba(139,92,246,.4));
+  }
+  .metric {
+    display:flex; flex-direction:column; gap:.2rem;
+    padding:1rem 1.25rem; border-radius:18px;
+    background: rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07);
+  }
+  .metric .num { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.8rem; color:#fff; }
+  .metric .label { font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:#94a3b8; }
+
+  .proj-tag { font-family:'JetBrains Mono',monospace; font-size:.68rem; padding:.2rem .55rem; border-radius:6px;
+              background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:#c4b5fd; }
+
+  input, textarea {
+    width:100%; background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px; padding: .9rem 1rem;
+    color:#e6e8ef; font-family:inherit; font-size:.95rem;
+    transition: all .2s ease;
+  }
+  input:focus, textarea:focus { outline:none; border-color: rgba(139,92,246,.5); background: rgba(139,92,246,.05); }
+
+  .service-card .icon-wrap {
+    width: 56px; height: 56px; border-radius: 18px;
+    display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg,#8b5cf6,#06b6d4);
+    color:#0a0d14; font-size:1.3rem;
+    box-shadow: 0 12px 30px -12px rgba(139,92,246,.6);
+  }
+
+  .divider-label {
+    display:flex; align-items:center; gap:1rem;
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.18em;
+    color:#94a3b8; text-transform:uppercase;
+  }
+  .divider-label::before, .divider-label::after {
+    content:""; flex:1; height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  }
+</style>
+</head>
+<body class="antialiased">
+<div class="noise"></div>
+
+<!-- ====================================================== -->
+<!-- PREVIEW HEADER                                           -->
+<!-- ====================================================== -->
+<div class="relative z-20 border-b border-white/10 bg-black/30 backdrop-blur">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl flex items-center justify-center font-display font-bold" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4); color:#0a0d14;">M</div>
+      <div>
+        <div class="font-display font-semibold text-white">Portfolio Redesign — Preview</div>
+        <div class="text-xs text-slate-400 font-mono">Dark & Modern · v1 · Not yet applied to Angular</div>
+      </div>
+    </div>
+    <div class="hidden md:flex items-center gap-2 text-xs font-mono text-slate-400">
+      <span class="w-2 h-2 rounded-full bg-lime-400"></span> Mockup · scroll to review all pages
+    </div>
+  </div>
+</div>
+
+<!-- ====================================================== -->
+<!-- SIDEBAR (visual reference)                                -->
+<!-- ====================================================== -->
+<aside class="hidden lg:flex fixed top-[73px] left-0 bottom-0 z-30 w-20 flex-col items-center py-8 glass" style="border-right:1px solid rgba(255,255,255,.06); border-top:0; border-bottom:0; border-left:0;">
+  <a href="#home" class="w-11 h-11 rounded-2xl flex items-center justify-center font-display font-bold text-ink-900 mb-10" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4); box-shadow:0 10px 30px -8px rgba(139,92,246,.6);">M</a>
+  <ul class="space-y-2 flex-1 flex flex-col items-center justify-center">
+    <li class="sidebar-item active"><a href="#home" class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-300 border border-transparent transition" title="Home"><i class="fas fa-house"></i></a></li>
+    <li class="sidebar-item"><a href="#about" class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition" title="About"><i class="fas fa-user"></i></a></li>
+    <li class="sidebar-item"><a href="#services" class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition" title="Services"><i class="fas fa-bolt"></i></a></li>
+    <li class="sidebar-item"><a href="#projects" class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition" title="Projects"><i class="fas fa-folder-open"></i></a></li>
+    <li class="sidebar-item"><a href="#contact" class="w-11 h-11 flex items-center justify-center rounded-xl text-slate-400 hover:text-white transition" title="Contact"><i class="fas fa-paper-plane"></i></a></li>
+  </ul>
+  <div class="mt-auto flex flex-col items-center gap-3">
+    <a href="#" class="text-slate-400 hover:text-white"><i class="fab fa-github"></i></a>
+    <a href="#" class="text-slate-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+    <button class="w-11 h-11 rounded-xl flex items-center justify-center text-slate-400 hover:text-white transition" title="Theme"><i class="fas fa-moon"></i></button>
+  </div>
+</aside>
+
+<main class="lg:ml-20">
+
+<!-- ====================================================== -->
+<!-- HOME / HERO                                              -->
+<!-- ====================================================== -->
+<section id="home" class="relative overflow-hidden min-h-[92vh] flex items-center pt-20 pb-28">
+  <div class="absolute inset-0 grid-bg"></div>
+  <div class="orb w-[420px] h-[420px] -top-20 -left-32" style="background:rgba(139,92,246,.35);"></div>
+  <div class="orb w-[520px] h-[520px] -bottom-40 right-[-10%]" style="background:rgba(6,182,212,.25); animation-delay:-6s;"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10 w-full">
+    <div class="mb-6 flex items-center gap-4">
+      <span class="section-num">01 / INTRO</span>
+      <div class="h-px flex-1 max-w-[120px] bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-14 items-center">
+      <!-- Left -->
+      <div>
+        <div class="chip mb-7"><span class="dot"></span>AVAILABLE FOR FREELANCE · Q2 2026</div>
+
+        <h1 class="font-display font-bold tracking-tight leading-[1.02] text-[clamp(2.6rem,6vw,5.5rem)] text-white">
+          Building <span class="gradient-text">fast, elegant</span><br/>
+          web products<br/>
+          that <span class="italic font-medium text-slate-400">actually ship.</span>
+        </h1>
+
+        <p class="mt-7 max-w-xl text-lg text-slate-400 leading-relaxed">
+          I'm <span class="text-white font-medium">Mourad Tizougarine</span> — a full-stack developer based in Casablanca. I design and build high-performance applications with Angular, React, and Laravel, with a focus on clean architecture, SEO, and measurable outcomes.
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="#projects" class="btn-primary">
+            <i class="fas fa-arrow-right-long"></i> View my work
+          </a>
+          <a href="#" class="btn-ghost">
+            <i class="fas fa-download"></i> Download CV
+          </a>
+          <a href="#contact" class="text-slate-400 hover:text-white font-medium flex items-center gap-2 group">
+            <span class="underline-offset-4 group-hover:underline">Let's talk</span>
+            <i class="fas fa-arrow-up-right-from-square text-xs"></i>
+          </a>
+        </div>
+
+        <!-- Metrics -->
+        <div class="mt-12 grid grid-cols-3 gap-4 max-w-lg">
+          <div class="metric"><div class="num">4+</div><div class="label">Years exp.</div></div>
+          <div class="metric"><div class="num">25+</div><div class="label">Projects shipped</div></div>
+          <div class="metric"><div class="num">12</div><div class="label">Happy clients</div></div>
+        </div>
+      </div>
+
+      <!-- Right: avatar / visual -->
+      <div class="relative">
+        <div class="avatar-frame">
+          <div class="avatar-emoji">👨‍💻</div>
+
+          <!-- floating badges -->
+          <div class="absolute top-6 left-6 glass-strong rounded-2xl px-4 py-3 flex items-center gap-3 text-sm">
+            <i class="fab fa-angular text-red-400 text-xl"></i>
+            <div>
+              <div class="text-xs text-slate-400 font-mono">EXPERT · 4Y</div>
+              <div class="text-white font-medium">Angular</div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-20 right-6 glass-strong rounded-2xl px-4 py-3 flex items-center gap-3 text-sm">
+            <i class="fab fa-laravel text-rose-400 text-xl"></i>
+            <div>
+              <div class="text-xs text-slate-400 font-mono">BACKEND · 3Y</div>
+              <div class="text-white font-medium">Laravel · Node</div>
+            </div>
+          </div>
+
+          <div class="absolute top-1/2 -translate-y-1/2 -right-4 glass-strong rounded-full pl-2 pr-4 py-2 flex items-center gap-2 text-sm">
+            <span class="w-2 h-2 rounded-full bg-lime-400 shadow-[0_0_10px_#a3e635]"></span>
+            <span class="text-white text-xs font-medium">Open to work</span>
+          </div>
+        </div>
+
+        <!-- code snippet card -->
+        <div class="absolute -bottom-10 -left-10 glass-strong rounded-2xl p-4 w-72 hidden md:block font-mono text-[11px] leading-relaxed">
+          <div class="flex items-center gap-1.5 mb-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-lime-400"></span>
+            <span class="ml-auto text-slate-500 text-[10px]">hello.ts</span>
+          </div>
+          <div><span class="text-violet-400">const</span> <span class="text-cyan-300">dev</span> <span class="text-slate-500">=</span> <span class="text-slate-500">{</span></div>
+          <div class="pl-3"><span class="text-cyan-300">name</span><span class="text-slate-500">:</span> <span class="text-amber-200">'Mourad T.'</span><span class="text-slate-500">,</span></div>
+          <div class="pl-3"><span class="text-cyan-300">stack</span><span class="text-slate-500">: [</span><span class="text-amber-200">'Angular'</span><span class="text-slate-500">, </span><span class="text-amber-200">'Laravel'</span><span class="text-slate-500">],</span></div>
+          <div class="pl-3"><span class="text-cyan-300">shipping</span><span class="text-slate-500">:</span> <span class="text-lime-400">true</span></div>
+          <div><span class="text-slate-500">}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech marquee -->
+    <div class="mt-24">
+      <div class="divider-label mb-6"><span>TRUSTED STACK</span></div>
+      <div class="marquee overflow-hidden">
+        <div class="marquee-track flex gap-12 whitespace-nowrap text-2xl text-slate-400/80" style="width:max-content;">
+          <span class="flex items-center gap-3"><i class="fab fa-angular text-red-400"></i> Angular</span>
+          <span class="flex items-center gap-3"><i class="fab fa-react text-cyan-400"></i> React</span>
+          <span class="flex items-center gap-3"><i class="fab fa-node-js text-emerald-400"></i> Node.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-laravel text-rose-400"></i> Laravel</span>
+          <span class="flex items-center gap-3"><i class="fab fa-js text-amber-300"></i> TypeScript</span>
+          <span class="flex items-center gap-3"><i class="fab fa-php text-indigo-400"></i> PHP</span>
+          <span class="flex items-center gap-3"><i class="fab fa-java text-orange-400"></i> Java</span>
+          <span class="flex items-center gap-3"><i class="fas fa-cube text-fuchsia-400"></i> Three.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-css3-alt text-sky-400"></i> Tailwind</span>
+          <!-- duplicate for seamless loop -->
+          <span class="flex items-center gap-3"><i class="fab fa-angular text-red-400"></i> Angular</span>
+          <span class="flex items-center gap-3"><i class="fab fa-react text-cyan-400"></i> React</span>
+          <span class="flex items-center gap-3"><i class="fab fa-node-js text-emerald-400"></i> Node.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-laravel text-rose-400"></i> Laravel</span>
+          <span class="flex items-center gap-3"><i class="fab fa-js text-amber-300"></i> TypeScript</span>
+          <span class="flex items-center gap-3"><i class="fab fa-php text-indigo-400"></i> PHP</span>
+          <span class="flex items-center gap-3"><i class="fab fa-java text-orange-400"></i> Java</span>
+          <span class="flex items-center gap-3"><i class="fas fa-cube text-fuchsia-400"></i> Three.js</span>
+          <span class="flex items-center gap-3"><i class="fab fa-css3-alt text-sky-400"></i> Tailwind</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-separator"></div>
+
+<!-- ====================================================== -->
+<!-- ABOUT                                                     -->
+<!-- ====================================================== -->
+<section id="about" class="relative overflow-hidden py-32">
+  <div class="orb w-[400px] h-[400px] top-20 right-10" style="background:rgba(139,92,246,.22);"></div>
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+
+    <div class="mb-10 flex items-center gap-4">
+      <span class="section-num">02 / ABOUT</span>
+      <div class="h-px flex-1 max-w-[120px] bg-gradient-to-r from-violet-500/50 to-transparent"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-[1fr_1fr] gap-16 items-center">
+      <div>
+        <h2 class="font-display font-bold text-5xl md:text-6xl leading-tight text-white">
+          Full-stack developer<br/>
+          <span class="gradient-text">& problem solver.</span>
+        </h2>
+
+        <p class="mt-6 text-slate-400 text-lg leading-relaxed">
+          For the past four years I've been helping startups and agencies turn fuzzy product ideas into working software. I care deeply about clean code, real performance, and making interfaces that feel effortless.
+        </p>
+
+        <p class="mt-4 text-slate-400 text-lg leading-relaxed">
+          I'm equally comfortable architecting a Laravel API as I am tuning Core Web Vitals on a marketing site. What ties it together: shipping fast without leaving a mess.
+        </p>
+
+        <!-- skill bars -->
+        <div class="mt-10 space-y-5">
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2"><span class="text-white font-medium">Frontend · Angular / React / TS</span><span class="text-cyan-300 font-mono">95%</span></div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full" style="width:95%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2"><span class="text-white font-medium">Backend · Laravel / Node</span><span class="text-cyan-300 font-mono">88%</span></div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full" style="width:88%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2"><span class="text-white font-medium">SEO · Performance · A11y</span><span class="text-cyan-300 font-mono">82%</span></div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full" style="width:82%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div></div>
+          </div>
+          <div>
+            <div class="flex items-center justify-between text-sm mb-2"><span class="text-white font-medium">3D / Three.js / Creative</span><span class="text-cyan-300 font-mono">75%</span></div>
+            <div class="h-1.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full rounded-full" style="width:75%; background:linear-gradient(90deg,#8b5cf6,#06b6d4);"></div></div>
+          </div>
+        </div>
+
+        <div class="mt-10"><a href="#contact" class="btn-primary"><i class="fas fa-comment-dots"></i> Let's work together</a></div>
+      </div>
+
+      <!-- right: tech grid + mini bio cards -->
+      <div>
+        <div class="card p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="font-display text-xl font-semibold text-white">Stack I love working with</h3>
+            <span class="proj-tag">9 tools</span>
+          </div>
+          <div class="grid grid-cols-5 gap-3">
+            <div class="tech-icon" title="Angular"><i class="fab fa-angular text-red-400 text-2xl"></i></div>
+            <div class="tech-icon" title="React"><i class="fab fa-react text-cyan-400 text-2xl"></i></div>
+            <div class="tech-icon" title="Node"><i class="fab fa-node-js text-emerald-400 text-2xl"></i></div>
+            <div class="tech-icon" title="Laravel"><i class="fab fa-laravel text-rose-400 text-2xl"></i></div>
+            <div class="tech-icon" title="TypeScript"><i class="fab fa-js text-amber-300 text-2xl"></i></div>
+            <div class="tech-icon" title="PHP"><i class="fab fa-php text-indigo-400 text-2xl"></i></div>
+            <div class="tech-icon" title="Java"><i class="fab fa-java text-orange-400 text-2xl"></i></div>
+            <div class="tech-icon" title="HTML5"><i class="fab fa-html5 text-orange-500 text-2xl"></i></div>
+            <div class="tech-icon" title="CSS3"><i class="fab fa-css3-alt text-sky-400 text-2xl"></i></div>
+          </div>
+
+          <div class="mt-8 grid grid-cols-2 gap-3">
+            <div class="metric"><div class="num">Casablanca</div><div class="label">Based in Morocco</div></div>
+            <div class="metric"><div class="num">EN / FR / AR</div><div class="label">Languages</div></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div class="card p-5">
+            <div class="service-card">
+              <div class="icon-wrap mb-4"><i class="fas fa-graduation-cap"></i></div>
+              <div class="text-xs font-mono text-slate-400">EDUCATION</div>
+              <div class="text-white font-medium mt-1">Software Engineering</div>
+              <div class="text-sm text-slate-400 mt-1">Computer science background</div>
+            </div>
+          </div>
+          <div class="card p-5">
+            <div class="service-card">
+              <div class="icon-wrap mb-4" style="background:linear-gradient(135deg,#06b6d4,#c5f82a); color:#0a0d14;"><i class="fas fa-briefcase"></i></div>
+              <div class="text-xs font-mono text-slate-400">EXPERIENCE</div>
+              <div class="text-white font-medium mt-1">4+ years shipping</div>
+              <div class="text-sm text-slate-400 mt-1">Agencies · Startups · Clients</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-separator"></div>
+
+<!-- ====================================================== -->
+<!-- SERVICES                                                  -->
+<!-- ====================================================== -->
+<section id="services" class="relative overflow-hidden py-32">
+  <div class="orb w-[400px] h-[400px] top-1/2 -left-20" style="background:rgba(6,182,212,.22);"></div>
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-14">
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <span class="section-num">03 / SERVICES</span>
+          <div class="h-px w-28 bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+        </div>
+        <h2 class="font-display font-bold text-5xl md:text-6xl leading-tight text-white max-w-2xl">
+          What I <span class="gradient-text">build for</span> clients.
+        </h2>
+      </div>
+      <p class="text-slate-400 max-w-sm text-lg">From first pixel to production. Scoped tightly, shipped predictably, measured after launch.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="card p-7">
+        <div class="service-card">
+          <div class="icon-wrap mb-6"><i class="fas fa-pen-ruler"></i></div>
+          <span class="proj-tag mb-4 inline-block">01</span>
+          <h3 class="font-display font-semibold text-xl text-white mb-2">Web Design</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Interfaces that convert — clean hierarchy, real brand, accessible from day one.</p>
+          <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">Learn more <i class="fas fa-arrow-right text-xs"></i></div>
+        </div>
+      </div>
+      <div class="card p-7">
+        <div class="service-card">
+          <div class="icon-wrap mb-6" style="background:linear-gradient(135deg,#06b6d4,#c5f82a);"><i class="fas fa-code"></i></div>
+          <span class="proj-tag mb-4 inline-block">02</span>
+          <h3 class="font-display font-semibold text-xl text-white mb-2">Web Development</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Full-stack apps in Angular, React, Laravel, Node. Scalable, tested, production-ready.</p>
+          <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">Learn more <i class="fas fa-arrow-right text-xs"></i></div>
+        </div>
+      </div>
+      <div class="card p-7">
+        <div class="service-card">
+          <div class="icon-wrap mb-6" style="background:linear-gradient(135deg,#c5f82a,#8b5cf6);"><i class="fas fa-magnifying-glass"></i></div>
+          <span class="proj-tag mb-4 inline-block">03</span>
+          <h3 class="font-display font-semibold text-xl text-white mb-2">SEO Optimization</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Technical SEO, Core Web Vitals, structured data. Rank higher, load faster.</p>
+          <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">Learn more <i class="fas fa-arrow-right text-xs"></i></div>
+        </div>
+      </div>
+      <div class="card p-7">
+        <div class="service-card">
+          <div class="icon-wrap mb-6" style="background:linear-gradient(135deg,#8b5cf6,#f472b6);"><i class="fas fa-camera"></i></div>
+          <span class="proj-tag mb-4 inline-block">04</span>
+          <h3 class="font-display font-semibold text-xl text-white mb-2">Photography</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Product & brand photography — visuals that match the quality of your site.</p>
+          <div class="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-cyan-300 text-sm font-medium">Learn more <i class="fas fa-arrow-right text-xs"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- process ribbon -->
+    <div class="mt-20 card p-8">
+      <div class="divider-label mb-8"><span>MY PROCESS</span></div>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">01</div>
+          <h4 class="mt-2 text-white font-semibold">Discover</h4>
+          <p class="text-slate-400 text-sm mt-1">Deep dive into your goals, users, and constraints.</p>
+        </div>
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">02</div>
+          <h4 class="mt-2 text-white font-semibold">Design</h4>
+          <p class="text-slate-400 text-sm mt-1">Wireframes → prototypes → polished UI ready to ship.</p>
+        </div>
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">03</div>
+          <h4 class="mt-2 text-white font-semibold">Build</h4>
+          <p class="text-slate-400 text-sm mt-1">Clean code, reviewed weekly. You see progress every sprint.</p>
+        </div>
+        <div>
+          <div class="text-5xl font-display font-bold gradient-text">04</div>
+          <h4 class="mt-2 text-white font-semibold">Launch</h4>
+          <p class="text-slate-400 text-sm mt-1">Deploy, measure, iterate. Support after go-live.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page-separator"></div>
+
+<!-- ====================================================== -->
+<!-- PROJECTS                                                  -->
+<!-- ====================================================== -->
+<section id="projects" class="relative overflow-hidden py-32">
+  <div class="orb w-[480px] h-[480px] -top-32 right-1/3" style="background:rgba(139,92,246,.2);"></div>
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+
+    <div class="flex items-end justify-between flex-wrap gap-6 mb-14">
+      <div>
+        <div class="flex items-center gap-4 mb-5">
+          <span class="section-num">04 / WORK</span>
+          <div class="h-px w-28 bg-gradient-to-r from-violet-500/50 to-transparent"></div>
+        </div>
+        <h2 class="font-display font-bold text-5xl md:text-6xl leading-tight text-white max-w-2xl">
+          Selected <span class="gradient-text">projects.</span>
+        </h2>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="px-4 py-2 rounded-full border border-white/20 text-white text-sm font-medium bg-white/5">All</button>
+        <button class="px-4 py-2 rounded-full border border-white/10 text-slate-400 text-sm hover:text-white transition">Web App</button>
+        <button class="px-4 py-2 rounded-full border border-white/10 text-slate-400 text-sm hover:text-white transition">Landing</button>
+        <button class="px-4 py-2 rounded-full border border-white/10 text-slate-400 text-sm hover:text-white transition">Dashboard</button>
+      </div>
+    </div>
+
+    <!-- Featured project -->
+    <div class="card p-0 overflow-hidden mb-8 group">
+      <div class="grid md:grid-cols-[1fr_1fr]">
+        <div class="relative aspect-video md:aspect-auto overflow-hidden" style="background:linear-gradient(135deg,#1e1b4b,#082f49);">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="glass-strong rounded-2xl p-8 text-center">
+              <i class="fas fa-chart-line text-6xl gradient-text"></i>
+              <div class="mt-4 text-xs font-mono text-slate-400">FEATURED · 2025</div>
+            </div>
+          </div>
+        </div>
+        <div class="p-10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-4 flex-wrap">
+              <span class="proj-tag">Angular</span><span class="proj-tag">Laravel</span><span class="proj-tag">Firebase</span><span class="proj-tag">SaaS</span>
+            </div>
+            <h3 class="font-display font-bold text-3xl text-white mb-3">Analytics Dashboard Platform</h3>
+            <p class="text-slate-400 leading-relaxed">A multi-tenant analytics dashboard used by 1,200+ daily users. Real-time data, custom reports, role-based access.</p>
+            <div class="mt-6 grid grid-cols-3 gap-3">
+              <div><div class="font-display font-bold text-xl text-white">1.2k</div><div class="text-xs text-slate-500 font-mono">DAU</div></div>
+              <div><div class="font-display font-bold text-xl text-white">98</div><div class="text-xs text-slate-500 font-mono">Lighthouse</div></div>
+              <div><div class="font-display font-bold text-xl text-white">&lt;200ms</div><div class="text-xs text-slate-500 font-mono">p95 TTFB</div></div>
+            </div>
+          </div>
+          <div class="mt-8 flex items-center gap-3">
+            <a href="#" class="btn-primary"><i class="fas fa-external-link-alt"></i> Visit site</a>
+            <a href="#" class="btn-ghost"><i class="fab fa-github"></i> Source</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid of projects -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <div class="card overflow-hidden">
+        <div class="aspect-video relative overflow-hidden" style="background:linear-gradient(135deg,#4c1d95,#0891b2);">
+          <div class="absolute inset-0 flex items-center justify-center text-6xl"><i class="fas fa-store text-white/80"></i></div>
+          <div class="absolute top-4 left-4 proj-tag">E-commerce</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-semibold text-xl text-white">Atlas Marketplace</h3>
+          <p class="text-slate-400 text-sm mt-2">Headless commerce built on Laravel + Angular with Stripe payouts.</p>
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <span class="proj-tag">Laravel</span><span class="proj-tag">Angular</span><span class="proj-tag">Stripe</span>
+          </div>
+          <div class="mt-5 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-500">2025</span>
+            <a href="#" class="text-cyan-300 text-sm flex items-center gap-2 hover:gap-3 transition-all">View <i class="fas fa-arrow-right text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="aspect-video relative overflow-hidden" style="background:linear-gradient(135deg,#0f766e,#4338ca);">
+          <div class="absolute inset-0 flex items-center justify-center text-6xl"><i class="fas fa-hotel text-white/80"></i></div>
+          <div class="absolute top-4 left-4 proj-tag">Booking</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-semibold text-xl text-white">Riad Reservation System</h3>
+          <p class="text-slate-400 text-sm mt-2">Real-time booking engine for a chain of boutique riads in Marrakech.</p>
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <span class="proj-tag">React</span><span class="proj-tag">Node</span><span class="proj-tag">PostgreSQL</span>
+          </div>
+          <div class="mt-5 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-500">2024</span>
+            <a href="#" class="text-cyan-300 text-sm flex items-center gap-2 hover:gap-3 transition-all">View <i class="fas fa-arrow-right text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="aspect-video relative overflow-hidden" style="background:linear-gradient(135deg,#be185d,#6d28d9);">
+          <div class="absolute inset-0 flex items-center justify-center text-6xl"><i class="fas fa-graduation-cap text-white/80"></i></div>
+          <div class="absolute top-4 left-4 proj-tag">EdTech</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-semibold text-xl text-white">Learning Platform</h3>
+          <p class="text-slate-400 text-sm mt-2">Video-first LMS with progress tracking, quizzes, and certificates.</p>
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <span class="proj-tag">Angular</span><span class="proj-tag">Firebase</span>
+          </div>
+          <div class="mt-5 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-500">2024</span>
+            <a href="#" class="text-cyan-300 text-sm flex items-center gap-2 hover:gap-3 transition-all">View <i class="fas fa-arrow-right text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="aspect-video relative overflow-hidden" style="background:linear-gradient(135deg,#1e40af,#0891b2);">
+          <div class="absolute inset-0 flex items-center justify-center text-6xl"><i class="fas fa-cube text-white/80"></i></div>
+          <div class="absolute top-4 left-4 proj-tag">Creative</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-semibold text-xl text-white">3D Product Configurator</h3>
+          <p class="text-slate-400 text-sm mt-2">Interactive Three.js configurator with real-time material previews.</p>
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <span class="proj-tag">Three.js</span><span class="proj-tag">WebGL</span>
+          </div>
+          <div class="mt-5 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-500">2024</span>
+            <a href="#" class="text-cyan-300 text-sm flex items-center gap-2 hover:gap-3 transition-all">View <i class="fas fa-arrow-right text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="aspect-video relative overflow-hidden" style="background:linear-gradient(135deg,#047857,#a16207);">
+          <div class="absolute inset-0 flex items-center justify-center text-6xl"><i class="fas fa-leaf text-white/80"></i></div>
+          <div class="absolute top-4 left-4 proj-tag">Landing</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-semibold text-xl text-white">Sustainable Energy Co.</h3>
+          <p class="text-slate-400 text-sm mt-2">Marketing site with CMS, multilingual content, 99 Lighthouse score.</p>
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <span class="proj-tag">Angular</span><span class="proj-tag">SEO</span>
+          </div>
+          <div class="mt-5 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-500">2023</span>
+            <a href="#" class="text-cyan-300 text-sm flex items-center gap-2 hover:gap-3 transition-all">View <i class="fas fa-arrow-right text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card overflow-hidden">
+        <div class="aspect-video relative overflow-hidden" style="background:linear-gradient(135deg,#9a3412,#7c2d12);">
+          <div class="absolute inset-0 flex items-center justify-center text-6xl"><i class="fas fa-utensils text-white/80"></i></div>
+          <div class="absolute top-4 left-4 proj-tag">Web App</div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-display font-semibold text-xl text-white">Restaurant POS</h3>
+          <p class="text-slate-400 text-sm mt-2">Restaurant management system with table, kitchen, and inventory flows.</p>
+          <div class="mt-4 flex items-center gap-2 flex-wrap">
+            <span class="proj-tag">Laravel</span><span class="proj-tag">Livewire</span>
+          </div>
+          <div class="mt-5 flex items-center justify-between">
+            <span class="text-xs font-mono text-slate-500">2023</span>
+            <a href="#" class="text-cyan-300 text-sm flex items-center gap-2 hover:gap-3 transition-all">View <i class="fas fa-arrow-right text-xs"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="page-separator"></div>
+
+<!-- ====================================================== -->
+<!-- CONTACT                                                   -->
+<!-- ====================================================== -->
+<section id="contact" class="relative overflow-hidden py-32">
+  <div class="orb w-[520px] h-[520px] -bottom-40 -left-20" style="background:rgba(6,182,212,.28);"></div>
+  <div class="orb w-[460px] h-[460px] -top-20 right-10" style="background:rgba(139,92,246,.25);"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="flex items-center gap-4 mb-5">
+      <span class="section-num">05 / CONTACT</span>
+      <div class="h-px w-28 bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+    </div>
+
+    <div class="grid lg:grid-cols-[1fr_1fr] gap-14 items-start">
+      <div>
+        <h2 class="font-display font-bold text-5xl md:text-6xl leading-tight text-white">
+          Got a project<br/>
+          in mind? <span class="gradient-text">Let's build it.</span>
+        </h2>
+        <p class="mt-6 text-slate-400 text-lg leading-relaxed max-w-md">
+          Tell me a bit about your idea, budget, and timeline. I typically reply within 24 hours.
+        </p>
+
+        <div class="mt-10 space-y-4">
+          <a href="#" class="flex items-center gap-4 card p-5 hover:border-violet-500/30 transition">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#8b5cf6,#06b6d4); color:#0a0d14;"><i class="fas fa-envelope"></i></div>
+            <div>
+              <div class="text-xs font-mono text-slate-400">EMAIL</div>
+              <div class="text-white font-medium">mouradtizougarine&#64;gmail.com</div>
+            </div>
+          </a>
+          <a href="#" class="flex items-center gap-4 card p-5 hover:border-violet-500/30 transition">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#06b6d4,#c5f82a); color:#0a0d14;"><i class="fas fa-location-dot"></i></div>
+            <div>
+              <div class="text-xs font-mono text-slate-400">LOCATION</div>
+              <div class="text-white font-medium">Casablanca, Morocco · UTC+1</div>
+            </div>
+          </a>
+          <div class="flex items-center gap-4 card p-5">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#c5f82a,#8b5cf6); color:#0a0d14;"><i class="fas fa-clock"></i></div>
+            <div>
+              <div class="text-xs font-mono text-slate-400">AVAILABILITY</div>
+              <div class="text-white font-medium">Open for new projects · Q2 2026</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 flex items-center gap-3">
+          <a href="#" class="w-11 h-11 rounded-xl flex items-center justify-center glass hover:border-violet-500/40 transition"><i class="fab fa-github text-slate-300"></i></a>
+          <a href="#" class="w-11 h-11 rounded-xl flex items-center justify-center glass hover:border-violet-500/40 transition"><i class="fab fa-linkedin-in text-slate-300"></i></a>
+          <a href="#" class="w-11 h-11 rounded-xl flex items-center justify-center glass hover:border-violet-500/40 transition"><i class="fab fa-x-twitter text-slate-300"></i></a>
+          <a href="#" class="w-11 h-11 rounded-xl flex items-center justify-center glass hover:border-violet-500/40 transition"><i class="fab fa-dribbble text-slate-300"></i></a>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form class="card p-8 md:p-10 space-y-5">
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <label class="text-xs font-mono text-slate-400 mb-2 block">YOUR NAME</label>
+            <input type="text" placeholder="John Doe" />
+          </div>
+          <div>
+            <label class="text-xs font-mono text-slate-400 mb-2 block">EMAIL</label>
+            <input type="email" placeholder="you@company.com" />
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-mono text-slate-400 mb-2 block">SUBJECT</label>
+          <input type="text" placeholder="Project inquiry · quick call · question…" />
+        </div>
+        <div>
+          <label class="text-xs font-mono text-slate-400 mb-2 block">BUDGET · OPTIONAL</label>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <button type="button" class="btn-ghost text-xs justify-center">&lt; $2k</button>
+            <button type="button" class="btn-ghost text-xs justify-center">$2–10k</button>
+            <button type="button" class="btn-ghost text-xs justify-center">$10–25k</button>
+            <button type="button" class="btn-ghost text-xs justify-center">$25k+</button>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-mono text-slate-400 mb-2 block">MESSAGE</label>
+          <textarea rows="5" placeholder="Tell me about your project…"></textarea>
+        </div>
+        <button type="button" class="btn-primary w-full justify-center"><i class="fas fa-paper-plane"></i> Send message</button>
+        <p class="text-xs text-center text-slate-500 font-mono">Response within 24h · Your info stays private.</p>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-28 pt-10 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-sm text-slate-500">
+      <div>© 2026 Mourad Tizougarine · Built with Angular + ❤️</div>
+      <div class="font-mono text-xs">Designed &amp; developed in Casablanca</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Mouse tracker for card glow -->
+<script>
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+</script>
+</body>
+</html>

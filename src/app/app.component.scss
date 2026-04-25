@@ -1,86 +1,25 @@
-// App component styles
+// App component styles — light editorial theme
 
-// 3D text effect for sidebar logo
-.effet-3d {
-  margin: 25px 20px;
-  display: flex;
-  justify-content: center;
-  font-family: 'Exo', sans-serif;
-  color: #ffffff;
-  font-size: 90px;
-  letter-spacing: .015em;
-  text-shadow: 
-    0 0 0 #ffffff,
-    .0025em .0025em 0 #ffffff,
-    .005em .005em 0 #ffffff,
-    .0075em .0075em 0 #ffffff,
-    .01em .01em 0 #ffffff,
-    .0125em .0125em 0 #ffffff,
-    .015em .015em 0 #ffffff,
-    .0175em .0175em 0 #ffffff,
-    .02em .02em 0 #ffffff,
-    .0225em .0225em 0 #ffffff,
-    .025em .025em 0 #ffffff,
-    .0275em .0275em 0 #ffffff,
-    .03em .03em 0 #ffffff,
-    .0325em .0325em 0 #ffffff,
-    .035em .035em 0 #ffffff,
-    .0375em .0375em 0 #ffffff,
-    .04em .04em 0 #ffffff,
-    .0425em .0425em 0 #ffffff,
-    .045em .045em 0 #ffffff,
-    .0475em .0475em 0 #ffffff,
-    .05em .05em 0 #ffffff,
-    .0525em .0525em 0 #ffffff,
-    .055em .055em 0 #ffffff,
-    .0575em .0575em 0 #ffffff,
-    .06em .06em 0 #ffffff,
-    .0625em .0625em 0 #ffffff,
-    .065em .065em 0 #ffffff,
-    .0675em .0675em 0 #ffffff,
-    .07em .07em 0 #ffffff,
-    .0725em .0725em 0 #ffffff,
-    .075em .075em 0 #ffffff,
-    .0775em .0775em 0 #ffffff,
-    .08em .08em 0 #ffffff,
-    .0825em .0825em 0 #ffffff,
-    .085em .085em 0 #ffffff,
-    .0875em .0875em 0 #ffffff,
-    .09em .09em 0 #ffffff,
-    .0925em .0925em 0 #ffffff,
-    .095em .095em 0 #ffffff,
-    .0975em .0975em 0 #ffffff,
-    .1em .1em 0 #ffffff;
-}
+body, html { margin: 0; padding: 0; }
 
-// Reset body and html
-body, html {
-  margin: 0;
-  padding: 0;
-}
-
-// Loading indicator styles
+// Loading overlay
 .loading-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(237, 237, 233, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 99999;
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.25s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .loading-container {
@@ -93,8 +32,7 @@ body, html {
 
 .loader {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 96px; height: 96px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,56 +40,44 @@ body, html {
 
 .loader-circle {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 3px solid transparent;
-  border-top-color: #00d4ff;
-  border-right-color: #ff006e;
+  width: 100%; height: 100%;
+  border: 2px solid transparent;
+  border-top-color: #0E0E0C;
+  border-right-color: #C9553B;
   border-radius: 50%;
   animation: spin 2s linear infinite;
 }
 
 .loader-circle:nth-child(2) {
-  width: 80%;
-  height: 80%;
-  border-top-color: #ff006e;
-  border-right-color: #00d4ff;
+  width: 80%; height: 80%;
+  border-top-color: #C9553B;
+  border-right-color: #0E0E0C;
   animation: spin 1.5s linear infinite reverse;
 }
 
 .loader-circle:nth-child(3) {
-  width: 60%;
-  height: 60%;
-  border-top-color: #00d4ff;
-  border-right-color: #ff006e;
+  width: 60%; height: 60%;
+  border-top-color: #0E0E0C;
+  border-right-color: #C9553B;
   animation: spin 1s linear infinite;
 }
 
 .code-symbol {
   position: absolute;
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 900;
-  color: #ffffff;
+  color: #0E0E0C;
   z-index: 10;
+  font-family: 'JetBrains Mono', monospace;
   animation: symbolPulse 1.5s ease-in-out infinite;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 @keyframes symbolPulse {
-  0%, 100% {
-    opacity: 0.7;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.1); }
 }

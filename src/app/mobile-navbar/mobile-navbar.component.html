@@ -1,59 +1,62 @@
-<nav *ngIf="showNavbar" class="fixed bottom-0 left-0 right-0 z-50 glass border-t border-gray-200 dark:border-gray-700">
-  <div class="flex justify-around items-center py-3 px-2">
+<nav *ngIf="showNavbar"
+     class="fixed bottom-0 left-0 right-0 z-50 glass"
+     style="border-top:1px solid rgba(255,255,255,0.08); border-left:0; border-right:0; border-bottom:0;">
+  <div class="flex justify-around items-center py-2 px-2">
 
     <a routerLink="/"
-       routerLinkActive="text-emerald-600 dark:text-emerald-400"
+       routerLinkActive="mobile-nav-active"
        [routerLinkActiveOptions]="{exact: true}"
-       class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+       class="mobile-nav-link">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8v10a1 1 0 0 0 1 1h4v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5h4a1 1 0 0 0 1-1V8M1 10l9-9 9 9"/>
       </svg>
-      <span class="text-xs">Home</span>
+      <span class="text-[10px] font-medium">Home</span>
     </a>
 
     <a routerLink="/about"
-       routerLinkActive="text-emerald-600 dark:text-emerald-400"
-       class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
+       routerLinkActive="mobile-nav-active"
+       class="mobile-nav-link">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 18">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z"/>
       </svg>
-      <span class="text-xs">About</span>
+      <span class="text-[10px] font-medium">About</span>
     </a>
 
     <a routerLink="/services"
-       routerLinkActive="text-emerald-600 dark:text-emerald-400"
-       class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+       routerLinkActive="mobile-nav-active"
+       class="mobile-nav-link">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.143 1H1.857A.857.857 0 0 0 1 1.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 7 6.143V1.857A.857.857 0 0 0 6.143 1Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 17 6.143V1.857A.857.857 0 0 0 16.143 1Zm-10 10H1.857a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286A.857.857 0 0 0 7 16.143v-4.286A.857.857 0 0 0 6.143 11Zm10 0h-4.286a.857.857 0 0 0-.857.857v4.286c0 .473.384.857.857.857h4.286a.857.857 0 0 0 .857-.857v-4.286a.857.857 0 0 0-.857-.857Z"/>
       </svg>
-      <span class="text-xs">Services</span>
+      <span class="text-[10px] font-medium">Services</span>
     </a>
 
     <a routerLink="/projects"
-       routerLinkActive="text-emerald-600 dark:text-emerald-400"
-       class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+       routerLinkActive="mobile-nav-active"
+       class="mobile-nav-link">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
         <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z"/>
       </svg>
-      <span class="text-xs">Projects</span>
+      <span class="text-[10px] font-medium">Work</span>
     </a>
 
     <a routerLink="/contact"
-       routerLinkActive="text-emerald-600 dark:text-emerald-400"
-       class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+       routerLinkActive="mobile-nav-active"
+       class="mobile-nav-link">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5h9M5 9h5m8-8H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4l3.5 4 3.5-4h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"/>
       </svg>
-      <span class="text-xs">Contact</span>
+      <span class="text-[10px] font-medium">Contact</span>
     </a>
-    <!-- Theme toggle button -->
+
     <button (click)="toggleTheme()"
-            class="flex flex-col items-center gap-1 p-2 text-gray-600 dark:text-gray-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="mobile-nav-link"
+            type="button">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
       </svg>
-      <span class="text-xs">Theme</span>
+      <span class="text-[10px] font-medium">Theme</span>
     </button>
 
   </div>

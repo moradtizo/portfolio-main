@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mourad Tizougarine — v3 preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#EDEDE9',
+          bg2: '#F5F4F0',
+          ink: '#0E0E0C',
+          mute: '#6B6A66',
+          line: '#D9D7D0',
+          accent: '#C9553B',
+        },
+        fontFamily: {
+          sans: ['Inter','system-ui','sans-serif'],
+          serif: ['"Instrument Serif"','serif'],
+          mono: ['"JetBrains Mono"','monospace'],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html, body {
+    background: #EDEDE9;
+    color: #0E0E0C;
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .card {
+    background: #FFFFFF;
+    border: 1px solid #E6E4DD;
+    border-radius: 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 8px 40px -24px rgba(0,0,0,0.08);
+  }
+  .card-dark {
+    background: #0E0E0C;
+    color: #F5F4F0;
+    border-radius: 22px;
+  }
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #8A8983;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .label::before { content: '// '; color: #C9A99C; }
+  .display-name {
+    font-family: Inter, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    font-size: clamp(2.4rem, 7vw, 5.6rem);
+    color: #0E0E0C;
+  }
+  .display-italic {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: #B9B6AC;
+    letter-spacing: -0.01em;
+  }
+  .section-h2 {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    color: #0E0E0C;
+  }
+  .ghost-heading {
+    position: absolute;
+    top: 14px;
+    left: 32px;
+    font-family: Inter, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    color: #0E0E0C;
+    opacity: 0.05;
+    pointer-events: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  /* Sidebar */
+  .nav {
+    background: #0E0E0C;
+    border-radius: 18px;
+    padding: 14px 10px;
+    color: #E9E7DE;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: #9A9892;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .nav-item:hover { color: #F5F4F0; background: rgba(255,255,255,0.04); }
+  .nav-item.active { color: #FFFFFF; background: rgba(255,255,255,0.06); }
+  .nav-item.active .dot { background: #F5F4F0; box-shadow: 0 0 0 4px rgba(255,255,255,0.08); }
+  .nav-item .dot {
+    width: 6px; height: 6px; border-radius: 999px;
+    background: #4A4945;
+  }
+  /* Chips / pills */
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 14px; border-radius: 999px;
+    border: 1px solid #E6E4DD; background: #FFFFFF;
+    font-size: 13px; color: #2B2A27;
+  }
+  .pill-sm {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 11px; border-radius: 999px;
+    border: 1px solid #E6E4DD; background: #F7F5EF;
+    font-size: 11px; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em; color: #3F3E3B; text-transform: uppercase;
+  }
+  .social-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #0E0E0C; background: transparent;
+    border: 1px solid transparent; transition: all .2s;
+  }
+  .social-btn:hover { background: #FFFFFF; border-color: #E6E4DD; }
+  /* Stat numbers */
+  .stat-num {
+    font-family: Inter, sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .stat-sup {
+    font-family: Inter, sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #6B6A66;
+    margin-left: 4px;
+    vertical-align: super;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.14em;
+    color: #8A8983; text-transform: uppercase;
+    margin-top: 6px;
+  }
+  /* Strength row */
+  .strength-row {
+    display: grid;
+    grid-template-columns: 48px 1fr 1.5fr;
+    align-items: start;
+    gap: 28px;
+    padding: 22px 0;
+    border-top: 1px dashed #E6E4DD;
+  }
+  .strength-row:first-child { border-top: none; padding-top: 4px; }
+  .strength-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #0E0E0C;
+    letter-spacing: -0.02em;
+  }
+  .strength-title {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.14em;
+    color: #0E0E0C; text-transform: uppercase;
+  }
+  .strength-title i { color: #0E0E0C; font-size: 14px; }
+  .strength-desc { color: #4A4945; font-size: 14px; line-height: 1.55; }
+  /* Timeline */
+  .tl {
+    position: relative;
+    padding-left: 22px;
+  }
+  .tl::before {
+    content: '';
+    position: absolute; left: 5px; top: 8px; bottom: 8px;
+    width: 1px; background: #DCD9D0;
+  }
+  .tl-item {
+    position: relative;
+    padding-bottom: 24px;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute; left: -22px; top: 8px;
+    width: 11px; height: 11px; border-radius: 999px;
+    background: #FFFFFF; border: 2px solid #0E0E0C;
+  }
+  /* Form */
+  .field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #D9D7D0;
+    padding: 14px 2px;
+    font-size: 14px;
+    color: #0E0E0C;
+    outline: none;
+    font-family: Inter, sans-serif;
+    transition: border-color .2s;
+  }
+  .field:focus { border-color: #0E0E0C; }
+  .field::placeholder { color: #A9A79F; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px; border-radius: 999px;
+    background: #0E0E0C; color: #F5F4F0;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.02em;
+    border: 1px solid #0E0E0C;
+    transition: all .2s;
+  }
+  .btn:hover { background: transparent; color: #0E0E0C; }
+  .btn-ghost {
+    background: transparent; color: #0E0E0C;
+    border: 1px solid #D9D7D0;
+  }
+  .btn-ghost:hover { background: #0E0E0C; color: #F5F4F0; border-color: #0E0E0C; }
+  /* Testimonial */
+  .stars { color: #F5A524; font-size: 13px; letter-spacing: 2px; }
+  .logo-box {
+    background: #FFFFFF; border: 1px solid #E6E4DD;
+    border-radius: 16px; padding: 42px 24px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 130px;
+  }
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(18px); transition: all .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body class="antialiased">
+
+<div class="max-w-[1400px] mx-auto px-5 md:px-8 pt-8 pb-20">
+
+  <!-- TOP BAR -->
+  <header class="flex items-start justify-between gap-8 mb-8">
+    <h1 class="display-name">
+      Mourad <span class="display-italic">Tizougarine</span>
+    </h1>
+
+    <div class="flex items-center gap-1 shrink-0 mt-3">
+      <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" class="social-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="#" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-btn" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+      <a href="#" class="social-btn" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+      <a href="#" class="social-btn" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      <button class="social-btn ml-2" style="border:1px solid #D9D7D0;border-radius:999px;width:38px;height:38px;background:#0E0E0C;color:#F5F4F0;" aria-label="Theme">
+        <i class="fas fa-moon text-[11px]"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- LAYOUT: sidebar + content -->
+  <div class="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6 lg:gap-10 items-start">
+
+    <!-- SIDEBAR NAV -->
+    <aside class="lg:sticky lg:top-8 self-start">
+      <nav class="nav">
+        <a class="nav-item active" href="#about">
+          <span>About me</span>
+          <span class="w-4 h-4 rounded-full border border-white/30"></span>
+        </a>
+        <a class="nav-item" href="#strengths">
+          <span>Strengths</span>
+          <span class="dot"></span>
+        </a>
+        <a class="nav-item" href="#testimonials">
+          <span>Testimonials</span>
+          <span class="dot"></span>
+        </a>
+        <a class="nav-item" href="#resume">
+          <span>Resume</span>
+          <span class="dot"></span>
+        </a>
+        <a class="nav-item" href="#employers">
+          <span>Employers</span>
+          <span class="dot"></span>
+        </a>
+        <a class="nav-item" href="#blogs">
+          <span>Blogs</span>
+          <span class="dot"></span>
+        </a>
+        <a class="nav-item" href="#contact">
+          <span>Contact</span>
+          <span class="dot"></span>
+        </a>
+      </nav>
+
+      <div class="mt-4 pill-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        Available · Q2 2026
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="space-y-6">
+
+      <!-- ABOUT ME -->
+      <section id="about" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">About me</div>
+        <div class="mb-5 label">About me</div>
+
+        <div class="grid md:grid-cols-[180px_1fr] gap-8 items-center">
+          <div class="relative">
+            <div class="w-[160px] h-[160px] rounded-full overflow-hidden" style="background: radial-gradient(circle at 30% 30%, #F4A38C, #C9553B 70%);">
+              <div class="w-full h-full flex items-center justify-center text-white" style="font-family:'Instrument Serif',serif;font-size:74px;font-style:italic;">M</div>
+            </div>
+            <button class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-line flex items-center justify-center">
+              <i class="fas fa-chevron-down text-[11px] text-ink"></i>
+            </button>
+          </div>
+
+          <div>
+            <h2 class="section-h2">Full-Stack Developer</h2>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="pill"><i class="fab fa-angular text-red-500 text-xs"></i> Angular</span>
+              <span class="pill"><i class="fab fa-react text-sky-500 text-xs"></i> React</span>
+              <span class="pill"><i class="fab fa-laravel text-rose-500 text-xs"></i> Laravel</span>
+              <span class="pill"><i class="fab fa-node-js text-emerald-600 text-xs"></i> Node.js</span>
+              <span class="pill"><i class="fab fa-docker text-sky-600 text-xs"></i> Docker</span>
+            </div>
+            <p class="mt-5 text-[15px] leading-relaxed text-[#3F3E3B] max-w-xl">
+              Casablanca-based engineer <span class="font-serif italic text-ink">on a mission</span> to ship fast, elegant web products — from pixel to pipeline. Currently open for freelance work.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-10 pt-8 border-t border-dashed border-line grid grid-cols-3 gap-4">
+          <div>
+            <div class="stat-num">4<span class="stat-sup">+</span></div>
+            <div class="stat-label">Years of experience</div>
+          </div>
+          <div>
+            <div class="stat-num">8<span class="stat-sup">k</span></div>
+            <div class="stat-label">Hours of coding</div>
+          </div>
+          <div>
+            <div class="stat-num">25<span class="stat-sup">+</span></div>
+            <div class="stat-label">Projects done</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STRENGTHS -->
+      <section id="strengths" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">Strengths</div>
+        <div class="mb-5 label">Strengths</div>
+        <h2 class="section-h2">What I'm <span class="display-italic" style="color:#C9553B;">good at</span></h2>
+        <p class="mt-3 text-[#6B6A66] text-[15px]">From pixels to pipelines, I'll make your digital dreams ship. 🚀</p>
+
+        <div class="mt-8">
+          <div class="strength-row">
+            <div class="strength-num">01</div>
+            <div class="strength-title"><i class="fas fa-code"></i> Full-Stack Development</div>
+            <div class="strength-desc">Expert in building and optimizing web applications — Angular & Laravel — with a focus on performance and UX.</div>
+          </div>
+          <div class="strength-row">
+            <div class="strength-num">02</div>
+            <div class="strength-title"><i class="fas fa-infinity"></i> DevOps &amp; Hosting Infra</div>
+            <div class="strength-desc">Proficient in CI/CD pipelines, Docker, and cloud deployment to keep shipping reliable and fast.</div>
+          </div>
+          <div class="strength-row">
+            <div class="strength-num">03</div>
+            <div class="strength-title"><i class="fas fa-vial"></i> Automation &amp; Testing</div>
+            <div class="strength-desc">Unit, integration, and end-to-end testing — so code stays confident through every release.</div>
+          </div>
+          <div class="strength-row">
+            <div class="strength-num">04</div>
+            <div class="strength-title"><i class="fas fa-people-group"></i> Team Collaboration</div>
+            <div class="strength-desc">Strong collaborator who shares knowledge, reviews thoughtfully, and lifts the team along the way.</div>
+          </div>
+          <div class="strength-row">
+            <div class="strength-num">05</div>
+            <div class="strength-title"><i class="fas fa-wrench"></i> Problem Solving</div>
+            <div class="strength-desc">Skilled at driving technical innovation — from debugging nasty prod issues to full system enhancements.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section id="testimonials" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">Testimonials</div>
+        <div class="flex items-start justify-between gap-6 mb-6">
+          <div>
+            <div class="label">What people say</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="w-9 h-9 rounded-full border border-line flex items-center justify-center hover:bg-ink hover:text-white transition"><i class="fas fa-chevron-left text-xs"></i></button>
+            <button class="w-9 h-9 rounded-full border border-line flex items-center justify-center hover:bg-ink hover:text-white transition"><i class="fas fa-chevron-right text-xs"></i></button>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <div class="stars">★★★★★</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-[#3F3E3B]">
+              "Mourad delivered a complete refactor of our Angular app ahead of schedule. He's the rare dev who can design, architect, and ship — all at a high level. Communication was clear and… <span class="text-ink underline cursor-pointer">Read more</span>"
+            </p>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-ink text-white flex items-center justify-center text-[11px] font-bold">AO</div>
+              <div>
+                <div class="text-[13px] font-semibold text-ink flex items-center gap-1.5">Abderrahmane Ouhna <i class="fab fa-linkedin text-sky-600 text-[11px]"></i></div>
+                <div class="text-[11px] text-mute font-mono">Full-Stack Engineer</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="stars">★★★★★</div>
+            <p class="mt-3 text-[14px] leading-relaxed text-[#3F3E3B]">
+              "Worked with Mourad at ELDEN — solid developer to collaborate with. He adapts fast, identifies what needs to happen, and delivers without drama. Would hire again anytime…  <span class="text-ink underline cursor-pointer">Read more</span>"
+            </p>
+            <div class="mt-5 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-ink text-white flex items-center justify-center text-[11px] font-bold">MB</div>
+              <div>
+                <div class="text-[13px] font-semibold text-ink flex items-center gap-1.5">Mostafa Amine Briere <i class="fab fa-linkedin text-sky-600 text-[11px]"></i></div>
+                <div class="text-[11px] text-mute font-mono">Software Developer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESUME -->
+      <section id="resume" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">Resume</div>
+        <div class="mb-5 label">Resume</div>
+        <h2 class="section-h2">Education &amp; <span class="display-italic" style="color:#C9553B;">experience</span></h2>
+        <p class="mt-3 text-[#6B6A66] text-[15px]">The dynamic duo that turned me into the engineer I am today. 📚</p>
+
+        <div class="mt-8 grid md:grid-cols-2 gap-10">
+          <!-- Education -->
+          <div>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-9 h-9 rounded-lg bg-[#F7F5EF] border border-line flex items-center justify-center">
+                <i class="fas fa-graduation-cap text-ink"></i>
+              </div>
+            </div>
+            <div class="tl">
+              <div class="tl-item">
+                <div class="pill-sm mb-2">2020 – 2023</div>
+                <div class="font-semibold text-ink">Computer Science &amp; Engineering</div>
+                <div class="text-[13px] text-mute">@ Specialized Institute of Applied Technology</div>
+              </div>
+              <div class="tl-item">
+                <div class="pill-sm mb-2">2018 – 2020</div>
+                <div class="font-semibold text-ink">Bachelor's in Computer Science</div>
+                <div class="text-[13px] text-mute">@ Ibn Tofail University</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-9 h-9 rounded-lg bg-[#F7F5EF] border border-line flex items-center justify-center">
+                <i class="fas fa-briefcase text-ink"></i>
+              </div>
+            </div>
+            <div class="tl">
+              <div class="tl-item">
+                <div class="pill-sm mb-2">2024 – Present</div>
+                <div class="font-semibold text-ink">Full-Stack Developer</div>
+                <div class="text-[13px] text-mute">@ ELDEN</div>
+              </div>
+              <div class="tl-item">
+                <div class="pill-sm mb-2">2022 – 2024</div>
+                <div class="font-semibold text-ink">Software Engineer</div>
+                <div class="text-[13px] text-mute">@ Previous Company</div>
+              </div>
+              <div class="tl-item">
+                <div class="pill-sm mb-2">2021</div>
+                <div class="font-semibold text-ink">Web Developer Intern</div>
+                <div class="text-[13px] text-mute">@ Freelance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMPLOYERS -->
+      <section id="employers" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">Employers</div>
+        <div class="mb-5 label">My awesome employers</div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="logo-box">
+            <span style="font-family:Inter;font-weight:900;letter-spacing:-0.05em;font-size:26px;">ELDEN</span>
+          </div>
+          <div class="logo-box">
+            <span style="font-family:'Instrument Serif',serif;font-style:italic;font-size:28px;">actando</span>
+          </div>
+          <div class="logo-box">
+            <span style="font-family:Inter;font-weight:800;letter-spacing:0.2em;font-size:20px;">RIVERTECH</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- BLOGS -->
+      <section id="blogs" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">Blogs</div>
+        <div class="mb-5 label">Latest notes</div>
+        <h2 class="section-h2">Latest <span class="display-italic" style="color:#C9553B;">blog posts</span></h2>
+        <p class="mt-3 text-[#6B6A66] text-[15px]">Beyond the Binary 0 1 — exploring the intersection of code &amp; craft.</p>
+
+        <div class="mt-8 space-y-4">
+          <article class="flex flex-col md:flex-row gap-5 items-stretch">
+            <div class="md:w-64 h-44 rounded-xl overflow-hidden relative" style="background: linear-gradient(135deg, #F4E9DF, #E9CDB8);">
+              <div class="absolute inset-0 flex items-center justify-center font-mono text-xs text-[#6B4F3F]">-90% QUERIES</div>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] font-mono text-mute tracking-wider">POSTED ON · 22 DEC 2025</div>
+              <h3 class="mt-2 text-xl font-bold text-ink leading-tight tracking-tight">How I optimized database queries by 90% in a Laravel app</h3>
+              <p class="mt-2 text-[14px] text-[#4A4945]">A practical case study on profiling, N+1 detection, and indexing strategy on a real production workload.</p>
+              <button class="mt-4 btn btn-ghost text-xs"><i class="fas fa-arrow-right"></i> Read more</button>
+            </div>
+          </article>
+
+          <article class="flex flex-col md:flex-row gap-5 items-stretch pt-4 border-t border-dashed border-line">
+            <div class="md:w-64 h-44 rounded-xl overflow-hidden relative" style="background: linear-gradient(135deg, #1A1A18, #3A4B2E);">
+              <div class="absolute inset-0 flex items-center justify-center font-mono text-xs text-[#C9E0A8]">FULL-STACK</div>
+            </div>
+            <div class="flex-1">
+              <div class="text-[11px] font-mono text-mute tracking-wider">POSTED ON · 29 DEC 2025</div>
+              <h3 class="mt-2 text-xl font-bold text-ink leading-tight tracking-tight">What I wish I knew about full-stack development 5 years ago</h3>
+              <p class="mt-2 text-[14px] text-[#4A4945]">Lessons on architecture, shipping, and working with teams — the stuff no tutorial taught me.</p>
+              <button class="mt-4 btn btn-ghost text-xs"><i class="fas fa-arrow-right"></i> Read more</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="card p-8 md:p-10 relative overflow-hidden reveal">
+        <div class="ghost-heading">Contact</div>
+        <div class="mb-5 label">Get in touch</div>
+        <h2 class="section-h2">Let's <span class="display-italic" style="color:#C9553B;">connect</span></h2>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="pill"><i class="fas fa-phone text-xs text-emerald-600"></i> +212 6 XX XX XX XX</span>
+          <span class="pill"><i class="fas fa-envelope text-xs text-accent"></i> m.tizougarine&#64;elden.ma</span>
+          <span class="pill"><i class="fas fa-location-dot text-xs text-sky-600"></i> Casablanca, MA</span>
+          <span class="pill"><i class="fab fa-whatsapp text-xs text-emerald-500"></i> WhatsApp</span>
+          <span class="pill"><i class="fab fa-linkedin text-xs text-sky-600"></i> LinkedIn</span>
+          <span class="pill"><i class="fas fa-file-pdf text-xs text-rose-500"></i> Resume</span>
+        </div>
+
+        <form class="mt-10 grid md:grid-cols-2 gap-x-10 gap-y-2">
+          <div>
+            <div class="label mb-1" style="font-size:10px;">Name</div>
+            <input class="field" placeholder="Your name" />
+          </div>
+          <div>
+            <div class="label mb-1" style="font-size:10px;">E-mail</div>
+            <input class="field" placeholder="you@company.com" />
+          </div>
+          <div class="md:col-span-2 mt-4">
+            <div class="label mb-1" style="font-size:10px;">Subject</div>
+            <input class="field" placeholder="What's this about?" />
+          </div>
+          <div class="md:col-span-2 mt-4">
+            <div class="label mb-1" style="font-size:10px;">Message</div>
+            <textarea class="field" rows="3" placeholder="Tell me about your project…"></textarea>
+          </div>
+          <div class="md:col-span-2 mt-6 flex items-center justify-between gap-4">
+            <span class="text-xs text-mute font-mono">I typically reply within 24h</span>
+            <button class="btn" type="button">
+              <i class="fas fa-paper-plane text-[11px]"></i> Send message
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="pt-10 pb-4 flex flex-wrap items-center justify-between gap-4 text-[12px] text-mute font-mono">
+        <div>© 2026 Mourad Tizougarine · Designed &amp; developed in Casablanca</div>
+        <div class="flex items-center gap-4">
+          <a href="#about" class="hover:text-ink">↑ Back to top</a>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Active nav-item highlighting via IntersectionObserver
+  const navLinks = document.querySelectorAll('.nav-item');
+  const sections = [...document.querySelectorAll('section[id]')];
+  const byId = id => [...navLinks].find(a => a.getAttribute('href') === '#' + id);
+
+  const navIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = byId(e.target.id);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s => navIo.observe(s));
+
+  // Scroll-reveal
+  const revealIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); revealIo.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revealIo.observe(el));
+</script>
+
+</body>
+</html>
