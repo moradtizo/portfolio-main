@@ -4,9 +4,33 @@
   <!-- TOP BAR: huge name + social icons -->
   <!-- ============================================================== -->
   <header class="flex items-start justify-between gap-8 mb-10 flex-wrap">
-    <h1 class="display-name">
-      Mourad <span class="display-italic">Tizougarine</span>
-    </h1>
+    <div>
+      <!-- dev handle line -->
+      <div class="dev-handle">
+        <span class="dev-prompt">~/portfolio</span>
+        <span class="dev-arrow">$</span>
+        <span class="dev-cmd">whoami</span>
+        <span class="dev-cursor">▍</span>
+      </div>
+
+      <h1 class="display-name">
+        Mourad <span class="display-italic">Tizougarine</span>
+      </h1>
+
+      <!-- status row -->
+      <div class="status-row">
+        <span class="status-pill">
+          <span class="status-dot"></span>
+          {{ t('status.available') }}
+        </span>
+        <span class="status-meta">
+          <i class="fas fa-location-dot"></i> {{ t('status.location') }}
+        </span>
+        <span class="status-meta">
+          <i class="far fa-clock"></i> GMT+1
+        </span>
+      </div>
+    </div>
 
     <div class="flex items-center gap-1 shrink-0 mt-3">
       <a href="https://www.linkedin.com/in/mourad-tizougarine"
@@ -25,9 +49,31 @@
          class="social-btn" aria-label="Phone">
         <i class="fas fa-phone"></i>
       </a>
+
+      <!-- Language toggle -->
+      <div class="lang-toggle ml-1" role="group" aria-label="Language">
+        <button type="button"
+                (click)="setLang('en')"
+                [class.active]="lang === 'en'"
+                aria-label="English">EN</button>
+        <span class="lang-sep">/</span>
+        <button type="button"
+                (click)="setLang('fr')"
+                [class.active]="lang === 'fr'"
+                aria-label="Français">FR</button>
+      </div>
+
+      <!-- Theme toggle -->
+      <button (click)="toggleTheme()"
+              class="social-btn ml-1"
+              aria-label="Toggle theme"
+              title="Toggle theme">
+        <i class="fas" [class.fa-moon]="!isDark" [class.fa-sun]="isDark"></i>
+      </button>
+
       <button (click)="scrollTo('contact')"
               class="ml-2 inline-flex items-center justify-center w-10 h-10 rounded-full"
-              style="background:#0E0E0C; color:#F5F4F0;"
+              style="background:var(--ink); color:var(--on-ink);"
               aria-label="Contact">
         <i class="fas fa-paper-plane text-[12px]"></i>
       </button>
@@ -36,27 +82,26 @@
 
   <div class="space-y-6">
 
-    <!-- ============================================================== -->
-    <!-- ABOUT ME -->
-    <!-- ============================================================== -->
+    <!-- ABOUT -->
     <section id="about" class="card p-8 md:p-10 reveal">
-      <div class="ghost-heading">About me</div>
-      <div class="mb-5 label">About me</div>
+      <div class="ghost-heading">{{ t('about.label') }}</div>
+      <div class="mb-5 label">{{ t('about.label') }}</div>
 
       <div class="grid md:grid-cols-[180px_1fr] gap-8 items-center">
         <div class="relative shrink-0">
-          <div class="w-[160px] h-[160px] rounded-full overflow-hidden flex items-center justify-center relative"
-               style="background: radial-gradient(circle at 30% 30%, #F4A38C, #C9553B 70%);">
+          <div class="absolute inset-0 rounded-full pointer-events-none avatar-halo" aria-hidden="true"></div>
+          <div class="avatar-frame relative w-[164px] h-[164px] rounded-full overflow-hidden">
             <img src="../../assets/images/mt.png"
                  alt="Mourad Tizougarine"
-                 class="w-full h-full object-cover mix-blend-luminosity opacity-95"
+                 class="w-full h-full object-cover"
                  onerror="this.style.display='none'" />
-            <span class="absolute text-white pointer-events-none" style="font-family:'Instrument Serif',serif;font-size:80px;font-style:italic;line-height:1;">M</span>
           </div>
+          <div class="avatar-badge avatar-badge--code" aria-hidden="true">&lt;/&gt;</div>
+          <div class="avatar-badge avatar-badge--brace" aria-hidden="true">&#123; &#125;</div>
         </div>
 
         <div>
-          <h2 class="section-h2">Front-End &amp; Full-Stack Developer</h2>
+          <h2 class="section-h2">{{ t('about.role') }}</h2>
           <div class="mt-4 flex flex-wrap gap-2">
             <span class="pill"><i class="fab fa-react text-sky-500 text-xs"></i> React.js</span>
             <span class="pill"><i class="fab fa-react text-cyan-500 text-xs"></i> React Native</span>
@@ -64,27 +109,42 @@
             <span class="pill"><i class="fab fa-laravel text-rose-500 text-xs"></i> Laravel</span>
             <span class="pill"><i class="fab fa-node-js text-emerald-600 text-xs"></i> Node.js</span>
           </div>
-          <p class="mt-5 text-[15px] leading-relaxed text-[#3F3E3B] max-w-xl">
-            Casablanca-based engineer <span class="display-italic" style="font-size:1rem;">on a mission</span>
-            to build modern, scalable, and user-focused web &amp; mobile apps.
-            Passionate about clean code, performance, and delivering high-quality digital solutions.
+          <p class="mt-5 text-[15px] leading-relaxed max-w-xl" style="color:var(--ink-3);">
+            {{ t('about.bio.1') }} <span class="display-italic" style="font-size:1rem;">{{ t('about.bio.italic') }}</span>
+            {{ t('about.bio.2') }}
           </p>
+
+          <!-- mini terminal block -->
+          <div class="terminal mt-5 max-w-xl">
+            <div class="terminal-bar">
+              <span class="terminal-dot terminal-dot--r"></span>
+              <span class="terminal-dot terminal-dot--y"></span>
+              <span class="terminal-dot terminal-dot--g"></span>
+              <span class="terminal-title">~/mourad — zsh</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="t-prompt">$</span> <span class="t-cmd">cat focus.md</span></div>
+              <div class="t-out"><span class="t-key">{{ t('about.terminal.role') }}</span>: {{ t('about.terminal.role.value') }}</div>
+              <div class="t-out"><span class="t-key">{{ t('about.terminal.stack') }}</span>: react · react-native · angular · laravel</div>
+              <div class="t-out"><span class="t-key">{{ t('about.terminal.status') }}</span>: {{ t('about.terminal.status.value') }} <span class="t-accent">elden.ma</span></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="mt-10 pt-8 border-t border-dashed" style="border-color:#E6E4DD;">
+      <div class="mt-10 pt-8 border-t border-dashed" style="border-color:var(--line);">
         <div class="grid grid-cols-3 gap-4">
           <div>
             <div class="stat-num">3<span class="stat-sup">+</span></div>
-            <div class="stat-label">Years of experience</div>
+            <div class="stat-label">{{ t('about.stat.exp') }}</div>
           </div>
           <div>
             <div class="stat-num">15<span class="stat-sup">+</span></div>
-            <div class="stat-label">Projects shipped</div>
+            <div class="stat-label">{{ t('about.stat.proj') }}</div>
           </div>
           <div>
             <div class="stat-num">3</div>
-            <div class="stat-label">Languages spoken</div>
+            <div class="stat-label">{{ t('about.stat.lang') }}</div>
           </div>
         </div>
       </div>
@@ -92,63 +152,59 @@
       <div class="mt-8 flex flex-wrap items-center gap-3">
         <button (click)="downloadCV()" [disabled]="downloading" class="btn-primary">
           <i class="fas fa-arrow-down text-[11px]"></i>
-          {{ downloading ? 'Preparing…' : 'Download CV' }}
+          {{ downloading ? t('about.cv.preparing') : t('about.cv.download') }}
         </button>
         <button (click)="scrollTo('contact')" class="btn-ghost">
           <i class="fas fa-paper-plane text-[11px]"></i>
-          Let's talk
+          {{ t('about.cta.talk') }}
         </button>
       </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- STRENGTHS -->
-    <!-- ============================================================== -->
     <section id="strengths" class="card p-8 md:p-10 reveal">
-      <div class="ghost-heading">Strengths</div>
-      <div class="mb-5 label">Strengths</div>
-      <h2 class="section-h2">What I'm <span class="display-italic" style="color:#C9553B;">good at</span></h2>
-      <p class="section-subtitle">From pixels to pipelines, I'll make your digital dreams ship.</p>
+      <div class="ghost-heading">{{ t('strengths.label') }}</div>
+      <div class="mb-5 label">{{ t('strengths.label') }}</div>
+      <h2 class="section-h2">{{ t('strengths.title.what') }} <span class="display-italic" style="color:var(--accent);">{{ t('strengths.title.italic') }}</span></h2>
+      <p class="section-subtitle">{{ t('strengths.subtitle') }}</p>
 
       <div class="mt-8">
         <div class="strength-row">
           <div class="strength-num">01</div>
-          <div class="strength-title"><i class="fas fa-mobile-screen"></i> Mobile Development</div>
-          <div class="strength-desc">Cross-platform mobile apps with React Native — scalable UI components, smooth interactions, and seamless API integrations.</div>
+          <div class="strength-title"><i class="fas fa-mobile-screen"></i> {{ t('strengths.1.title') }}</div>
+          <div class="strength-desc">{{ t('strengths.1.desc') }}</div>
         </div>
         <div class="strength-row">
           <div class="strength-num">02</div>
-          <div class="strength-title"><i class="fas fa-code"></i> Full-Stack Web Development</div>
-          <div class="strength-desc">React.js, Angular, and Laravel — from responsive interfaces to secure auth systems and optimized MySQL/PostgreSQL databases.</div>
+          <div class="strength-title"><i class="fas fa-code"></i> {{ t('strengths.2.title') }}</div>
+          <div class="strength-desc">{{ t('strengths.2.desc') }}</div>
         </div>
         <div class="strength-row">
           <div class="strength-num">03</div>
-          <div class="strength-title"><i class="fas fa-plug"></i> RESTful API Integration</div>
-          <div class="strength-desc">Designing and consuming REST APIs with proper state management, error handling, and authentication flows.</div>
+          <div class="strength-title"><i class="fas fa-plug"></i> {{ t('strengths.3.title') }}</div>
+          <div class="strength-desc">{{ t('strengths.3.desc') }}</div>
         </div>
         <div class="strength-row">
           <div class="strength-num">04</div>
-          <div class="strength-title"><i class="fas fa-people-group"></i> Agile Collaboration</div>
-          <div class="strength-desc">Comfortable in Scrum/Kanban teams — close collaboration with designers and back-end developers, clear async communication.</div>
+          <div class="strength-title"><i class="fas fa-people-group"></i> {{ t('strengths.4.title') }}</div>
+          <div class="strength-desc">{{ t('strengths.4.desc') }}</div>
         </div>
         <div class="strength-row">
           <div class="strength-num">05</div>
-          <div class="strength-title"><i class="fas fa-gauge-high"></i> Performance &amp; Quality</div>
-          <div class="strength-desc">Clean code, performance optimization, and deployment monitoring — making sure shipped apps stay fast and reliable.</div>
+          <div class="strength-title"><i class="fas fa-gauge-high"></i> {{ t('strengths.5.title') }}</div>
+          <div class="strength-desc">{{ t('strengths.5.desc') }}</div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- TECH STACK MARQUEE -->
-    <!-- ============================================================== -->
     <section class="card p-8 md:p-10 reveal">
       <div class="ghost-heading">Stack</div>
-      <div class="mb-5 label">My toolkit</div>
-      <h2 class="section-h2">Trusted <span class="display-italic" style="color:#C9553B;">stack</span></h2>
+      <div class="mb-5 label">{{ t('stack.label') }}</div>
+      <h2 class="section-h2">{{ t('stack.title.trusted') }} <span class="display-italic" style="color:var(--accent);">{{ t('stack.title.italic') }}</span></h2>
 
       <div class="mt-8 marquee">
-        <div class="marquee-track text-2xl text-[#3F3E3B]">
+        <div class="marquee-track text-2xl">
           <span class="flex items-center gap-3"><i class="fab fa-react text-sky-500"></i> React.js</span>
           <span class="flex items-center gap-3"><i class="fab fa-react text-cyan-500"></i> React Native</span>
           <span class="flex items-center gap-3"><i class="fab fa-angular text-red-500"></i> Angular</span>
@@ -160,7 +216,6 @@
           <span class="flex items-center gap-3"><i class="fas fa-database text-sky-700"></i> PostgreSQL</span>
           <span class="flex items-center gap-3"><i class="fas fa-leaf text-emerald-500"></i> MongoDB</span>
           <span class="flex items-center gap-3"><i class="fab fa-css3-alt text-sky-500"></i> Tailwind</span>
-          <!-- duplicate for loop -->
           <span class="flex items-center gap-3"><i class="fab fa-react text-sky-500"></i> React.js</span>
           <span class="flex items-center gap-3"><i class="fab fa-react text-cyan-500"></i> React Native</span>
           <span class="flex items-center gap-3"><i class="fab fa-angular text-red-500"></i> Angular</span>
@@ -176,76 +231,70 @@
       </div>
     </section>
 
-    <!-- ============================================================== -->
-    <!-- RESUME (Education + Experience) -->
-    <!-- ============================================================== -->
+    <!-- RESUME -->
     <section id="resume" class="card p-8 md:p-10 reveal">
-      <div class="ghost-heading">Resume</div>
-      <div class="mb-5 label">Resume</div>
-      <h2 class="section-h2">Education &amp; <span class="display-italic" style="color:#C9553B;">experience</span></h2>
-      <p class="section-subtitle">The dynamic duo that turned me into the engineer I am today.</p>
+      <div class="ghost-heading">{{ t('resume.label') }}</div>
+      <div class="mb-5 label">{{ t('resume.label') }}</div>
+      <h2 class="section-h2">{{ t('resume.title.education') }} <span class="display-italic" style="color:var(--accent);">{{ t('resume.title.italic') }}</span></h2>
+      <p class="section-subtitle">{{ t('resume.subtitle') }}</p>
 
       <div class="mt-10 grid md:grid-cols-2 gap-12">
-        <!-- Education -->
         <div>
           <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 rounded-xl flex items-center justify-center"
-                 style="background:#F7F5EF;border:1px solid #E6E4DD;">
-              <i class="fas fa-graduation-cap" style="color:#0E0E0C;"></i>
+                 style="background:var(--bg-pill);border:1px solid var(--line);">
+              <i class="fas fa-graduation-cap" style="color:var(--ink);"></i>
             </div>
-            <div class="font-mono text-[11px] tracking-widest" style="color:#8A8983;">EDUCATION</div>
+            <div class="font-mono text-[11px] tracking-widest" style="color:var(--mute-2);">{{ t('resume.education') }}</div>
           </div>
           <div class="tl">
             <div class="tl-item">
               <div class="pill-sm mb-2">2021 – 2022</div>
-              <div class="font-semibold" style="color:#0E0E0C;">Professional Bachelor's · Web &amp; Mobile Development</div>
-              <div class="text-[13px]" style="color:#6B6A66;">Faculty of Sciences Ain Chock — Casablanca</div>
+              <div class="font-semibold" style="color:var(--ink);">{{ t('resume.edu.1.role') }}</div>
+              <div class="text-[13px]" style="color:var(--mute);">{{ t('resume.edu.1.school') }}</div>
             </div>
             <div class="tl-item">
               <div class="pill-sm mb-2">2019 – 2021</div>
-              <div class="font-semibold" style="color:#0E0E0C;">Specialized Technician · Software Development</div>
-              <div class="text-[13px]" style="color:#6B6A66;">NTIC2 Sidi Maârouf (ISTA) — Morocco</div>
+              <div class="font-semibold" style="color:var(--ink);">{{ t('resume.edu.2.role') }}</div>
+              <div class="text-[13px]" style="color:var(--mute);">{{ t('resume.edu.2.school') }}</div>
             </div>
           </div>
         </div>
 
-        <!-- Experience -->
         <div>
           <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 rounded-xl flex items-center justify-center"
-                 style="background:#F7F5EF;border:1px solid #E6E4DD;">
-              <i class="fas fa-briefcase" style="color:#0E0E0C;"></i>
+                 style="background:var(--bg-pill);border:1px solid var(--line);">
+              <i class="fas fa-briefcase" style="color:var(--ink);"></i>
             </div>
-            <div class="font-mono text-[11px] tracking-widest" style="color:#8A8983;">EXPERIENCE</div>
+            <div class="font-mono text-[11px] tracking-widest" style="color:var(--mute-2);">{{ t('resume.experience') }}</div>
           </div>
           <div class="tl">
             <div class="tl-item">
-              <div class="pill-sm mb-2">Jan 2026 – Present</div>
-              <div class="font-semibold" style="color:#0E0E0C;">Front-End Developer · React Native</div>
-              <div class="text-[13px]" style="color:#6B6A66;">@ ELDEN — Casablanca</div>
+              <div class="pill-sm mb-2">{{ t('resume.exp.1.date') }}</div>
+              <div class="font-semibold" style="color:var(--ink);">{{ t('resume.exp.1.role') }}</div>
+              <div class="text-[13px]" style="color:var(--mute);">@ ELDEN — Casablanca</div>
             </div>
             <div class="tl-item">
-              <div class="pill-sm mb-2">Sept 2024 – Dec 2025</div>
-              <div class="font-semibold" style="color:#0E0E0C;">Full-Stack Developer</div>
-              <div class="text-[13px]" style="color:#6B6A66;">@ Bibatech — Casablanca</div>
+              <div class="pill-sm mb-2">{{ t('resume.exp.2.date') }}</div>
+              <div class="font-semibold" style="color:var(--ink);">{{ t('resume.exp.2.role') }}</div>
+              <div class="text-[13px]" style="color:var(--mute);">@ Bibatech — Casablanca</div>
             </div>
             <div class="tl-item">
-              <div class="pill-sm mb-2">Jun 2023 – Sept 2023</div>
-              <div class="font-semibold" style="color:#0E0E0C;">Front-End Web Developer Intern</div>
-              <div class="text-[13px]" style="color:#6B6A66;">@ Digitalia Solutions — Casablanca</div>
+              <div class="pill-sm mb-2">{{ t('resume.exp.3.date') }}</div>
+              <div class="font-semibold" style="color:var(--ink);">{{ t('resume.exp.3.role') }}</div>
+              <div class="text-[13px]" style="color:var(--mute);">@ Digitalia Solutions — Casablanca</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- EMPLOYERS -->
-    <!-- ============================================================== -->
     <section id="employers" class="card p-8 md:p-10 reveal">
       <div class="ghost-heading">Employers</div>
-      <div class="mb-5 label">My awesome employers</div>
-      <h2 class="section-h2">Companies I've <span class="display-italic" style="color:#C9553B;">worked with</span></h2>
+      <div class="mb-5 label">{{ t('employers.label') }}</div>
+      <h2 class="section-h2">{{ t('employers.title.companies') }} <span class="display-italic" style="color:var(--accent);">{{ t('employers.title.italic') }}</span></h2>
 
       <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div class="logo-box">
@@ -260,14 +309,12 @@
       </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- PROJECTS -->
-    <!-- ============================================================== -->
     <section id="projects" class="card p-8 md:p-10 reveal">
       <div class="ghost-heading">Projects</div>
-      <div class="mb-5 label">Selected work</div>
-      <h2 class="section-h2">Selected <span class="display-italic" style="color:#C9553B;">projects</span></h2>
-      <p class="section-subtitle">A handful of recent builds — from side projects to client work.</p>
+      <div class="mb-5 label">{{ t('projects.label') }}</div>
+      <h2 class="section-h2">{{ t('projects.title.selected') }} <span class="display-italic" style="color:var(--accent);">{{ t('projects.title.italic') }}</span></h2>
+      <p class="section-subtitle">{{ t('projects.subtitle') }}</p>
 
       <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
         <a href="https://movie-mtizo.vercel.app/" target="_blank" rel="noopener"
@@ -281,12 +328,12 @@
           <div class="p-6">
             <div class="flex items-center justify-between mb-2">
               <span class="proj-tag">#01</span>
-              <span class="text-[11px] font-mono" style="color:#8A8983;">ANGULAR · API</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">ANGULAR · API</span>
             </div>
-            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">Movie Scope</h3>
-            <p class="text-sm mt-2" style="color:#4A4945;">Movie discovery app built with Angular and the TMDB API.</p>
-            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
-              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            <h3 class="text-xl font-bold tracking-tight" style="color:var(--ink);">{{ t('projects.1.title') }}</h3>
+            <p class="text-sm mt-2" style="color:var(--ink-4);">{{ t('projects.1.desc') }}</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:var(--ink);">
+              {{ t('projects.visit') }} <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
             </div>
           </div>
         </a>
@@ -302,12 +349,12 @@
           <div class="p-6">
             <div class="flex items-center justify-between mb-2">
               <span class="proj-tag">#02</span>
-              <span class="text-[11px] font-mono" style="color:#8A8983;">HTML · CSS</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">HTML · CSS</span>
             </div>
-            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">Business Website</h3>
-            <p class="text-sm mt-2" style="color:#4A4945;">UX/UI marketing site — pure HTML &amp; CSS, mobile-first.</p>
-            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
-              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            <h3 class="text-xl font-bold tracking-tight" style="color:var(--ink);">{{ t('projects.2.title') }}</h3>
+            <p class="text-sm mt-2" style="color:var(--ink-4);">{{ t('projects.2.desc') }}</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:var(--ink);">
+              {{ t('projects.visit') }} <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
             </div>
           </div>
         </a>
@@ -323,12 +370,12 @@
           <div class="p-6">
             <div class="flex items-center justify-between mb-2">
               <span class="proj-tag">#03</span>
-              <span class="text-[11px] font-mono" style="color:#8A8983;">LARAVEL · DASHBOARD</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">LARAVEL · DASHBOARD</span>
             </div>
-            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">Budget Management Platform</h3>
-            <p class="text-sm mt-2" style="color:#4A4945;">SDG-aligned budget tracking dashboard for ministries &amp; regions.</p>
-            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
-              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            <h3 class="text-xl font-bold tracking-tight" style="color:var(--ink);">{{ t('projects.3.title') }}</h3>
+            <p class="text-sm mt-2" style="color:var(--ink-4);">{{ t('projects.3.desc') }}</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:var(--ink);">
+              {{ t('projects.visit') }} <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
             </div>
           </div>
         </a>
@@ -344,34 +391,32 @@
           <div class="p-6">
             <div class="flex items-center justify-between mb-2">
               <span class="proj-tag">#04</span>
-              <span class="text-[11px] font-mono" style="color:#8A8983;">E-COMMERCE</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">E-COMMERCE</span>
             </div>
-            <h3 class="text-xl font-bold tracking-tight" style="color:#0E0E0C;">E-commerce Website</h3>
-            <p class="text-sm mt-2" style="color:#4A4945;">Full e-commerce flow with cart, checkout, and admin dashboard.</p>
-            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:#0E0E0C;">
-              Visit <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+            <h3 class="text-xl font-bold tracking-tight" style="color:var(--ink);">{{ t('projects.4.title') }}</h3>
+            <p class="text-sm mt-2" style="color:var(--ink-4);">{{ t('projects.4.desc') }}</p>
+            <div class="mt-4 flex items-center gap-2 text-[13px] font-medium" style="color:var(--ink);">
+              {{ t('projects.visit') }} <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
             </div>
           </div>
         </a>
       </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- CONTACT -->
-    <!-- ============================================================== -->
     <section id="contact" class="card p-8 md:p-10 reveal">
       <div class="ghost-heading">Contact</div>
-      <div class="mb-5 label">Get in touch</div>
-      <h2 class="section-h2">Let's <span class="display-italic" style="color:#C9553B;">connect</span></h2>
-      <p class="section-subtitle">Tell me about your idea, budget, and timeline. I typically reply within 24 hours.</p>
+      <div class="mb-5 label">{{ t('contact.label') }}</div>
+      <h2 class="section-h2">{{ t('contact.title.lets') }} <span class="display-italic" style="color:var(--accent);">{{ t('contact.title.italic') }}</span></h2>
+      <p class="section-subtitle">{{ t('contact.subtitle') }}</p>
 
       <div class="mt-6 flex flex-wrap gap-2">
         <a href="tel:+212649331053" class="pill"><i class="fas fa-phone text-xs text-emerald-600"></i> +212 649 331 053</a>
-        <a href="mailto:mouradtizougarine@gmail.com" class="pill"><i class="fas fa-envelope text-xs" style="color:#C9553B;"></i> mouradtizougarine&#64;gmail.com</a>
-        <span class="pill"><i class="fas fa-location-dot text-xs text-sky-600"></i> Casablanca, MA</span>
+        <a href="mailto:mouradtizougarine@gmail.com" class="pill"><i class="fas fa-envelope text-xs" style="color:var(--accent);"></i> mouradtizougarine&#64;gmail.com</a>
+        <span class="pill"><i class="fas fa-location-dot text-xs text-sky-600"></i> {{ t('status.location') }}</span>
         <a href="https://www.linkedin.com/in/mourad-tizougarine" target="_blank" rel="noopener" class="pill"><i class="fab fa-linkedin text-xs text-sky-600"></i> LinkedIn</a>
         <a href="https://github.com/moradtizo" target="_blank" rel="noopener" class="pill"><i class="fab fa-github text-xs"></i> GitHub</a>
-        <button type="button" (click)="downloadCV()" class="pill"><i class="fas fa-file-pdf text-xs text-rose-500"></i> Resume</button>
+        <button type="button" (click)="downloadCV()" class="pill"><i class="fas fa-file-pdf text-xs text-rose-500"></i> {{ t('about.cv.download') }}</button>
       </div>
 
       <form class="mt-10 grid md:grid-cols-2 gap-x-10 gap-y-2"
@@ -379,50 +424,99 @@
             (ngSubmit)="onSubmit()">
 
         <div>
-          <div class="field-label mb-1">Name</div>
-          <input class="field" formControlName="name" placeholder="Your name" required />
+          <div class="field-label mb-1">{{ t('contact.field.name') }}</div>
+          <input class="field" formControlName="name" [placeholder]="t('contact.field.name.ph')" required />
         </div>
         <div>
-          <div class="field-label mb-1">E-mail</div>
-          <input class="field" type="email" formControlName="email" placeholder="you@company.com" required />
+          <div class="field-label mb-1">{{ t('contact.field.email') }}</div>
+          <input class="field" type="email" formControlName="email" [placeholder]="t('contact.field.email.ph')" required />
         </div>
         <div class="md:col-span-2 mt-4">
-          <div class="field-label mb-1">Subject</div>
-          <input class="field" formControlName="subject" placeholder="What's this about?" required />
+          <div class="field-label mb-1">{{ t('contact.field.subject') }}</div>
+          <input class="field" formControlName="subject" [placeholder]="t('contact.field.subject.ph')" required />
         </div>
         <div class="md:col-span-2 mt-4">
-          <div class="field-label mb-1">Message</div>
-          <textarea class="field" rows="3" formControlName="message" placeholder="Tell me about your project…" required></textarea>
+          <div class="field-label mb-1">{{ t('contact.field.message') }}</div>
+          <textarea class="field" rows="3" formControlName="message" [placeholder]="t('contact.field.message.ph')" required></textarea>
         </div>
 
         <div class="md:col-span-2 mt-6 flex items-center justify-between gap-4 flex-wrap">
-          <span class="text-xs font-mono" style="color:#8A8983;">I typically reply within 24h</span>
+          <span class="text-xs font-mono" style="color:var(--mute-2);">{{ t('contact.reply') }}</span>
           <button class="btn-primary" type="submit" [disabled]="loading">
             <i class="fas fa-paper-plane text-[11px]"></i>
-            {{ loading ? 'Sending…' : 'Send message' }}
+            {{ loading ? t('contact.sending') : t('contact.send') }}
           </button>
         </div>
 
-        <div *ngIf="successMessage"
-             class="md:col-span-2 mt-4 animate-fadeIn p-4 rounded-2xl text-sm font-medium"
-             style="background:#ECF7E5;border:1px solid #BFDDA8;color:#365D1F;">
-          {{ successMessage }}
-        </div>
-        <div *ngIf="errorMessage"
-             class="md:col-span-2 mt-4 animate-fadeIn p-4 rounded-2xl text-sm font-medium"
-             style="background:#FBE7E2;border:1px solid #E8B7AC;color:#7A2A18;">
-          {{ errorMessage }}
-        </div>
       </form>
     </section>
 
-    <!-- ============================================================== -->
+    <!-- TOAST / MODAL -->
+    <div *ngIf="successMessage || errorMessage"
+         class="toast-overlay"
+         (click)="closeToast()">
+      <div class="toast-card" (click)="$event.stopPropagation()" [class.toast-card--error]="errorMessage">
+        <button class="toast-close" type="button"
+                (click)="closeToast()"
+                aria-label="Close">
+          <i class="fas fa-xmark"></i>
+        </button>
+
+        <ng-container *ngIf="successMessage">
+          <div class="toast-icon toast-icon--success">
+            <span class="toast-icon-ring"></span>
+            <i class="fas fa-paper-plane"></i>
+          </div>
+          <div class="label toast-label">{{ t('toast.success.label') }}</div>
+          <h3 class="toast-title">
+            {{ t('toast.success.title.1') }} <span class="display-italic" style="color:var(--accent);">{{ t('toast.success.title.italic') }}</span>.
+          </h3>
+          <p class="toast-sub">{{ t('toast.success.sub') }}</p>
+
+          <div class="toast-meta">
+            <span class="t-prompt">$</span>
+            <span class="t-cmd">mail.send()</span>
+            <span class="toast-meta-ok">→ 200 OK</span>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="errorMessage">
+          <div class="toast-icon toast-icon--error">
+            <span class="toast-icon-ring"></span>
+            <i class="fas fa-triangle-exclamation"></i>
+          </div>
+          <div class="label toast-label">{{ t('toast.error.label') }}</div>
+          <h3 class="toast-title">
+            {{ t('toast.error.title.1') }} <span class="display-italic" style="color:var(--accent);">{{ t('toast.error.title.italic') }}</span>.
+          </h3>
+          <p class="toast-sub">{{ errorMessage }}</p>
+
+          <div class="toast-meta">
+            <span class="t-prompt">$</span>
+            <span class="t-cmd">mail.send()</span>
+            <span class="toast-meta-err">→ 500 ERR</span>
+          </div>
+        </ng-container>
+
+        <div class="toast-actions">
+          <button class="btn-ghost" type="button"
+                  (click)="closeToast()">
+            {{ t('toast.close') }}
+          </button>
+          <a href="mailto:mouradtizougarine@gmail.com" class="btn-primary"
+             *ngIf="errorMessage">
+            <i class="fas fa-envelope text-[11px]"></i>
+            {{ t('toast.email.direct') }}
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- FOOTER -->
-    <!-- ============================================================== -->
     <footer class="pt-10 pb-4 flex flex-wrap items-center justify-between gap-4 text-[12px] font-mono"
-            style="color:#8A8983;">
-      <div>© 2026 Mourad Tizougarine · Designed &amp; developed in Casablanca</div>
-      <button (click)="scrollTo('about')" class="hover:text-[#0E0E0C] transition" style="background:none;border:none;cursor:pointer;font:inherit;color:inherit;">↑ Back to top</button>
+            style="color:var(--mute-2);">
+      <div>{{ t('footer.copy') }}</div>
+      <button (click)="scrollTo('about')" class="back-to-top transition">{{ t('footer.top') }}</button>
     </footer>
 
   </div>

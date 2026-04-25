@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll } from 'firebase/storage';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll, getMetadata } from 'firebase/storage';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../environments/environment';
 
@@ -188,5 +188,33 @@ export class FirebaseService {
    */
   getUploadComplete(): Observable<boolean> {
     return this.uploadComplete$.asObservable();
+  }
+
+  /**
+   * Get file metadata (size, uploadedAt customMetadata, contentType, etc.)
+   * Returns null if the file doesn't exist.
+   */
+  getFileMetadata(filePath: string): Observable<any | null> {
+    return new Observable(observer => {
+      try {
+        const fileRef = ref(this.storage, filePath);
+        getMetadata(fileRef)
+          .then((meta) => {
+            observer.next(meta);
+            observer.complete();
+          })
+          .catch((error) => {
+            // 404 = not yet uploaded — surface as null instead of error
+            if (error?.code === 'storage/object-not-found') {
+              observer.next(null);
+              observer.complete();
+            } else {
+              observer.error(error);
+            }
+          });
+      } catch (error) {
+        observer.error(error);
+      }
+    });
   }
 }

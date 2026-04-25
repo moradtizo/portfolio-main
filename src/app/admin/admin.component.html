@@ -1,95 +1,269 @@
-<section class="section min-h-screen">
-  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-    <div class="absolute top-1/4 -left-24 h-72 w-72 surface-blob-emerald"></div>
-    <div class="absolute bottom-1/4 -right-24 h-72 w-72 surface-blob-indigo"></div>
-  </div>
+<div class="max-w-[1100px] mx-auto px-5 md:px-8 pt-8 pb-20">
 
-  <div class="section-container py-16">
-    <!-- Login Form - Show when not authenticated -->
-    <div *ngIf="!isAuthenticated" class="card p-8 space-y-6">
-      <h2 class="text-xl font-semibold">Login Required</h2>
-      <form (ngSubmit)="login()" class="space-y-4">
+  <!-- ============================================================== -->
+  <!-- TOP BAR: dev handle + utilities -->
+  <!-- ============================================================== -->
+  <header class="flex items-start justify-between gap-8 mb-10 flex-wrap">
+    <div>
+      <div class="dev-handle">
+        <span class="dev-prompt">~/admin</span>
+        <span class="dev-arrow">$</span>
+        <span class="dev-cmd">{{ isAuthenticated ? 'manage cv' : 'auth login' }}</span>
+        <span class="dev-cursor">▍</span>
+      </div>
+
+      <h1 class="display-name" style="font-size:clamp(2.4rem, 6vw, 4.2rem);">
+        Admin <span class="display-italic">panel</span>
+      </h1>
+
+      <div class="status-row" *ngIf="isAuthenticated">
+        <span class="status-pill">
+          <span class="status-dot"></span>
+          Authenticated
+        </span>
+        <span class="status-meta">
+          <i class="fas fa-user"></i> admin
+        </span>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-1 shrink-0 mt-3">
+      <a routerLink="/" class="social-btn" aria-label="Back to portfolio" title="Back to portfolio">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+
+      <!-- Language toggle -->
+      <div class="lang-toggle ml-1" role="group" aria-label="Language">
+        <button type="button" (click)="setLang('en')" [class.active]="lang === 'en'">EN</button>
+        <span class="lang-sep">/</span>
+        <button type="button" (click)="setLang('fr')" [class.active]="lang === 'fr'">FR</button>
+      </div>
+
+      <!-- Theme toggle -->
+      <button (click)="toggleTheme()" class="social-btn ml-1"
+              aria-label="Toggle theme" title="Toggle theme">
+        <i class="fas" [class.fa-moon]="!isDark" [class.fa-sun]="isDark"></i>
+      </button>
+
+      <button *ngIf="isAuthenticated" (click)="logout()"
+              class="ml-2 inline-flex items-center justify-center w-10 h-10 rounded-full"
+              style="background:var(--ink); color:var(--on-ink);"
+              [attr.aria-label]="t('actions.logout')"
+              [title]="t('actions.logout')">
+        <i class="fas fa-right-from-bracket text-[12px]"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="space-y-6">
+
+    <!-- ============================================================== -->
+    <!-- LOGIN -->
+    <!-- ============================================================== -->
+    <section *ngIf="!isAuthenticated" class="card p-8 md:p-10 reveal in admin-login">
+      <div class="ghost-heading">Login</div>
+      <div class="mb-5 label">{{ t('login.label') }}</div>
+      <h2 class="section-h2">{{ t('login.title.welcome') }} <span class="display-italic" style="color:var(--accent);">{{ t('login.title.italic') }}</span></h2>
+      <p class="section-subtitle">{{ t('login.subtitle') }}</p>
+
+      <form (ngSubmit)="login()" class="mt-8 max-w-md mx-auto space-y-5">
         <div>
-          <label class="block text-sm font-medium mb-2">Username</label>
-          <input type="text" [(ngModel)]="username" name="username"
-                 class="w-full rounded-lg border p-2.5" required>
+          <div class="field-label mb-1">{{ t('login.username') }}</div>
+          <div class="field-wrap">
+            <i class="fas fa-user field-icon"></i>
+            <input class="field field--with-icon" type="text"
+                   name="username" [(ngModel)]="username"
+                   [placeholder]="t('login.username.ph')"
+                   autocomplete="username" required />
+          </div>
         </div>
+
         <div>
-          <label class="block text-sm font-medium mb-2">Password</label>
-          <input type="password" [(ngModel)]="password" name="password"
-                 class="w-full rounded-lg border p-2.5" required>
+          <div class="field-label mb-1">{{ t('login.password') }}</div>
+          <div class="field-wrap">
+            <i class="fas fa-lock field-icon"></i>
+            <input class="field field--with-icon field--with-action"
+                   [type]="showPassword ? 'text' : 'password'"
+                   name="password" [(ngModel)]="password"
+                   [placeholder]="t('login.password.ph')"
+                   autocomplete="current-password" required />
+            <button type="button" class="field-action"
+                    (click)="togglePassword()"
+                    [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+              <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+            </button>
+          </div>
         </div>
-        <button type="submit" class="btn-primary w-full">Login</button>
+
+        <button type="submit" class="btn-primary w-full justify-center" [disabled]="isLoading">
+          <i class="fas fa-arrow-right-to-bracket text-[11px]"></i>
+          {{ isLoading ? t('login.signing') : t('login.submit') }}
+        </button>
+
+        <div class="text-center">
+          <span class="text-[11px] font-mono" style="color:var(--mute-2);">
+            <i class="fas fa-shield-halved" style="color:var(--accent);"></i>
+            secure session · stored in sessionStorage
+          </span>
+        </div>
       </form>
-    </div>
-    <div *ngIf="isAuthenticated" class="max-w-3xl mx-auto">
+    </section>
 
-      <!-- Header -->
-      <div class="text-center mb-12">
-        <div class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 mb-4">
-          Admin Panel
-        </div>
-        <h1 class="section-title">CV Management</h1>
-        <p class="section-subtitle">
-          Manage the CV used by the site. You can upload a PDF (stored in Firebase) or download the current CV.
-        </p>
-      </div>
+    <!-- ============================================================== -->
+    <!-- DASHBOARD -->
+    <!-- ============================================================== -->
+    <ng-container *ngIf="isAuthenticated">
 
-      <!-- Main Card -->
-      <div class="card p-8 space-y-8">
-        <!-- Upload Section -->
-        <div class="space-y-4">
-          <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-indigo-600 dark:text-indigo-400">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-            </svg>
-            <label class="block text-sm font-semibold text-gray-900 dark:text-white">Upload New CV (PDF)</label>
+      <!-- Header card -->
+      <section class="card p-8 md:p-10 reveal in">
+        <div class="ghost-heading">CV</div>
+        <div class="mb-5 label">{{ t('panel.label') }}</div>
+        <h2 class="section-h2">{{ t('panel.title.cv') }} <span class="display-italic" style="color:var(--accent);">{{ t('panel.title.italic') }}</span></h2>
+        <p class="section-subtitle">{{ t('panel.subtitle') }}</p>
+      </section>
+
+      <!-- Upload card -->
+      <section class="card p-8 md:p-10 reveal in">
+        <div class="mb-5 label">{{ t('upload.label') }}</div>
+        <h3 class="section-h2" style="font-size:1.5rem;">{{ t('upload.title') }}</h3>
+
+        <div class="mt-6">
+          <label class="dropzone"
+                 [class.dropzone--active]="isDragging"
+                 [class.dropzone--busy]="uploadProgress !== null"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)">
+            <div class="dropzone-icon">
+              <i class="fas fa-cloud-arrow-up"></i>
+            </div>
+            <div class="dropzone-title">{{ t('upload.dropzone.title') }}</div>
+            <div class="dropzone-sub">{{ t('upload.dropzone.sub') }}</div>
+            <input type="file" accept="application/pdf" (change)="onFile($event)" class="hidden-file" />
+          </label>
+
+          <!-- Upload progress -->
+          <div *ngIf="uploadProgress !== null" class="upload-progress mt-5">
+            <div class="upload-progress-head">
+              <span><i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i> {{ t('upload.uploading') }} <strong>{{ currentFileName }}</strong></span>
+              <span class="font-mono text-[12px]">{{ uploadProgress | number:'1.0-0' }}%</span>
+            </div>
+            <div class="upload-bar">
+              <div class="upload-bar-fill" [style.width.%]="uploadProgress"></div>
+            </div>
           </div>
 
-          <div class="flex items-center justify-center w-full">
-            <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-              <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                <svg class="w-8 h-8 mb-2 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                </svg>
-                <p class="mb-1 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">PDF only</p>
+          <!-- Current file info -->
+          <div *ngIf="currentFileName && uploadProgress === null" class="current-file mt-5">
+            <div class="current-file-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+            <div class="current-file-meta">
+              <div class="current-file-name">{{ currentFileName }}</div>
+              <div class="current-file-sub font-mono">
+                <span>{{ t('upload.size') }}: {{ formatSize(currentFileSize) }}</span>
+                <span *ngIf="downloadUrl" class="current-file-ok">
+                  <i class="fas fa-circle-check"></i> uploaded
+                </span>
               </div>
-              <input type="file" accept="application/pdf" (change)="onFile($event)" class="hidden" />
-            </label>
-          </div>
-
-          <!-- Upload Progress -->
-          <div *ngIf="uploadProgress !== null" class="mt-4">
-            <p>Upload Progress: {{ uploadProgress | number: '1.0-0' }}%</p>
+            </div>
           </div>
         </div>
+      </section>
 
-        <!-- Actions -->
-        <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <!-- Actions card -->
+      <section class="card p-8 md:p-10 reveal in">
+        <div class="mb-5 label">Actions</div>
+        <div class="flex flex-wrap items-center gap-3">
           <button class="btn-primary" (click)="testDownload()" [disabled]="!downloadUrl">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-            Download Current CV
+            <i class="fas fa-arrow-down text-[11px]"></i>
+            {{ t('actions.download') }}
           </button>
-          <button class="btn-secondary" (click)="logout()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-9A2.25 2.25 0 002.25 5.25v13.5A2.25 2.25 0 004.5 21h9a2.25 2.25 0 002.25-2.25V15m3-3h-8.25m0 0l3-3m-3 3l3 3" />
-            </svg>
-            Logout
+          <button class="btn-ghost" (click)="copyLink()" [disabled]="!downloadUrl">
+            <i class="fas fa-link text-[11px]"></i>
+            {{ t('actions.copy') }}
+          </button>
+          <a routerLink="/" class="btn-ghost">
+            <i class="fas fa-arrow-up-right-from-square text-[11px]"></i>
+            {{ t('actions.viewsite') }}
+          </a>
+          <button class="btn-ghost" (click)="logout()">
+            <i class="fas fa-right-from-bracket text-[11px]"></i>
+            {{ t('actions.logout') }}
           </button>
         </div>
 
-      </div>
+        <!-- mini terminal status -->
+        <div class="terminal mt-6 max-w-xl">
+          <div class="terminal-bar">
+            <span class="terminal-dot terminal-dot--r"></span>
+            <span class="terminal-dot terminal-dot--y"></span>
+            <span class="terminal-dot terminal-dot--g"></span>
+            <span class="terminal-title">~/admin — zsh</span>
+          </div>
+          <div class="terminal-body">
+            <div><span class="t-prompt">$</span> <span class="t-cmd">cv.status()</span></div>
+            <div class="t-out">
+              <span class="t-key">file</span>: {{ currentFileName || '—' }}
+            </div>
+            <div class="t-out">
+              <span class="t-key">size</span>: {{ formatSize(currentFileSize) }}
+            </div>
+            <div class="t-out">
+              <span class="t-key">state</span>:
+              <span *ngIf="!currentFileName" class="t-out">no upload yet</span>
+              <span *ngIf="uploadProgress !== null" class="t-accent">uploading… {{ uploadProgress | number:'1.0-0' }}%</span>
+              <span *ngIf="downloadUrl && uploadProgress === null" class="toast-meta-ok">→ live ✓</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <!-- Back Link -->
-      <div class="mt-8 text-center">
-        <a routerLink="/" class="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
-          ← Back to Home
-        </a>
-      </div>
+    </ng-container>
 
+    <!-- ============================================================== -->
+    <!-- TOAST / MODAL -->
+    <!-- ============================================================== -->
+    <div *ngIf="successMessage || errorMessage"
+         class="toast-overlay"
+         (click)="closeToast()">
+      <div class="toast-card" (click)="$event.stopPropagation()" [class.toast-card--error]="errorMessage">
+        <button class="toast-close" type="button" (click)="closeToast()" aria-label="Close">
+          <i class="fas fa-xmark"></i>
+        </button>
+
+        <ng-container *ngIf="successMessage">
+          <div class="toast-icon toast-icon--success">
+            <span class="toast-icon-ring"></span>
+            <i class="fas fa-circle-check"></i>
+          </div>
+          <div class="label toast-label">OK</div>
+          <h3 class="toast-title">{{ successMessage }}</h3>
+        </ng-container>
+
+        <ng-container *ngIf="errorMessage">
+          <div class="toast-icon toast-icon--error">
+            <span class="toast-icon-ring"></span>
+            <i class="fas fa-triangle-exclamation"></i>
+          </div>
+          <div class="label toast-label">Error</div>
+          <h3 class="toast-title">{{ errorMessage }}</h3>
+        </ng-container>
+
+        <div class="toast-actions">
+          <button class="btn-ghost" type="button" (click)="closeToast()">Close</button>
+        </div>
+      </div>
     </div>
+
+    <!-- ============================================================== -->
+    <!-- FOOTER -->
+    <!-- ============================================================== -->
+    <footer class="pt-10 pb-4 flex flex-wrap items-center justify-between gap-4 text-[12px] font-mono"
+            style="color:var(--mute-2);">
+      <a routerLink="/" class="back-to-top transition">{{ t('footer.back') }}</a>
+      <div>© 2026 Mourad Tizougarine</div>
+    </footer>
+
   </div>
-</section>
+</div>
