@@ -24,6 +24,9 @@
         <span class="status-meta">
           <i class="fas fa-user"></i> admin
         </span>
+        <span class="status-meta">
+          <i class="fas fa-database"></i> firestore · cvs
+        </span>
       </div>
     </div>
 
@@ -122,67 +125,386 @@
         <p class="section-subtitle">{{ t('panel.subtitle') }}</p>
       </section>
 
-      <!-- Upload card -->
+      <!-- ============================================================== -->
+      <!-- UPLOAD: two language slots -->
+      <!-- ============================================================== -->
       <section class="card p-8 md:p-10 reveal in">
         <div class="mb-5 label">{{ t('upload.label') }}</div>
         <h3 class="section-h2" style="font-size:1.5rem;">{{ t('upload.title') }}</h3>
+        <p class="section-subtitle">{{ t('upload.subtitle') }}</p>
 
-        <div class="mt-6">
-          <label class="dropzone"
-                 [class.dropzone--active]="isDragging"
-                 [class.dropzone--busy]="uploadProgress !== null"
-                 (dragover)="onDragOver($event)"
-                 (dragleave)="onDragLeave($event)"
-                 (drop)="onDrop($event)">
-            <div class="dropzone-icon">
-              <i class="fas fa-cloud-arrow-up"></i>
-            </div>
-            <div class="dropzone-title">{{ t('upload.dropzone.title') }}</div>
-            <div class="dropzone-sub">{{ t('upload.dropzone.sub') }}</div>
-            <input type="file" accept="application/pdf" (change)="onFile($event)" class="hidden-file" />
-          </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
-          <!-- Upload progress -->
-          <div *ngIf="uploadProgress !== null" class="upload-progress mt-5">
-            <div class="upload-progress-head">
-              <span><i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i> {{ t('upload.uploading') }} <strong>{{ currentFileName }}</strong></span>
-              <span class="font-mono text-[12px]">{{ uploadProgress | number:'1.0-0' }}%</span>
+          <!-- ===== EN slot ===== -->
+          <div>
+            <div class="field-label mb-2 flex items-center justify-between">
+              <span><i class="fas fa-flag-usa mr-1" style="color:var(--accent);"></i> {{ t('upload.en') }}</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">cvs/cv-en.pdf</span>
             </div>
-            <div class="upload-bar">
-              <div class="upload-bar-fill" [style.width.%]="uploadProgress"></div>
+
+            <label class="dropzone"
+                   [class.dropzone--active]="slots.en.isDragging"
+                   [class.dropzone--busy]="slots.en.uploadProgress !== null"
+                   (dragover)="onDragOver($event, 'en')"
+                   (dragleave)="onDragLeave($event, 'en')"
+                   (drop)="onDrop($event, 'en')">
+              <div class="dropzone-icon">
+                <i class="fas fa-cloud-arrow-up"></i>
+              </div>
+              <div class="dropzone-title">{{ t('upload.dropzone.title') }}</div>
+              <div class="dropzone-sub">{{ t('upload.dropzone.sub') }}</div>
+              <input type="file" accept="application/pdf" (change)="onFile($event, 'en')" class="hidden-file" />
+            </label>
+
+            <!-- Progress -->
+            <div *ngIf="slots.en.uploadProgress !== null" class="upload-progress mt-4">
+              <div class="upload-progress-head">
+                <span><i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i> {{ t('upload.uploading') }} <strong>{{ slots.en.fileName }}</strong></span>
+                <span class="font-mono text-[12px]">{{ slots.en.uploadProgress | number:'1.0-0' }}%</span>
+              </div>
+              <div class="upload-bar">
+                <div class="upload-bar-fill" [style.width.%]="slots.en.uploadProgress"></div>
+              </div>
+            </div>
+
+            <!-- Current file info -->
+            <div *ngIf="slots.en.fileName && slots.en.uploadProgress === null" class="current-file mt-4">
+              <div class="current-file-icon">
+                <i class="fas fa-file-pdf"></i>
+              </div>
+              <div class="current-file-meta">
+                <div class="current-file-name">{{ slots.en.fileName }}</div>
+                <div class="current-file-sub font-mono">
+                  <span>{{ t('upload.size') }}: {{ formatSize(slots.en.fileSize) }}</span>
+                  <span *ngIf="slots.en.downloadUrl" class="current-file-ok">
+                    <i class="fas fa-circle-check"></i> live
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Per-slot mini actions -->
+            <div class="flex flex-wrap items-center gap-2 mt-3">
+              <button class="btn-ghost" type="button"
+                      (click)="testDownload('en')"
+                      [disabled]="!slots.en.downloadUrl">
+                <i class="fas fa-arrow-down text-[11px]"></i> {{ t('actions.download') }}
+              </button>
+              <button class="btn-ghost" type="button"
+                      (click)="copyLink('en')"
+                      [disabled]="!slots.en.downloadUrl">
+                <i class="fas fa-link text-[11px]"></i> {{ t('actions.copy') }}
+              </button>
             </div>
           </div>
 
-          <!-- Current file info -->
-          <div *ngIf="currentFileName && uploadProgress === null" class="current-file mt-5">
-            <div class="current-file-icon">
-              <i class="fas fa-file-pdf"></i>
+          <!-- ===== FR slot ===== -->
+          <div>
+            <div class="field-label mb-2 flex items-center justify-between">
+              <span><i class="fas fa-flag mr-1" style="color:var(--accent);"></i> {{ t('upload.fr') }}</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">cvs/cv-fr.pdf</span>
             </div>
-            <div class="current-file-meta">
-              <div class="current-file-name">{{ currentFileName }}</div>
-              <div class="current-file-sub font-mono">
-                <span>{{ t('upload.size') }}: {{ formatSize(currentFileSize) }}</span>
-                <span *ngIf="downloadUrl" class="current-file-ok">
-                  <i class="fas fa-circle-check"></i> uploaded
-                </span>
+
+            <label class="dropzone"
+                   [class.dropzone--active]="slots.fr.isDragging"
+                   [class.dropzone--busy]="slots.fr.uploadProgress !== null"
+                   (dragover)="onDragOver($event, 'fr')"
+                   (dragleave)="onDragLeave($event, 'fr')"
+                   (drop)="onDrop($event, 'fr')">
+              <div class="dropzone-icon">
+                <i class="fas fa-cloud-arrow-up"></i>
               </div>
+              <div class="dropzone-title">{{ t('upload.dropzone.title') }}</div>
+              <div class="dropzone-sub">{{ t('upload.dropzone.sub') }}</div>
+              <input type="file" accept="application/pdf" (change)="onFile($event, 'fr')" class="hidden-file" />
+            </label>
+
+            <!-- Progress -->
+            <div *ngIf="slots.fr.uploadProgress !== null" class="upload-progress mt-4">
+              <div class="upload-progress-head">
+                <span><i class="fas fa-spinner fa-spin" style="color:var(--accent);"></i> {{ t('upload.uploading') }} <strong>{{ slots.fr.fileName }}</strong></span>
+                <span class="font-mono text-[12px]">{{ slots.fr.uploadProgress | number:'1.0-0' }}%</span>
+              </div>
+              <div class="upload-bar">
+                <div class="upload-bar-fill" [style.width.%]="slots.fr.uploadProgress"></div>
+              </div>
+            </div>
+
+            <!-- Current file info -->
+            <div *ngIf="slots.fr.fileName && slots.fr.uploadProgress === null" class="current-file mt-4">
+              <div class="current-file-icon">
+                <i class="fas fa-file-pdf"></i>
+              </div>
+              <div class="current-file-meta">
+                <div class="current-file-name">{{ slots.fr.fileName }}</div>
+                <div class="current-file-sub font-mono">
+                  <span>{{ t('upload.size') }}: {{ formatSize(slots.fr.fileSize) }}</span>
+                  <span *ngIf="slots.fr.downloadUrl" class="current-file-ok">
+                    <i class="fas fa-circle-check"></i> live
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Per-slot mini actions -->
+            <div class="flex flex-wrap items-center gap-2 mt-3">
+              <button class="btn-ghost" type="button"
+                      (click)="testDownload('fr')"
+                      [disabled]="!slots.fr.downloadUrl">
+                <i class="fas fa-arrow-down text-[11px]"></i> {{ t('actions.download') }}
+              </button>
+              <button class="btn-ghost" type="button"
+                      (click)="copyLink('fr')"
+                      [disabled]="!slots.fr.downloadUrl">
+                <i class="fas fa-link text-[11px]"></i> {{ t('actions.copy') }}
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- mini terminal status -->
+        <div class="terminal mt-8">
+          <div class="terminal-bar">
+            <span class="terminal-dot terminal-dot--r"></span>
+            <span class="terminal-dot terminal-dot--y"></span>
+            <span class="terminal-dot terminal-dot--g"></span>
+            <span class="terminal-title">~/admin — cvs.status()</span>
+          </div>
+          <div class="terminal-body">
+            <div><span class="t-prompt">$</span> <span class="t-cmd">db.collection('cvs').list()</span></div>
+            <div class="t-out"><span class="t-key">en.file</span>: {{ slots.en.fileName || '—' }} <span *ngIf="slots.en.fileSize">({{ formatSize(slots.en.fileSize) }})</span></div>
+            <div class="t-out">
+              <span class="t-key">en.state</span>:
+              <span *ngIf="!slots.en.fileName" class="t-out">{{ t('upload.none') }}</span>
+              <span *ngIf="slots.en.uploadProgress !== null" class="t-accent">uploading… {{ slots.en.uploadProgress | number:'1.0-0' }}%</span>
+              <span *ngIf="slots.en.downloadUrl && slots.en.uploadProgress === null" class="toast-meta-ok">→ live ✓</span>
+            </div>
+            <div class="t-out"><span class="t-key">fr.file</span>: {{ slots.fr.fileName || '—' }} <span *ngIf="slots.fr.fileSize">({{ formatSize(slots.fr.fileSize) }})</span></div>
+            <div class="t-out">
+              <span class="t-key">fr.state</span>:
+              <span *ngIf="!slots.fr.fileName" class="t-out">{{ t('upload.none') }}</span>
+              <span *ngIf="slots.fr.uploadProgress !== null" class="t-accent">uploading… {{ slots.fr.uploadProgress | number:'1.0-0' }}%</span>
+              <span *ngIf="slots.fr.downloadUrl && slots.fr.uploadProgress === null" class="toast-meta-ok">→ live ✓</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Actions card -->
+      <!-- ============================================================== -->
+      <!-- STRUCTURED EDITOR -->
+      <!-- ============================================================== -->
+      <section class="card p-8 md:p-10 reveal in">
+        <div class="mb-5 label">{{ t('structured.label') }}</div>
+        <h3 class="section-h2" style="font-size:1.5rem;">
+          {{ t('structured.title') }} <span class="display-italic" style="color:var(--accent);">{{ t('structured.title.italic') }}</span>
+        </h3>
+        <p class="section-subtitle">{{ t('structured.subtitle') }}</p>
+
+        <!-- EN/FR tab toggle -->
+        <div class="lang-toggle mt-6 inline-flex" role="group" aria-label="Editor language">
+          <button type="button" (click)="setEditorLang('en')" [class.active]="editorLang === 'en'">EN</button>
+          <span class="lang-sep">/</span>
+          <button type="button" (click)="setEditorLang('fr')" [class.active]="editorLang === 'fr'">FR</button>
+        </div>
+
+        <ng-container *ngFor="let lang of languages">
+          <div *ngIf="editorLang === lang" class="mt-6 space-y-5">
+
+            <!-- Identity row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <div class="field-label mb-1">{{ t('structured.fullName') }}</div>
+                <div class="field-wrap">
+                  <input class="field" type="text"
+                         [name]="'fullName_' + lang"
+                         [(ngModel)]="structured[lang].fullName"
+                         placeholder="Mourad Tizougarine" />
+                </div>
+              </div>
+              <div>
+                <div class="field-label mb-1">{{ t('structured.title.field') }}</div>
+                <div class="field-wrap">
+                  <input class="field" type="text"
+                         [name]="'title_' + lang"
+                         [(ngModel)]="structured[lang].title"
+                         placeholder="Front-End & Full-Stack Developer" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div>
+              <div class="field-label mb-1">{{ t('structured.summary') }}</div>
+              <div class="field-wrap">
+                <textarea class="field" rows="3"
+                          [name]="'summary_' + lang"
+                          [(ngModel)]="structured[lang].summary"
+                          placeholder="Short bio…"></textarea>
+              </div>
+            </div>
+
+            <!-- Contact row -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <div class="field-label mb-1">{{ t('structured.email') }}</div>
+                <div class="field-wrap">
+                  <input class="field" type="email"
+                         [name]="'email_' + lang"
+                         [(ngModel)]="structured[lang].email"
+                         placeholder="you@example.com" />
+                </div>
+              </div>
+              <div>
+                <div class="field-label mb-1">{{ t('structured.phone') }}</div>
+                <div class="field-wrap">
+                  <input class="field" type="text"
+                         [name]="'phone_' + lang"
+                         [(ngModel)]="structured[lang].phone"
+                         placeholder="+212 …" />
+                </div>
+              </div>
+              <div>
+                <div class="field-label mb-1">{{ t('structured.location') }}</div>
+                <div class="field-wrap">
+                  <input class="field" type="text"
+                         [name]="'location_' + lang"
+                         [(ngModel)]="structured[lang].location"
+                         placeholder="Casablanca, MA" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Experience -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="field-label">{{ t('structured.experience') }}</div>
+                <button type="button" class="btn-ghost" (click)="addExperience(lang)">
+                  <i class="fas fa-plus text-[11px]"></i> {{ t('structured.add') }}
+                </button>
+              </div>
+
+              <div class="space-y-3">
+                <div *ngFor="let exp of structured[lang].experience; let i = index; trackBy: trackByIndex"
+                     class="card p-4" style="background:var(--card-2, var(--card));">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                      <div class="field-label mb-1">{{ t('structured.exp.date') }}</div>
+                      <input class="field" type="text"
+                             [name]="'exp_date_' + lang + '_' + i"
+                             [(ngModel)]="exp.date"
+                             placeholder="2024 – Present" />
+                    </div>
+                    <div>
+                      <div class="field-label mb-1">{{ t('structured.exp.role') }}</div>
+                      <input class="field" type="text"
+                             [name]="'exp_role_' + lang + '_' + i"
+                             [(ngModel)]="exp.role"
+                             placeholder="Front-End Developer" />
+                    </div>
+                    <div>
+                      <div class="field-label mb-1">{{ t('structured.exp.company') }}</div>
+                      <input class="field" type="text"
+                             [name]="'exp_company_' + lang + '_' + i"
+                             [(ngModel)]="exp.company"
+                             placeholder="Acme Inc." />
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <div class="field-label mb-1">{{ t('structured.exp.desc') }}</div>
+                    <textarea class="field" rows="2"
+                              [name]="'exp_desc_' + lang + '_' + i"
+                              [(ngModel)]="exp.description"></textarea>
+                  </div>
+                  <div class="flex justify-end mt-3">
+                    <button type="button" class="btn-ghost"
+                            (click)="removeExperience(lang, i)">
+                      <i class="fas fa-trash text-[11px]"></i> {{ t('structured.remove') }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Education -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="field-label">{{ t('structured.education') }}</div>
+                <button type="button" class="btn-ghost" (click)="addEducation(lang)">
+                  <i class="fas fa-plus text-[11px]"></i> {{ t('structured.add') }}
+                </button>
+              </div>
+
+              <div class="space-y-3">
+                <div *ngFor="let ed of structured[lang].education; let i = index; trackBy: trackByIndex"
+                     class="card p-4" style="background:var(--card-2, var(--card));">
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div>
+                      <div class="field-label mb-1">{{ t('structured.edu.date') }}</div>
+                      <input class="field" type="text"
+                             [name]="'edu_date_' + lang + '_' + i"
+                             [(ngModel)]="ed.date"
+                             placeholder="2022 – 2023" />
+                    </div>
+                    <div>
+                      <div class="field-label mb-1">{{ t('structured.edu.role') }}</div>
+                      <input class="field" type="text"
+                             [name]="'edu_role_' + lang + '_' + i"
+                             [(ngModel)]="ed.role"
+                             placeholder="Bachelor's · Web & Mobile" />
+                    </div>
+                    <div>
+                      <div class="field-label mb-1">{{ t('structured.edu.school') }}</div>
+                      <input class="field" type="text"
+                             [name]="'edu_school_' + lang + '_' + i"
+                             [(ngModel)]="ed.school"
+                             placeholder="Faculty of Sciences Aïn Chock" />
+                    </div>
+                  </div>
+                  <div class="flex justify-end mt-3">
+                    <button type="button" class="btn-ghost"
+                            (click)="removeEducation(lang, i)">
+                      <i class="fas fa-trash text-[11px]"></i> {{ t('structured.remove') }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div>
+              <div class="field-label mb-1">{{ t('structured.skills') }}</div>
+              <div class="field-wrap">
+                <textarea class="field" rows="2"
+                          [name]="'skills_' + lang"
+                          [(ngModel)]="structured[lang].skills"
+                          placeholder="Angular, React, Node.js, …"></textarea>
+              </div>
+            </div>
+
+            <!-- Save -->
+            <div class="flex flex-wrap items-center gap-3 pt-2">
+              <button type="button" class="btn-primary"
+                      (click)="saveStructured(lang)"
+                      [disabled]="savingStructured[lang]">
+                <i class="fas fa-floppy-disk text-[11px]"></i>
+                {{ savingStructured[lang] ? t('structured.saving') : t('structured.save') }}
+              </button>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">
+                <i class="fas fa-database" style="color:var(--accent);"></i>
+                cvs/{{ lang }}
+              </span>
+            </div>
+          </div>
+        </ng-container>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- ACTIONS / NAV -->
+      <!-- ============================================================== -->
       <section class="card p-8 md:p-10 reveal in">
         <div class="mb-5 label">Actions</div>
         <div class="flex flex-wrap items-center gap-3">
-          <button class="btn-primary" (click)="testDownload()" [disabled]="!downloadUrl">
-            <i class="fas fa-arrow-down text-[11px]"></i>
-            {{ t('actions.download') }}
-          </button>
-          <button class="btn-ghost" (click)="copyLink()" [disabled]="!downloadUrl">
-            <i class="fas fa-link text-[11px]"></i>
-            {{ t('actions.copy') }}
-          </button>
           <a routerLink="/" class="btn-ghost">
             <i class="fas fa-arrow-up-right-from-square text-[11px]"></i>
             {{ t('actions.viewsite') }}
@@ -191,31 +513,6 @@
             <i class="fas fa-right-from-bracket text-[11px]"></i>
             {{ t('actions.logout') }}
           </button>
-        </div>
-
-        <!-- mini terminal status -->
-        <div class="terminal mt-6 max-w-xl">
-          <div class="terminal-bar">
-            <span class="terminal-dot terminal-dot--r"></span>
-            <span class="terminal-dot terminal-dot--y"></span>
-            <span class="terminal-dot terminal-dot--g"></span>
-            <span class="terminal-title">~/admin — zsh</span>
-          </div>
-          <div class="terminal-body">
-            <div><span class="t-prompt">$</span> <span class="t-cmd">cv.status()</span></div>
-            <div class="t-out">
-              <span class="t-key">file</span>: {{ currentFileName || '—' }}
-            </div>
-            <div class="t-out">
-              <span class="t-key">size</span>: {{ formatSize(currentFileSize) }}
-            </div>
-            <div class="t-out">
-              <span class="t-key">state</span>:
-              <span *ngIf="!currentFileName" class="t-out">no upload yet</span>
-              <span *ngIf="uploadProgress !== null" class="t-accent">uploading… {{ uploadProgress | number:'1.0-0' }}%</span>
-              <span *ngIf="downloadUrl && uploadProgress === null" class="toast-meta-ok">→ live ✓</span>
-            </div>
-          </div>
         </div>
       </section>
 

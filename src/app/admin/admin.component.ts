@@ -1,11 +1,64 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseService } from '../firebase.service';
+import {
+  AppwriteService,
+  CvDoc,
+  CvEducation,
+  CvExperience,
+  CvLang,
+  CvStructured
+} from '../appwrite.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 type Lang = 'en' | 'fr';
 type Dict = { [key: string]: string };
+
+interface CvSlotState {
+  lang: CvLang;
+  fileName: string | null;
+  fileSize: number | null;
+  uploadProgress: number | null;
+  downloadUrl: string | null;
+  isDragging: boolean;
+}
+
+interface StructuredForm {
+  fullName: string;
+  title: string;
+  summary: string;
+  email: string;
+  phone: string;
+  location: string;
+  experience: CvExperience[];
+  education: CvEducation[];
+  skills: string; // comma-separated in the UI, parsed on save
+}
+
+function emptyStructuredForm(): StructuredForm {
+  return {
+    fullName: '',
+    title: '',
+    summary: '',
+    email: '',
+    phone: '',
+    location: '',
+    experience: [],
+    education: [],
+    skills: ''
+  };
+}
+
+function emptySlot(lang: CvLang): CvSlotState {
+  return {
+    lang,
+    fileName: null,
+    fileSize: null,
+    uploadProgress: null,
+    downloadUrl: null,
+    isDragging: false
+  };
+}
 
 @Component({
   selector: 'app-admin',
@@ -19,19 +72,31 @@ export class AdminComponent implements OnInit, OnDestroy {
   showPassword = false;
   isLoading = false;
 
-  // Upload state
-  uploadProgress: number | null = null;
-  downloadUrl: string | null = null;
-  currentFileName: string | null = null;
-  currentFileSize: number | null = null;
-  isDragging = false;
+  // Per-language upload slots
+  slots: Record<CvLang, CvSlotState> = {
+    en: emptySlot('en'),
+    fr: emptySlot('fr')
+  };
+
+  // Per-language structured editor data
+  structured: Record<CvLang, StructuredForm> = {
+    en: emptyStructuredForm(),
+    fr: emptyStructuredForm()
+  };
+  savingStructured: Record<CvLang, boolean> = { en: false, fr: false };
+
+  // Which language tab is active in the structured editor
+  editorLang: CvLang = 'en';
+
+  // Languages to iterate in the template (typed as CvLang[])
+  readonly languages: CvLang[] = ['en', 'fr'];
 
   // Status toast
   successMessage = '';
   errorMessage = '';
   private toastTimer: any = null;
 
-  // Theme + Language (shared with home via localStorage)
+  // Theme + UI Language (shared with home via localStorage)
   isDark = false;
   lang: Lang = 'en';
 
@@ -45,7 +110,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'panel.label': 'Admin panel',
       'panel.title.cv': 'CV',
       'panel.title.italic': 'management',
-      'panel.subtitle': 'Manage the CV used by the public portfolio. Upload a new PDF or download the current one.',
+      'panel.subtitle': 'Manage the CV used by the public portfolio. Upload a new PDF for each language and edit the structured data stored in Firestore.',
 
       'login.label': 'Restricted area',
       'login.title.welcome': 'Welcome',
@@ -59,9 +124,12 @@ export class AdminComponent implements OnInit, OnDestroy {
       'login.signing': 'Signing in…',
       'login.invalid': 'Invalid username or password.',
 
-      'upload.label': 'Upload PDF',
-      'upload.title': 'New CV',
-      'upload.dropzone.title': 'Click to upload or drag a file here',
+      'upload.label': 'Upload PDFs',
+      'upload.title': 'CV files',
+      'upload.subtitle': 'One PDF per language. Replacing a file overwrites the current one in Firebase Storage and updates Firestore.',
+      'upload.en': 'CV — English',
+      'upload.fr': 'CV — Français',
+      'upload.dropzone.title': 'Click to upload or drag a PDF here',
       'upload.dropzone.sub': 'PDF only · Max 10 MB',
       'upload.uploading': 'Uploading',
       'upload.success': 'CV uploaded successfully',
@@ -70,6 +138,33 @@ export class AdminComponent implements OnInit, OnDestroy {
       'upload.error.generic': 'Upload failed',
       'upload.current': 'Current file',
       'upload.size': 'Size',
+      'upload.none': 'No upload yet',
+
+      'structured.label': 'Structured data',
+      'structured.title': 'CV',
+      'structured.title.italic': 'content',
+      'structured.subtitle': 'Stored in Firestore (collection: cvs). The portfolio can render this directly without parsing the PDF.',
+      'structured.fullName': 'Full name',
+      'structured.title.field': 'Title / Role',
+      'structured.summary': 'Summary',
+      'structured.email': 'Email',
+      'structured.phone': 'Phone',
+      'structured.location': 'Location',
+      'structured.experience': 'Experience',
+      'structured.education': 'Education',
+      'structured.skills': 'Skills (comma-separated)',
+      'structured.add': 'Add row',
+      'structured.remove': 'Remove',
+      'structured.save': 'Save to Firestore',
+      'structured.saving': 'Saving…',
+      'structured.saved': 'Saved!',
+      'structured.exp.role': 'Role',
+      'structured.exp.company': 'Company',
+      'structured.exp.date': 'Date',
+      'structured.exp.desc': 'Description',
+      'structured.edu.role': 'Diploma / Program',
+      'structured.edu.school': 'School',
+      'structured.edu.date': 'Date',
 
       'actions.download': 'Download current CV',
       'actions.logout': 'Logout',
@@ -77,13 +172,13 @@ export class AdminComponent implements OnInit, OnDestroy {
       'actions.copy': 'Copy link',
       'actions.copied': 'Link copied!',
 
-      'footer.back': '← Back to portfolio',
+      'footer.back': '← Back to portfolio'
     },
     fr: {
       'panel.label': 'Panneau admin',
       'panel.title.cv': 'Gestion du',
       'panel.title.italic': 'CV',
-      'panel.subtitle': 'Gérez le CV utilisé par le portfolio public. Téléversez un nouveau PDF ou téléchargez le courant.',
+      'panel.subtitle': 'Gérez le CV utilisé par le portfolio public. Téléversez un PDF par langue et modifiez les données structurées stockées dans Firestore.',
 
       'login.label': 'Zone restreinte',
       'login.title.welcome': 'Bon retour',
@@ -97,8 +192,11 @@ export class AdminComponent implements OnInit, OnDestroy {
       'login.signing': 'Connexion…',
       'login.invalid': 'Identifiants incorrects.',
 
-      'upload.label': 'Téléverser un PDF',
-      'upload.title': 'Nouveau CV',
+      'upload.label': 'Téléverser les PDFs',
+      'upload.title': 'Fichiers CV',
+      'upload.subtitle': 'Un PDF par langue. Remplacer un fichier écrase le précédent dans Firebase Storage et met à jour Firestore.',
+      'upload.en': 'CV — Anglais',
+      'upload.fr': 'CV — Français',
       'upload.dropzone.title': 'Cliquez pour téléverser ou déposez un fichier ici',
       'upload.dropzone.sub': 'PDF uniquement · Max 10 Mo',
       'upload.uploading': 'Téléversement',
@@ -108,6 +206,33 @@ export class AdminComponent implements OnInit, OnDestroy {
       'upload.error.generic': 'Échec du téléversement',
       'upload.current': 'Fichier actuel',
       'upload.size': 'Taille',
+      'upload.none': 'Aucun téléversement',
+
+      'structured.label': 'Données structurées',
+      'structured.title': 'Contenu du',
+      'structured.title.italic': 'CV',
+      'structured.subtitle': 'Stocké dans Firestore (collection : cvs). Le portfolio peut afficher ces données sans analyser le PDF.',
+      'structured.fullName': 'Nom complet',
+      'structured.title.field': 'Titre / Poste',
+      'structured.summary': 'Résumé',
+      'structured.email': 'E-mail',
+      'structured.phone': 'Téléphone',
+      'structured.location': 'Localisation',
+      'structured.experience': 'Expérience',
+      'structured.education': 'Formation',
+      'structured.skills': 'Compétences (séparées par des virgules)',
+      'structured.add': 'Ajouter une ligne',
+      'structured.remove': 'Supprimer',
+      'structured.save': 'Enregistrer dans Firestore',
+      'structured.saving': 'Enregistrement…',
+      'structured.saved': 'Enregistré !',
+      'structured.exp.role': 'Poste',
+      'structured.exp.company': 'Entreprise',
+      'structured.exp.date': 'Date',
+      'structured.exp.desc': 'Description',
+      'structured.edu.role': 'Diplôme / Cursus',
+      'structured.edu.school': 'École',
+      'structured.edu.date': 'Date',
 
       'actions.download': 'Télécharger le CV actuel',
       'actions.logout': 'Déconnexion',
@@ -115,8 +240,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       'actions.copy': 'Copier le lien',
       'actions.copied': 'Lien copié !',
 
-      'footer.back': '← Retour au portfolio',
-    },
+      'footer.back': '← Retour au portfolio'
+    }
   };
 
   t(key: string): string {
@@ -124,13 +249,16 @@ export class AdminComponent implements OnInit, OnDestroy {
     return dict[key] ?? this.tx.en[key] ?? key;
   }
 
-  constructor(private firebaseService: FirebaseService, private router: Router) {
+  constructor(private backend: AppwriteService, private router: Router) {
     this.isAuthenticated = sessionStorage.getItem('isAdmin') === 'true';
   }
 
   ngOnInit(): void {
     this.initTheme();
     this.initLang();
+    if (this.isAuthenticated) {
+      this.loadCvDocs();
+    }
   }
 
   ngOnDestroy(): void {
@@ -186,6 +314,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
   }
 
+  setEditorLang(l: CvLang): void {
+    this.editorLang = l;
+  }
+
   // ---- Toast helpers ---------------------------------------------------
   private showSuccess(msg: string): void {
     this.successMessage = msg;
@@ -221,12 +353,12 @@ export class AdminComponent implements OnInit, OnDestroy {
   async login() {
     try {
       this.isLoading = true;
-      // tiny delay so the spinner reads as "actually doing something"
       await new Promise(r => setTimeout(r, 350));
       if (this.username === this.validUsername && this.password === this.validPassword) {
         this.isAuthenticated = true;
         sessionStorage.setItem('isAdmin', 'true');
         this.password = '';
+        this.loadCvDocs();
       } else {
         this.showError(this.t('login.invalid'));
       }
@@ -239,80 +371,128 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.isAuthenticated = false;
     this.username = '';
     this.password = '';
-    this.downloadUrl = null;
-    this.currentFileName = null;
-    this.currentFileSize = null;
+    this.slots = { en: emptySlot('en'), fr: emptySlot('fr') };
+    this.structured = { en: emptyStructuredForm(), fr: emptyStructuredForm() };
     sessionStorage.removeItem('isAdmin');
   }
 
-  // ---- File upload ----------------------------------------------------
-  onDragOver(e: DragEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.isDragging = true;
-  }
-  onDragLeave(e: DragEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.isDragging = false;
-  }
-  onDrop(e: DragEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.isDragging = false;
-    if (!this.isAuthenticated) return;
-    const file = e.dataTransfer?.files?.[0];
-    if (file) this.handleFile(file);
+  // ---- Loading existing CV docs ---------------------------------------
+  private loadCvDocs(): void {
+    (['en', 'fr'] as CvLang[]).forEach((lang) => {
+      this.backend.getCvDoc(lang)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (cv) => this.applyCvDoc(lang, cv),
+          error: (err) => console.error(`Failed to load CV ${lang}:`, err)
+        });
+    });
   }
 
-  onFile(event: Event) {
+  private applyCvDoc(lang: CvLang, cv: CvDoc | null): void {
+    if (!cv) return;
+    if (cv.file) {
+      this.slots[lang].fileName = cv.file.fileName;
+      this.slots[lang].fileSize = cv.file.size;
+      this.slots[lang].downloadUrl = cv.file.pdfUrl;
+    }
+    if (cv.structured) {
+      const s = cv.structured;
+      this.structured[lang] = {
+        fullName: s.fullName ?? '',
+        title: s.title ?? '',
+        summary: s.summary ?? '',
+        email: s.email ?? '',
+        phone: s.phone ?? '',
+        location: s.location ?? '',
+        experience: (s.experience ?? []).map((e) => ({ ...e })),
+        education: (s.education ?? []).map((e) => ({ ...e })),
+        skills: (s.skills ?? []).join(', ')
+      };
+    }
+  }
+
+  // ---- File upload (per language) -------------------------------------
+  onDragOver(e: DragEvent, lang: CvLang) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.slots[lang].isDragging = true;
+  }
+  onDragLeave(e: DragEvent, lang: CvLang) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.slots[lang].isDragging = false;
+  }
+  onDrop(e: DragEvent, lang: CvLang) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.slots[lang].isDragging = false;
+    if (!this.isAuthenticated) return;
+    const file = e.dataTransfer?.files?.[0];
+    if (file) this.handleFile(file, lang);
+  }
+
+  onFile(event: Event, lang: CvLang) {
     if (!this.isAuthenticated) return;
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
-    if (file) this.handleFile(file);
-    // reset input so the same file can be re-uploaded
+    if (file) this.handleFile(file, lang);
     if (input) input.value = '';
   }
 
-  private handleFile(file: File) {
+  private handleFile(file: File, lang: CvLang) {
     if (file.type !== 'application/pdf') {
       this.showError(this.t('upload.error.notpdf'));
       return;
     }
 
-    this.currentFileName = file.name;
-    this.currentFileSize = file.size;
-    const filePath = `cvs/${file.name}`;
-    this.uploadProgress = 0;
+    const slot = this.slots[lang];
+    slot.fileName = file.name;
+    slot.fileSize = file.size;
+    slot.uploadProgress = 0;
 
-    this.firebaseService.uploadFile(filePath, file).subscribe(
-      progress => {
-        this.uploadProgress = progress || 0;
+    // Logical path kept for terminal/status display only — Appwrite stores
+    // the file under the bucket with a stable per-language file ID.
+    const pdfPath = `cvs/cv-${lang}.pdf`;
+
+    // Use the per-upload Observable's own completion event so EN and FR
+    // uploads in parallel never trigger each other's "upload complete" path.
+    this.backend.uploadFile(lang, file).subscribe({
+      next: (progress) => {
+        slot.uploadProgress = progress ?? 0;
       },
-      error => {
-        this.uploadProgress = null;
+      error: (error) => {
+        console.error(`Upload failed for ${lang}:`, error);
+        slot.uploadProgress = null;
         this.showError(`${this.t('upload.error.generic')}: ${error?.message || ''}`);
-      }
-    );
+      },
+      complete: () => {
+        // Upload finished — get the public file-view URL and persist meta.
+        try {
+          const url = this.backend.getDownloadUrl(lang);
+          slot.downloadUrl = url;
+          slot.uploadProgress = null;
 
-    const completeSub = this.firebaseService.getUploadComplete().subscribe(
-      isComplete => {
-        if (isComplete) {
-          this.firebaseService.getDownloadUrl(filePath).subscribe(
-            url => {
-              this.downloadUrl = url;
-              this.uploadProgress = null;
+          this.backend
+            .saveCvFileMeta(lang, {
+              pdfPath,
+              pdfUrl: url,
+              fileName: file.name,
+              size: file.size
+            })
+            .then(() => {
               this.showSuccess(this.t('upload.success'));
-            },
-            () => {
-              this.uploadProgress = null;
+            })
+            .catch((err) => {
+              console.error('Failed to save file meta to Appwrite DB:', err);
               this.showError(this.t('upload.error.generic'));
-            }
-          );
-          completeSub.unsubscribe();
+            });
+        } catch (err: any) {
+          console.error('Failed to get download URL:', err);
+          slot.uploadProgress = null;
+          this.showError(this.t('upload.error.generic'));
         }
       }
-    );
+    });
   }
 
   formatSize(bytes: number | null): string {
@@ -322,22 +502,86 @@ export class AdminComponent implements OnInit, OnDestroy {
     return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
   }
 
-  testDownload() {
+  testDownload(lang: CvLang) {
     if (!this.isAuthenticated) return;
-    if (this.downloadUrl) {
-      window.open(this.downloadUrl, '_blank');
+    const slot = this.slots[lang];
+    if (slot.downloadUrl) {
+      window.open(slot.downloadUrl, '_blank');
     } else {
       this.showError('No CV available to download');
     }
   }
 
-  copyLink() {
-    if (!this.downloadUrl) return;
+  copyLink(lang: CvLang) {
+    const slot = this.slots[lang];
+    if (!slot.downloadUrl) return;
     if (navigator?.clipboard?.writeText) {
-      navigator.clipboard.writeText(this.downloadUrl).then(() => {
+      navigator.clipboard.writeText(slot.downloadUrl).then(() => {
         this.showSuccess(this.t('actions.copied'));
       });
     }
+  }
+
+  // ---- Structured editor ----------------------------------------------
+  addExperience(lang: CvLang) {
+    this.structured[lang].experience.push({ date: '', role: '', company: '', description: '' });
+  }
+  removeExperience(lang: CvLang, idx: number) {
+    this.structured[lang].experience.splice(idx, 1);
+  }
+  addEducation(lang: CvLang) {
+    this.structured[lang].education.push({ date: '', role: '', school: '' });
+  }
+  removeEducation(lang: CvLang, idx: number) {
+    this.structured[lang].education.splice(idx, 1);
+  }
+
+  /** Used in *ngFor for stable DOM as user types into rows. */
+  trackByIndex(i: number) { return i; }
+
+  saveStructured(lang: CvLang) {
+    if (!this.isAuthenticated) return;
+    const form = this.structured[lang];
+    const payload: CvStructured = {
+      fullName: form.fullName.trim() || undefined,
+      title: form.title.trim() || undefined,
+      summary: form.summary.trim() || undefined,
+      email: form.email.trim() || undefined,
+      phone: form.phone.trim() || undefined,
+      location: form.location.trim() || undefined,
+      experience: form.experience
+        .filter((e) => (e.role || '').trim() || (e.company || '').trim() || (e.date || '').trim())
+        .map((e) => ({
+          date: (e.date || '').trim(),
+          role: (e.role || '').trim(),
+          company: (e.company || '').trim() || undefined,
+          description: (e.description || '').trim() || undefined
+        })),
+      education: form.education
+        .filter((e) => (e.role || '').trim() || (e.school || '').trim())
+        .map((e) => ({
+          date: (e.date || '').trim() || undefined,
+          role: (e.role || '').trim(),
+          school: (e.school || '').trim()
+        })),
+      skills: form.skills
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+    };
+
+    this.savingStructured[lang] = true;
+    this.backend.saveCvStructured(lang, payload)
+      .then(() => {
+        this.showSuccess(this.t('structured.saved'));
+      })
+      .catch((err) => {
+        console.error('Failed to save structured CV:', err);
+        this.showError(`${this.t('upload.error.generic')}: ${err?.message || ''}`);
+      })
+      .finally(() => {
+        this.savingStructured[lang] = false;
+      });
   }
 
   goHome() {
