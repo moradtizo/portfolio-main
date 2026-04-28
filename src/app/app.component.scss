@@ -81,3 +81,65 @@ body, html { margin: 0; padding: 0; }
   0%, 100% { opacity: 0.7; transform: scale(1); }
   50%      { opacity: 1;   transform: scale(1.1); }
 }
+
+// ---------------------------------------------------------------------------
+//  Dev hover hint — small floating label that appears next to the native
+//  cursor only when hovering interactive elements. Native cursor stays
+//  visible everywhere; nothing is replaced.
+// ---------------------------------------------------------------------------
+
+.dev-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100000;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 9px;
+  border-radius: 999px;
+
+  background: #0E0E0C;
+  color: #FFF8EE;
+  border: 1px solid rgba(255, 248, 238, 0.14);
+  box-shadow: 0 6px 20px rgba(14, 14, 12, 0.18);
+
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  will-change: transform, opacity;
+
+  &__chev {
+    color: #C9553B;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: -1px;
+  }
+
+  &__text {
+    line-height: 1;
+  }
+
+  // Visible only while hovering an interactive element.
+  &--active {
+    opacity: 1;
+  }
+}
+
+// Hide entirely on touch / coarse-pointer devices.
+@media (hover: none), (pointer: coarse) {
+  .dev-cursor { display: none !important; }
+}
+
+// Respect reduced-motion preference.
+@media (prefers-reduced-motion: reduce) {
+  .dev-cursor { transition: none; }
+}
