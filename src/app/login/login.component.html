@@ -1,0 +1,52 @@
+<main class="login-shell">
+  <section class="login-card card">
+    <div class="ghost-heading">Login</div>
+    <div class="label mb-3">restricted area</div>
+    <h1 class="section-h2">
+      Sign <span class="display-italic" style="color:var(--accent);">in</span>
+    </h1>
+    <p class="section-subtitle">
+      This area is private. Use your Appwrite credentials to continue.
+    </p>
+
+    <form class="login-form" (ngSubmit)="submit()" autocomplete="on">
+      <label class="login-field">
+        <span class="login-field__label">Email</span>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          [disabled]="loading"
+          autocomplete="email"
+          required
+          placeholder="you@example.com"
+          class="login-input" />
+      </label>
+
+      <label class="login-field">
+        <span class="login-field__label">Password</span>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          [disabled]="loading"
+          autocomplete="current-password"
+          required
+          placeholder="••••••••"
+          class="login-input" />
+      </label>
+
+      <div *ngIf="error" class="login-error">
+        <i class="fas fa-circle-exclamation"></i>
+        <span>{{ error }}</span>
+      </div>
+
+      <button type="submit" class="login-submit" [disabled]="loading">
+        <span *ngIf="!loading">Sign in</span>
+        <span *ngIf="loading">Signing in&hellip;</span>
+      </button>
+    </form>
+
+    <a routerLink="/home" class="login-back">&larr; Back to home</a>
+  </section>
+</main>

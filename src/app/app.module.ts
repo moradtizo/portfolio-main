@@ -14,6 +14,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { MobileNavbarComponent } from './mobile-navbar/mobile-navbar.component';
 import { AdminComponent } from './admin/admin.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AdminComponent } from './admin/admin.component';
     SidebarComponent,
     MobileNavbarComponent,
     AdminComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

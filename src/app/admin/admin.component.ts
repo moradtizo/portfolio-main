@@ -66,10 +66,10 @@ function emptySlot(lang: CvLang): CvSlotState {
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit, OnDestroy {
-  isAuthenticated = false;
-  username = '';
-  password = '';
-  showPassword = false;
+  // Always true once we render — AuthGuard blocks /admin for anonymous
+  // visitors. Kept as a flag so existing template *ngIf bindings still
+  // work without rewiring every reference.
+  isAuthenticated = true;
   isLoading = false;
 
   // Per-language upload slots
@@ -100,8 +100,6 @@ export class AdminComponent implements OnInit, OnDestroy {
   isDark = false;
   lang: Lang = 'en';
 
-  private readonly validUsername = 'admin';
-  private readonly validPassword = 'password123';
   private destroy$ = new Subject<void>();
 
   // ---- Translations -----------------------------------------------------
@@ -249,16 +247,13 @@ export class AdminComponent implements OnInit, OnDestroy {
     return dict[key] ?? this.tx.en[key] ?? key;
   }
 
-  constructor(private backend: AppwriteService, private router: Router) {
-    this.isAuthenticated = sessionStorage.getItem('isAdmin') === 'true';
-  }
+  constructor(private backend: AppwriteService, private router: Router) {}
 
   ngOnInit(): void {
     this.initTheme();
     this.initLang();
-    if (this.isAuthenticated) {
-      this.loadCvDocs();
-    }
+    // AuthGuard guarantees we have a session — load CV docs straight away.
+    this.loadCvDocs();
   }
 
   ngOnDestroy(): void {
@@ -345,35 +340,17 @@ export class AdminComponent implements OnInit, OnDestroy {
     }, 5000);
   }
 
-  togglePassword(): void {
-    this.showPassword = !this.showPassword;
-  }
-
-  // ---- Login -----------------------------------------------------------
-  async login() {
+  // ---- Logout ----------------------------------------------------------
+  async logout(): Promise<void> {
     try {
-      this.isLoading = true;
-      await new Promise(r => setTimeout(r, 350));
-      if (this.username === this.validUsername && this.password === this.validPassword) {
-        this.isAuthenticated = true;
-        sessionStorage.setItem('isAdmin', 'true');
-        this.password = '';
-        this.loadCvDocs();
-      } else {
-        this.showError(this.t('login.invalid'));
-      }
-    } finally {
-      this.isLoading = false;
+      await this.backend.logout();
+    } catch (err) {
+      console.warn('logout warning', err);
     }
-  }
-
-  logout() {
     this.isAuthenticated = false;
-    this.username = '';
-    this.password = '';
     this.slots = { en: emptySlot('en'), fr: emptySlot('fr') };
     this.structured = { en: emptyStructuredForm(), fr: emptyStructuredForm() };
-    sessionStorage.removeItem('isAdmin');
+    this.router.navigate(['/login']);
   }
 
   // ---- Loading existing CV docs ---------------------------------------

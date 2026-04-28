@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Client, Databases, Storage, ID, AppwriteException } from 'appwrite';
-import { Observable } from 'rxjs';
+import { Client, Databases, Storage, Account, Models, ID, AppwriteException } from 'appwrite';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
+
+export type AppwriteUser = Models.User<Models.Preferences>;
 
 export type CvLang = 'en' | 'fr';
 
@@ -61,6 +63,18 @@ export class AppwriteService {
   private client: Client;
   private storage: Storage;
   private db: Databases;
+  private account: Account;
+
+  /** Current logged-in user, or null if anonymous. Use as observable. */
+  private readonly user$ = new BehaviorSubject<AppwriteUser | null>(null);
+  readonly currentUser$ = this.user$.asObservable();
+
+  /**
+   * Set to true once we've checked the session at least once. Guards can
+   * `await` this so they don't bounce to /login during a race on first load.
+   */
+  private readyResolve!: () => void;
+  private readonly ready = new Promise<void>((res) => (this.readyResolve = res));
 
   // Cache the local File so admin code can read its name/size after upload
   // without an extra round trip.
@@ -71,11 +85,78 @@ export class AppwriteService {
 
     this.storage = new Storage(this.client);
     this.db = new Databases(this.client);
+    this.account = new Account(this.client);
 
     console.log('[Appwrite] initialized', {
       endpoint: environment.appwrite.endpoint,
       project: environment.appwrite.projectId
     });
+
+    // Probe for an existing session on app start.
+    this.refreshUser().finally(() => this.readyResolve());
+  }
+
+  // ---------------------------------------------------------------------
+  //  AUTH — login / logout / current user
+  // ---------------------------------------------------------------------
+
+  /** Resolves once the initial session probe has completed. */
+  whenReady(): Promise<void> {
+    return this.ready;
+  }
+
+  /** Returns the cached user synchronously (may be null). */
+  get user(): AppwriteUser | null {
+    return this.user$.getValue();
+  }
+
+  /** True if a session is currently active. */
+  isAuthed(): boolean {
+    return this.user$.getValue() !== null;
+  }
+
+  /**
+   * Log in with email + password. Updates currentUser$ on success.
+   * Throws AppwriteException on failure (caller should catch and surface).
+   */
+  async login(email: string, password: string): Promise<AppwriteUser> {
+    // Some Appwrite SDK versions expose createEmailPasswordSession, older
+    // ones expose createEmailSession — try both for compatibility.
+    const acc: any = this.account;
+    if (typeof acc.createEmailPasswordSession === 'function') {
+      await acc.createEmailPasswordSession(email, password);
+    } else if (typeof acc.createEmailSession === 'function') {
+      await acc.createEmailSession(email, password);
+    } else {
+      throw new Error('Appwrite SDK is missing email session methods.');
+    }
+    const u = await this.account.get();
+    this.user$.next(u);
+    return u;
+  }
+
+  /** Log out and clear cached user. */
+  async logout(): Promise<void> {
+    try {
+      await this.account.deleteSession('current');
+    } catch (err) {
+      // If session was already invalid, ignore — just clear local state.
+      console.warn('[Appwrite] logout warning', err);
+    }
+    this.user$.next(null);
+  }
+
+  /** Re-fetch the current user. Returns null if no session. */
+  async refreshUser(): Promise<AppwriteUser | null> {
+    try {
+      const u = await this.account.get();
+      this.user$.next(u);
+      return u;
+    } catch {
+      // 401 / no session — that's fine, we're anonymous.
+      this.user$.next(null);
+      return null;
+    }
   }
 
   // ---------------------------------------------------------------------

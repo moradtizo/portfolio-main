@@ -61,59 +61,8 @@
   <div class="space-y-6">
 
     <!-- ============================================================== -->
-    <!-- LOGIN -->
-    <!-- ============================================================== -->
-    <section *ngIf="!isAuthenticated" class="card p-8 md:p-10 reveal in admin-login">
-      <div class="ghost-heading">Login</div>
-      <div class="mb-5 label">{{ t('login.label') }}</div>
-      <h2 class="section-h2">{{ t('login.title.welcome') }} <span class="display-italic" style="color:var(--accent);">{{ t('login.title.italic') }}</span></h2>
-      <p class="section-subtitle">{{ t('login.subtitle') }}</p>
-
-      <form (ngSubmit)="login()" class="mt-8 max-w-md mx-auto space-y-5">
-        <div>
-          <div class="field-label mb-1">{{ t('login.username') }}</div>
-          <div class="field-wrap">
-            <i class="fas fa-user field-icon"></i>
-            <input class="field field--with-icon" type="text"
-                   name="username" [(ngModel)]="username"
-                   [placeholder]="t('login.username.ph')"
-                   autocomplete="username" required />
-          </div>
-        </div>
-
-        <div>
-          <div class="field-label mb-1">{{ t('login.password') }}</div>
-          <div class="field-wrap">
-            <i class="fas fa-lock field-icon"></i>
-            <input class="field field--with-icon field--with-action"
-                   [type]="showPassword ? 'text' : 'password'"
-                   name="password" [(ngModel)]="password"
-                   [placeholder]="t('login.password.ph')"
-                   autocomplete="current-password" required />
-            <button type="button" class="field-action"
-                    (click)="togglePassword()"
-                    [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-              <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-primary w-full justify-center" [disabled]="isLoading">
-          <i class="fas fa-arrow-right-to-bracket text-[11px]"></i>
-          {{ isLoading ? t('login.signing') : t('login.submit') }}
-        </button>
-
-        <div class="text-center">
-          <span class="text-[11px] font-mono" style="color:var(--mute-2);">
-            <i class="fas fa-shield-halved" style="color:var(--accent);"></i>
-            secure session · stored in sessionStorage
-          </span>
-        </div>
-      </form>
-    </section>
-
-    <!-- ============================================================== -->
     <!-- DASHBOARD -->
+    <!-- (login is handled by /login + AuthGuard before this renders)   -->
     <!-- ============================================================== -->
     <ng-container *ngIf="isAuthenticated">
 
