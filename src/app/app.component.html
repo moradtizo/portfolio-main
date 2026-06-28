@@ -1,10 +1,13 @@
 <div *ngIf="isLoading" class="loading-overlay">
   <div class="loading-container">
-    <div class="loader">
-      <div class="loader-circle"></div>
-      <div class="loader-circle"></div>
-      <div class="loader-circle"></div>
-      <div class="code-symbol">&lt;/&gt;</div>
+    <div class="loader" aria-label="Loading">
+      <div class="loader-ring"></div>
+      <div class="loader-mark">MT</div>
+    </div>
+    <div class="loader-caption">
+      <span class="loader-prompt">$</span>
+      <span>loading</span>
+      <span class="loader-dots" aria-hidden="true"></span>
     </div>
   </div>
 </div>

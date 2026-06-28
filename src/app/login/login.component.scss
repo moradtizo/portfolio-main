@@ -78,6 +78,21 @@
   i { font-size: 13px; }
 }
 
+.login-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: color-mix(in srgb, var(--ink, #0E0E0C) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink, #0E0E0C) 16%, transparent);
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+
+  i { font-size: 13px; color: var(--accent, #C9553B); }
+}
+
 .login-submit {
   margin-top: 4px;
   padding: 13px 18px;

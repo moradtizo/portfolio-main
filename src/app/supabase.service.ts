@@ -81,6 +81,10 @@ export class SupabaseService {
     return this.user$.getValue();
   }
 
+  get userEmail(): string | null {
+    return this.user$.getValue()?.email ?? null;
+  }
+
   isAuthed(): boolean {
     return this.user$.getValue() !== null;
   }

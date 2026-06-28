@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   password = '';
   loading = false;
   error: string | null = null;
+  info: string | null = null;
 
   private redirectTo = '/admin';
 
@@ -28,6 +29,10 @@ export class LoginComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const r = this.route.snapshot.queryParamMap.get('redirect');
     if (r) this.redirectTo = r;
+    const reason = this.route.snapshot.queryParamMap.get('reason');
+    if (reason === 'session') {
+      this.info = 'Please sign in again to continue to the admin panel.';
+    }
 
     // If already signed in, skip the form.
     await this.auth.whenReady();
@@ -39,6 +44,7 @@ export class LoginComponent implements OnInit {
   async submit(): Promise<void> {
     if (this.loading) return;
     this.error = null;
+    this.info = null;
 
     const email = this.email.trim();
     const password = this.password;

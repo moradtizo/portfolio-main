@@ -10,6 +10,11 @@
     </p>
 
     <form class="login-form" (ngSubmit)="submit()" autocomplete="on">
+      <div *ngIf="info" class="login-info">
+        <i class="fas fa-circle-info"></i>
+        <span>{{ info }}</span>
+      </div>
+
       <label class="login-field">
         <span class="login-field__label">Email</span>
         <input

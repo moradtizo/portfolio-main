@@ -71,6 +71,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   // work without rewiring every reference.
   isAuthenticated = true;
   isLoading = false;
+  adminEmail = '';
 
   // Per-language upload slots
   slots: Record<CvLang, CvSlotState> = {
@@ -84,6 +85,8 @@ export class AdminComponent implements OnInit, OnDestroy {
     fr: emptyStructuredForm()
   };
   savingStructured: Record<CvLang, boolean> = { en: false, fr: false };
+  loadingDocs: Record<CvLang, boolean> = { en: false, fr: false };
+  loadErrors: Record<CvLang, string | null> = { en: null, fr: null };
 
   // Which language tab is active in the structured editor
   editorLang: CvLang = 'en';
@@ -131,6 +134,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'upload.dropzone.sub': 'PDF only · Max 10 MB',
       'upload.uploading': 'Uploading',
       'upload.success': 'CV uploaded successfully',
+      'upload.confirm.replace': 'This will replace the current CV PDF. Continue?',
       'upload.error.notpdf': 'Please select a PDF file',
       'upload.error.nofile': 'No file selected',
       'upload.error.generic': 'Upload failed',
@@ -165,10 +169,15 @@ export class AdminComponent implements OnInit, OnDestroy {
       'structured.edu.date': 'Date',
 
       'actions.download': 'Download current CV',
+      'actions.preview': 'Open preview',
       'actions.logout': 'Logout',
       'actions.viewsite': 'View site',
       'actions.copy': 'Copy link',
       'actions.copied': 'Link copied!',
+      'status.loading': 'Loading CV data from Supabase...',
+      'status.loaded': 'CV data loaded',
+      'status.error': 'Could not load CV data',
+      'status.retry': 'Retry',
 
       'footer.back': '← Back to portfolio'
     },
@@ -199,6 +208,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'upload.dropzone.sub': 'PDF uniquement · Max 10 Mo',
       'upload.uploading': 'Téléversement',
       'upload.success': 'CV téléversé avec succès',
+      'upload.confirm.replace': 'Ce PDF remplacera le CV actuel. Continuer ?',
       'upload.error.notpdf': 'Veuillez sélectionner un fichier PDF',
       'upload.error.nofile': 'Aucun fichier sélectionné',
       'upload.error.generic': 'Échec du téléversement',
@@ -233,10 +243,15 @@ export class AdminComponent implements OnInit, OnDestroy {
       'structured.edu.date': 'Date',
 
       'actions.download': 'Télécharger le CV actuel',
+      'actions.preview': 'Ouvrir l’aperçu',
       'actions.logout': 'Déconnexion',
       'actions.viewsite': 'Voir le site',
       'actions.copy': 'Copier le lien',
       'actions.copied': 'Lien copié !',
+      'status.loading': 'Chargement des données CV depuis Supabase...',
+      'status.loaded': 'Données CV chargées',
+      'status.error': 'Impossible de charger les données CV',
+      'status.retry': 'Réessayer',
 
       'footer.back': '← Retour au portfolio'
     }
@@ -252,6 +267,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTheme();
     this.initLang();
+    this.adminEmail = this.backend.userEmail ?? '';
     // AuthGuard guarantees we have a session — load CV docs straight away.
     this.loadCvDocs();
   }
@@ -356,13 +372,39 @@ export class AdminComponent implements OnInit, OnDestroy {
   // ---- Loading existing CV docs ---------------------------------------
   private loadCvDocs(): void {
     (['en', 'fr'] as CvLang[]).forEach((lang) => {
-      this.backend.getCvDoc(lang)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (cv) => this.applyCvDoc(lang, cv),
-          error: (err) => console.error(`Failed to load CV ${lang}:`, err)
-        });
+      this.loadCvDoc(lang);
     });
+  }
+
+  retryLoadCvDocs(): void {
+    this.loadCvDocs();
+  }
+
+  private loadCvDoc(lang: CvLang): void {
+    this.loadingDocs[lang] = true;
+    this.loadErrors[lang] = null;
+
+    this.backend.getCvDoc(lang)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (cv) => this.applyCvDoc(lang, cv),
+        error: (err) => {
+          console.error(`Failed to load CV ${lang}:`, err);
+          this.loadErrors[lang] = err?.message || this.t('status.error');
+          this.loadingDocs[lang] = false;
+        },
+        complete: () => {
+          this.loadingDocs[lang] = false;
+        }
+      });
+  }
+
+  get isLoadingCvDocs(): boolean {
+    return this.loadingDocs.en || this.loadingDocs.fr;
+  }
+
+  get cvLoadError(): string | null {
+    return this.loadErrors.en || this.loadErrors.fr;
   }
 
   private applyCvDoc(lang: CvLang, cv: CvDoc | null): void {
@@ -423,6 +465,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
 
     const slot = this.slots[lang];
+    if (
+      slot.downloadUrl &&
+      typeof window !== 'undefined' &&
+      !window.confirm(this.t('upload.confirm.replace'))
+    ) {
+      return;
+    }
+
     slot.fileName = file.name;
     slot.fileSize = file.size;
     slot.uploadProgress = 0;

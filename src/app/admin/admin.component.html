@@ -22,7 +22,7 @@
           Authenticated
         </span>
         <span class="status-meta">
-          <i class="fas fa-user"></i> admin
+          <i class="fas fa-user"></i> {{ adminEmail || 'admin' }}
         </span>
         <span class="status-meta">
           <i class="fas fa-database"></i> supabase · cvs
@@ -72,6 +72,32 @@
         <div class="mb-5 label">{{ t('panel.label') }}</div>
         <h2 class="section-h2">{{ t('panel.title.cv') }} <span class="display-italic" style="color:var(--accent);">{{ t('panel.title.italic') }}</span></h2>
         <p class="section-subtitle">{{ t('panel.subtitle') }}</p>
+
+        <div class="terminal mt-6">
+          <div class="terminal-bar">
+            <span class="terminal-dot terminal-dot--r"></span>
+            <span class="terminal-dot terminal-dot--y"></span>
+            <span class="terminal-dot terminal-dot--g"></span>
+            <span class="terminal-title">~/admin — supabase.health()</span>
+          </div>
+          <div class="terminal-body">
+            <div *ngIf="isLoadingCvDocs">
+              <span class="t-prompt">$</span>
+              <span class="t-accent"><i class="fas fa-spinner fa-spin"></i> {{ t('status.loading') }}</span>
+            </div>
+            <div *ngIf="!isLoadingCvDocs && !cvLoadError">
+              <span class="t-prompt">$</span>
+              <span class="toast-meta-ok">→ {{ t('status.loaded') }}</span>
+            </div>
+            <div *ngIf="cvLoadError" class="flex flex-wrap items-center gap-3">
+              <span class="t-prompt">$</span>
+              <span class="t-accent">{{ t('status.error') }}: {{ cvLoadError }}</span>
+              <button class="btn-ghost" type="button" (click)="retryLoadCvDocs()">
+                <i class="fas fa-rotate-right text-[11px]"></i> {{ t('status.retry') }}
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ============================================================== -->
@@ -137,6 +163,11 @@
               <button class="btn-ghost" type="button"
                       (click)="testDownload('en')"
                       [disabled]="!slots.en.downloadUrl">
+                <i class="fas fa-eye text-[11px]"></i> {{ t('actions.preview') }}
+              </button>
+              <button class="btn-ghost" type="button"
+                      (click)="testDownload('en')"
+                      [disabled]="!slots.en.downloadUrl">
                 <i class="fas fa-arrow-down text-[11px]"></i> {{ t('actions.download') }}
               </button>
               <button class="btn-ghost" type="button"
@@ -197,6 +228,11 @@
 
             <!-- Per-slot mini actions -->
             <div class="flex flex-wrap items-center gap-2 mt-3">
+              <button class="btn-ghost" type="button"
+                      (click)="testDownload('fr')"
+                      [disabled]="!slots.fr.downloadUrl">
+                <i class="fas fa-eye text-[11px]"></i> {{ t('actions.preview') }}
+              </button>
               <button class="btn-ghost" type="button"
                       (click)="testDownload('fr')"
                       [disabled]="!slots.fr.downloadUrl">

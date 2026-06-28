@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     await this.auth.whenReady();
     if (this.auth.isAdmin()) return true;
     return this.router.createUrlTree(['/login'], {
-      queryParams: { redirect: '/admin' }
+      queryParams: { redirect: '/admin', reason: 'session' }
     });
   }
 }
