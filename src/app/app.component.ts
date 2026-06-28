@@ -20,6 +20,8 @@ import {
   NavigationError
 } from '@angular/router';
 const SHOW_BOTTOM_NAVBAR_KEY = 'showBottomNavbar';
+const MIN_LOADER_DURATION_MS = 1200;
+const MAX_LOADER_DURATION_MS = 6000;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private cursorTeardown: (() => void) | null = null;
   private loadingTimer: ReturnType<typeof setTimeout> | null = null;
   private loadingSafetyTimer: ReturnType<typeof setTimeout> | null = null;
+  private loadingStartedAt = 0;
 
   constructor(
     private sharedService: SharedService,
@@ -71,18 +74,21 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private showLoading(): void {
     this.clearLoadingTimers();
     this.isLoading = true;
+    this.loadingStartedAt = Date.now();
     this.loadingSafetyTimer = setTimeout(() => {
       this.isLoading = false;
       this.clearLoadingTimers();
-    }, 5000);
+    }, MAX_LOADER_DURATION_MS);
   }
 
   private hideLoading(): void {
     if (this.loadingTimer) clearTimeout(this.loadingTimer);
+    const elapsed = Date.now() - this.loadingStartedAt;
+    const remaining = Math.max(MIN_LOADER_DURATION_MS - elapsed, 0);
     this.loadingTimer = setTimeout(() => {
       this.isLoading = false;
       this.clearLoadingTimers();
-    }, 300);
+    }, remaining);
   }
 
   private clearLoadingTimers(): void {
