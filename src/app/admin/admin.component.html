@@ -25,7 +25,7 @@
           <i class="fas fa-user"></i> admin
         </span>
         <span class="status-meta">
-          <i class="fas fa-database"></i> firestore · cvs
+          <i class="fas fa-database"></i> supabase · cvs
         </span>
       </div>
     </div>
@@ -88,7 +88,7 @@
           <div>
             <div class="field-label mb-2 flex items-center justify-between">
               <span><i class="fas fa-flag-usa mr-1" style="color:var(--accent);"></i> {{ t('upload.en') }}</span>
-              <span class="text-[11px] font-mono" style="color:var(--mute-2);">cvs/cv-en.pdf</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">cv-en.pdf</span>
             </div>
 
             <label class="dropzone"
@@ -151,7 +151,7 @@
           <div>
             <div class="field-label mb-2 flex items-center justify-between">
               <span><i class="fas fa-flag mr-1" style="color:var(--accent);"></i> {{ t('upload.fr') }}</span>
-              <span class="text-[11px] font-mono" style="color:var(--mute-2);">cvs/cv-fr.pdf</span>
+              <span class="text-[11px] font-mono" style="color:var(--mute-2);">cv-fr.pdf</span>
             </div>
 
             <label class="dropzone"
@@ -221,7 +221,7 @@
             <span class="terminal-title">~/admin — cvs.status()</span>
           </div>
           <div class="terminal-body">
-            <div><span class="t-prompt">$</span> <span class="t-cmd">db.collection('cvs').list()</span></div>
+            <div><span class="t-prompt">$</span> <span class="t-cmd">supabase.from('cvs').select()</span></div>
             <div class="t-out"><span class="t-key">en.file</span>: {{ slots.en.fileName || '—' }} <span *ngIf="slots.en.fileSize">({{ formatSize(slots.en.fileSize) }})</span></div>
             <div class="t-out">
               <span class="t-key">en.state</span>:

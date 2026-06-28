@@ -12,7 +12,13 @@ import {
 } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { SharedService } from './shared.service';
-import { Router, NavigationStart, NavigationEnd } from '@angular/router';
+import {
+  Router,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError
+} from '@angular/router';
 const SHOW_BOTTOM_NAVBAR_KEY = 'showBottomNavbar';
 @Component({
   selector: 'app-root',
@@ -23,6 +29,8 @@ const SHOW_BOTTOM_NAVBAR_KEY = 'showBottomNavbar';
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('devCursor') devCursor?: ElementRef<HTMLDivElement>;
   private cursorTeardown: (() => void) | null = null;
+  private loadingTimer: ReturnType<typeof setTimeout> | null = null;
+  private loadingSafetyTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(
     private sharedService: SharedService,
@@ -40,10 +48,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
-        this.isLoading = true;
-      } else if (event instanceof NavigationEnd) {        setTimeout(() => {
-          this.isLoading = false;
-        }, 500);
+        this.showLoading();
+      } else if (
+        event instanceof NavigationEnd ||
+        event instanceof NavigationCancel ||
+        event instanceof NavigationError
+      ) {
+        this.hideLoading();
       }
     });
   }
@@ -54,6 +65,35 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.cursorTeardown) this.cursorTeardown();
+    this.clearLoadingTimers();
+  }
+
+  private showLoading(): void {
+    this.clearLoadingTimers();
+    this.isLoading = true;
+    this.loadingSafetyTimer = setTimeout(() => {
+      this.isLoading = false;
+      this.clearLoadingTimers();
+    }, 5000);
+  }
+
+  private hideLoading(): void {
+    if (this.loadingTimer) clearTimeout(this.loadingTimer);
+    this.loadingTimer = setTimeout(() => {
+      this.isLoading = false;
+      this.clearLoadingTimers();
+    }, 300);
+  }
+
+  private clearLoadingTimers(): void {
+    if (this.loadingTimer) {
+      clearTimeout(this.loadingTimer);
+      this.loadingTimer = null;
+    }
+    if (this.loadingSafetyTimer) {
+      clearTimeout(this.loadingSafetyTimer);
+      this.loadingSafetyTimer = null;
+    }
   }
 
   /**
@@ -120,6 +160,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       const onMove = (e: MouseEvent) => {
         targetX = e.clientX;
         targetY = e.clientY;
+        el.style.transform = `translate3d(${targetX + 16}px, ${targetY + 18}px, 0)`;
         const t = e.target as Element | null;
         const hit = t && t.closest ? t.closest(interactiveSel) as Element | null : null;
         if (hit) {
@@ -142,20 +183,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         el.classList.remove('dev-cursor--active');
       };
 
-      const tick = () => {
-        // Locked to the cursor — no easing, no trailing motion.
-        // Offset slightly down-right of the cursor tip so the label never
-        // covers the link or text the user is reading.
-        el.style.transform = `translate3d(${targetX + 16}px, ${targetY + 18}px, 0)`;
-        raf = requestAnimationFrame(tick);
-      };
-
       document.addEventListener('mousemove', onMove, { passive: true });
       document.addEventListener('mouseleave', onLeave);
-      raf = requestAnimationFrame(tick);
 
       this.cursorTeardown = () => {
-        cancelAnimationFrame(raf);
+        if (raf) cancelAnimationFrame(raf);
         document.removeEventListener('mousemove', onMove);
         document.removeEventListener('mouseleave', onLeave);
       };
@@ -184,4 +216,3 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.setItem(SHOW_BOTTOM_NAVBAR_KEY, JSON.stringify(this.showBottomNavbar));
   }
 }
-

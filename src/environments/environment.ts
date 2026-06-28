@@ -1,10 +1,9 @@
 export const environment = {
   production: false,
-  appwrite: {
-    endpoint: 'https://nyc.cloud.appwrite.io/v1',
-    projectId: '69edfff3003e69433a5e',
-    databaseId: 'portfolio',
-    cvsCollectionId: 'cvs',
-    cvsBucketId: 'cvs'
-  }
+  supabase: {
+    url: "https://upchamgnhudioixfvxww.supabase.co",
+    publishableKey: "sb_publishable_siPxDIwdOdpT9jZpbb-y2A_pOKtKGtw",
+    cvsBucket: "cvs",
+    adminEmails: ["mouradtizougarine@gmail.com"] as string[],
+  },
 };

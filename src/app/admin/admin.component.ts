@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  AppwriteService,
   CvDoc,
   CvEducation,
   CvExperience,
   CvLang,
-  CvStructured
-} from '../appwrite.service';
+  CvStructured,
+  SupabaseService
+} from '../supabase.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -108,7 +108,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'panel.label': 'Admin panel',
       'panel.title.cv': 'CV',
       'panel.title.italic': 'management',
-      'panel.subtitle': 'Manage the CV used by the public portfolio. Upload a new PDF for each language and edit the structured data stored in Firestore.',
+      'panel.subtitle': 'Manage the CV used by the public portfolio. Upload a new PDF for each language and edit the structured data stored in Supabase.',
 
       'login.label': 'Restricted area',
       'login.title.welcome': 'Welcome',
@@ -124,7 +124,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
       'upload.label': 'Upload PDFs',
       'upload.title': 'CV files',
-      'upload.subtitle': 'One PDF per language. Replacing a file overwrites the current one in Firebase Storage and updates Firestore.',
+      'upload.subtitle': 'One PDF per language. Replacing a file overwrites the current one in Supabase Storage and updates the cvs table.',
       'upload.en': 'CV — English',
       'upload.fr': 'CV — Français',
       'upload.dropzone.title': 'Click to upload or drag a PDF here',
@@ -141,7 +141,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'structured.label': 'Structured data',
       'structured.title': 'CV',
       'structured.title.italic': 'content',
-      'structured.subtitle': 'Stored in Firestore (collection: cvs). The portfolio can render this directly without parsing the PDF.',
+      'structured.subtitle': 'Stored in Supabase (table: cvs). The portfolio can render this directly without parsing the PDF.',
       'structured.fullName': 'Full name',
       'structured.title.field': 'Title / Role',
       'structured.summary': 'Summary',
@@ -153,7 +153,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'structured.skills': 'Skills (comma-separated)',
       'structured.add': 'Add row',
       'structured.remove': 'Remove',
-      'structured.save': 'Save to Firestore',
+      'structured.save': 'Save to Supabase',
       'structured.saving': 'Saving…',
       'structured.saved': 'Saved!',
       'structured.exp.role': 'Role',
@@ -176,7 +176,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'panel.label': 'Panneau admin',
       'panel.title.cv': 'Gestion du',
       'panel.title.italic': 'CV',
-      'panel.subtitle': 'Gérez le CV utilisé par le portfolio public. Téléversez un PDF par langue et modifiez les données structurées stockées dans Firestore.',
+      'panel.subtitle': 'Gérez le CV utilisé par le portfolio public. Téléversez un PDF par langue et modifiez les données structurées stockées dans Supabase.',
 
       'login.label': 'Zone restreinte',
       'login.title.welcome': 'Bon retour',
@@ -192,7 +192,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
       'upload.label': 'Téléverser les PDFs',
       'upload.title': 'Fichiers CV',
-      'upload.subtitle': 'Un PDF par langue. Remplacer un fichier écrase le précédent dans Firebase Storage et met à jour Firestore.',
+      'upload.subtitle': 'Un PDF par langue. Remplacer un fichier écrase le précédent dans Supabase Storage et met à jour la table cvs.',
       'upload.en': 'CV — Anglais',
       'upload.fr': 'CV — Français',
       'upload.dropzone.title': 'Cliquez pour téléverser ou déposez un fichier ici',
@@ -209,7 +209,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'structured.label': 'Données structurées',
       'structured.title': 'Contenu du',
       'structured.title.italic': 'CV',
-      'structured.subtitle': 'Stocké dans Firestore (collection : cvs). Le portfolio peut afficher ces données sans analyser le PDF.',
+      'structured.subtitle': 'Stocké dans Supabase (table : cvs). Le portfolio peut afficher ces données sans analyser le PDF.',
       'structured.fullName': 'Nom complet',
       'structured.title.field': 'Titre / Poste',
       'structured.summary': 'Résumé',
@@ -221,7 +221,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       'structured.skills': 'Compétences (séparées par des virgules)',
       'structured.add': 'Ajouter une ligne',
       'structured.remove': 'Supprimer',
-      'structured.save': 'Enregistrer dans Firestore',
+      'structured.save': 'Enregistrer dans Supabase',
       'structured.saving': 'Enregistrement…',
       'structured.saved': 'Enregistré !',
       'structured.exp.role': 'Poste',
@@ -247,7 +247,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     return dict[key] ?? this.tx.en[key] ?? key;
   }
 
-  constructor(private backend: AppwriteService, private router: Router) {}
+  constructor(private backend: SupabaseService, private router: Router) {}
 
   ngOnInit(): void {
     this.initTheme();
@@ -427,9 +427,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     slot.fileSize = file.size;
     slot.uploadProgress = 0;
 
-    // Logical path kept for terminal/status display only — Appwrite stores
-    // the file under the bucket with a stable per-language file ID.
-    const pdfPath = `cvs/cv-${lang}.pdf`;
+    const pdfPath = `cv-${lang}.pdf`;
 
     // Use the per-upload Observable's own completion event so EN and FR
     // uploads in parallel never trigger each other's "upload complete" path.
@@ -460,7 +458,7 @@ export class AdminComponent implements OnInit, OnDestroy {
               this.showSuccess(this.t('upload.success'));
             })
             .catch((err) => {
-              console.error('Failed to save file meta to Appwrite DB:', err);
+              console.error('Failed to save file meta to Supabase:', err);
               this.showError(this.t('upload.error.generic'));
             });
         } catch (err: any) {

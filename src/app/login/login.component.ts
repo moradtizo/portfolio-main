@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppwriteService } from '../appwrite.service';
+import { SupabaseService } from '../supabase.service';
 
 /**
- * Login screen for the admin area. Email + password against Appwrite.
+ * Login screen for the admin area. Email + password against Supabase.
  * On success, redirects to ?redirect= (default /admin).
  */
 @Component({
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   private redirectTo = '/admin';
 
   constructor(
-    private auth: AppwriteService,
+    private auth: SupabaseService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
     // If already signed in, skip the form.
     await this.auth.whenReady();
-    if (this.auth.isAuthed()) {
+    if (this.auth.isAdmin()) {
       this.router.navigateByUrl(this.redirectTo);
     }
   }
@@ -53,9 +53,6 @@ export class LoginComponent implements OnInit {
       this.router.navigateByUrl(this.redirectTo);
     } catch (err: any) {
       console.error('[login] failed', err);
-      // Common Appwrite codes:
-      //   401: invalid credentials
-      //   429: too many requests
       const code = err?.code;
       if (code === 401) {
         this.error = 'Invalid email or password.';

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { DownloadService } from 'src/assets/download.service';
 import { CvService } from '../cv.service';
-import { AppwriteService } from '../appwrite.service';
+import { SupabaseService } from '../supabase.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import emailjs from 'emailjs-com';
@@ -277,7 +277,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private fb: FormBuilder,
     private downloadService: DownloadService,
     private cv: CvService,
-    private backend: AppwriteService,
+    private backend: SupabaseService,
     private router: Router
   ) {
     this.contactForm = this.fb.group({
@@ -386,7 +386,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   downloadCV(): void {
     this.downloading = true;
 
-    // 1) Try to fetch the language-specific CV from Appwrite (cvs/{lang}).
+    // 1) Try to fetch the language-specific CV from Supabase (cvs/{lang}).
     //    If found, download from the public bucket URL.
     this.backend.getCvDoc(this.lang).subscribe({
       next: (cvDoc) => {
@@ -400,7 +400,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fallbackLocalDownload();
       },
       error: (err) => {
-        console.warn('Appwrite CV lookup failed, falling back to local:', err);
+        console.warn('Supabase CV lookup failed, falling back to local:', err);
         this.fallbackLocalDownload();
       }
     });
