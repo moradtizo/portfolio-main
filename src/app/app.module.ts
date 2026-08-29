@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +38,5 @@ import { LoginComponent } from './login/login.component';
   ],
   providers: [DownloadService],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], // Add this line to include the <link>model-viewer</link> custom element
 })
 export class AppModule { }

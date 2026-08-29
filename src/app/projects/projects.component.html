@@ -28,9 +28,11 @@
     <!-- Projects grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-      <div *ngFor="let project of projects; let i = index"
-           class="card-hover overflow-hidden group"
-           (click)="navigateToProjectWebsite(project.websiteUrl)">
+      <a *ngFor="let project of projects; let i = index"
+         [href]="project.websiteUrl"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="card-hover overflow-hidden group block">
 
         <!-- Image -->
         <div class="relative overflow-hidden aspect-video"
@@ -46,7 +48,7 @@
 
         <!-- Content -->
         <div class="p-6">
-          <h3 class="font-display font-semibold text-xl text-white mb-2">{{ project.title }}</h3>
+          <h3 class="font-display font-semibold text-xl mb-2">{{ project.title }}</h3>
           <p class="text-sm text-slate-400 leading-relaxed mb-4">{{ project.description }}</p>
 
           <div class="flex items-center justify-between pt-4 border-t border-white/5">
@@ -57,7 +59,7 @@
           </div>
         </div>
 
-      </div>
+      </a>
 
     </div>
 
@@ -67,7 +69,7 @@
            style="background: radial-gradient(500px 300px at 50% 0%, rgba(139,92,246,0.15), transparent 60%);"></div>
       <div class="relative">
         <p class="text-slate-400 mb-4 font-mono text-xs tracking-widest">HAVE A PROJECT IN MIND?</p>
-        <h3 class="font-display font-bold text-3xl md:text-4xl text-white mb-6">
+        <h3 class="font-display font-bold text-3xl md:text-4xl mb-6">
           Let's <span class="gradient-text">build</span> something together.
         </h3>
         <a routerLink="/contact" class="btn-primary">
